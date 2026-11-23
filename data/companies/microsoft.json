@@ -1,0 +1,124 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "microsoft",
+    "name": "Microsoft",
+    "legalName": "Microsoft Corporation",
+    "listings": [{ "exchange": "NASDAQ", "ticker": "MSFT" }],
+    "hq": { "city": "Redmond", "country": "United States", "lat": 47.67, "lon": -122.12 },
+    "region": "Americas",
+    "industry": { "gics": "Systems Software", "sasb": "Software & IT Services (TC-SI)" },
+    "peerGroup": "software_it",
+    "fiscalYear": { "end": "06-30", "labelConvention": "end_year", "note": "FY25 = year ended 30 June 2025 (Data Fact Sheet p.2)." },
+    "website": "https://www.microsoft.com",
+    "sustainabilityPage": "https://www.microsoft.com/en-us/corporate-responsibility/sustainability"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from the 2026 Environmental Data Fact Sheet, Section 1 (Tables 1A, 5, 6, 8, 9), reviewed by Deloitte for FY25. PUE from the 2026 Environmental Sustainability Report.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "msft-factsheet-2026",
+    "boundary": "consolidated_group",
+    "consolidation": "operational_control",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "limited", "provider": "Deloitte & Touche LLP", "scope": "Review engagement (AICPA AR-C/AT-C 210) on Section 1 of the Data Fact Sheet, FY25 only." }
+  },
+  "sources": [
+    {
+      "id": "msft-factsheet-2026",
+      "organisation": "Microsoft Corporation",
+      "title": "2026 Environmental Data Fact Sheet (fiscal year 2025)",
+      "type": "esg_data_book",
+      "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Data-Fact-Sheet-PDF.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Printed page numbers match PDF pages."
+    },
+    {
+      "id": "msft-esr-2026",
+      "organisation": "Microsoft Corporation",
+      "title": "2026 Environmental Sustainability Report",
+      "type": "sustainability_report",
+      "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Sustainability-Report-PDF.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document"
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "esg_data_book", "source": "msft-factsheet-2026", "assurance": { "level": "limited", "provider": "Deloitte & Touche LLP", "scope": "Review of Section 1 for FY25; prior years and goals not reviewed (p.2)." } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 170887, "unit": "tCO2e", "page": "p.3, Table 1A", "reportedWording": "Scope 1 | 118,100 | 123,704 | 139,413 | 144,960 | 143,510 | 170,887" },
+    { "metric": "ghg_scope1", "year": 2024, "state": "disclosed", "value": 143510, "unit": "tCO2e", "page": "p.3, Table 1A", "assurance": { "level": "none" }, "note": "Prior-year value as restated in the 2026 fact sheet; not covered by the FY25 review." },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 12030556, "unit": "tCO2e", "scope2Method": "location", "page": "p.3, Table 1A", "reportedWording": "Location-based | 4,328,916 | 5,010,667 | 6,381,250 | 8,077,403 | 9,955,368 12,030,556" },
+    { "metric": "ghg_scope2_location", "year": 2024, "state": "disclosed", "value": 9955368, "unit": "tCO2e", "scope2Method": "location", "page": "p.3, Table 1A", "assurance": { "level": "none" } },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 2707428, "unit": "tCO2e", "scope2Method": "market", "page": "p.3, Table 1A", "reportedWording": "Market-based | 456,119 | 429,405 | 288,029 | 393,134 | 259,090 | 2,707,428", "note": "Increase reflects the pause on unbundled spot EACs from February 2025 (p.6, Table 5 note 2)." },
+    { "metric": "ghg_scope2_market", "year": 2024, "state": "disclosed", "value": 259090, "unit": "tCO2e", "scope2Method": "market", "page": "p.3, Table 1A", "assurance": { "level": "none" } },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 18243000, "unit": "tCO2e", "page": "p.3, Table 1A", "reportedWording": "Subtotal emissions (Scope 3) | ... | 18,243,000", "note": "GHG Protocol-aligned, market-based. Table 1B gives 17,412,000 under management's criteria (net of SAF/SMF certificates and renewable electricity in category 11)." },
+    { "metric": "ghg_scope3_total", "year": 2024, "state": "disclosed", "value": 16290000, "unit": "tCO2e", "page": "p.3, Table 1A", "assurance": { "level": "none" } },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 5129000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c2", "year": 2025, "state": "disclosed", "value": 9044000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 1075000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 823000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c5", "year": 2025, "state": "disclosed", "value": 14000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 239000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 284000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c9", "year": 2025, "state": "disclosed", "value": 86000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 1540000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 3000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "ghg_scope3_c13", "year": 2025, "state": "disclosed", "value": 6000, "unit": "tCO2e", "page": "p.3, Table 1A" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 37461476, "unit": "MWh", "page": "p.6, Table 5", "reportedWording": "Total energy consumption | ... 30,207,220 37,461,476" },
+    { "metric": "energy_total", "year": 2024, "state": "disclosed", "value": 30207220, "unit": "MWh", "page": "p.6, Table 5", "assurance": { "level": "none" } },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 100, "unit": "%", "page": "p.6, Table 6", "reportedWording": "Percentage of direct | – | – | 62 | 59 | 78 | 100", "note": "Microsoft's definition includes PPAs, green power products, long-term attribute contracts and the renewable portion of the grid mix." },
+    { "metric": "renewable_electricity_share", "year": 2024, "state": "disclosed", "value": 78, "unit": "%", "page": "p.6, Table 6", "assurance": { "level": "none" } },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 13266, "unit": "ML", "page": "p.7, Table 8", "reportedWording": "Total water withdrawals | 6,794 | 7,747 | 8,698 | 9,666 | 11,590 | 13,266" },
+    { "metric": "water_withdrawal", "year": 2024, "state": "disclosed", "value": 11590, "unit": "ML", "page": "p.7, Table 8", "assurance": { "level": "none" }, "note": "Restated in the 2026 fact sheet after data-capture improvements (Table 8 note 1)." },
+    { "metric": "water_consumption", "year": 2025, "state": "disclosed", "value": 8170, "unit": "ML", "page": "p.7, Table 8", "reportedWording": "Total water consumption | 3,990 | 4,794 | 5,329 | 5,818 | 6,693 | 8,170" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 58868, "unit": "t", "page": "p.7, Table 9", "reportedWording": "Total waste generated | 40,571 | 22,518 | 29,596 | 36,392 | 41,290 | 58,868" },
+    { "metric": "waste_total", "year": 2024, "state": "disclosed", "value": 41290, "unit": "t", "page": "p.7, Table 9", "assurance": { "level": "none" } },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 61.4, "unit": "%", "status": "derived", "page": "p.7, Table 9", "note": "Derived: diverted subtotal 36,149 t ÷ total waste generated 58,868 t = 61.4%." },
+    { "metric": "sw_datacenter_pue", "year": 2025, "state": "disclosed", "value": 1.17, "unit": "ratio", "source": "msft-esr-2026", "page": "PDF p.23", "assurance": { "level": "none" }, "reportedWording": "our datacenters delivered a global average PUE" }
+  ],
+  "targets": [
+    {
+      "id": "msft-carbon-negative-2030",
+      "category": "emissions",
+      "type": "net_zero",
+      "description": "Become carbon negative by 2030 by reducing emissions across operations and value chain and removing more carbon than emitted.",
+      "scopes": ["1", "2", "3"],
+      "target": { "year": 2030 },
+      "validation": "not_stated",
+      "source": "msft-esr-2026",
+      "page": "PDF p.8"
+    },
+    {
+      "id": "msft-water-positive-2030",
+      "category": "water",
+      "type": "qualitative",
+      "description": "Become water positive by 2030 by reducing water use and replenishing more than withdrawn.",
+      "target": { "year": 2030 },
+      "validation": "not_stated",
+      "source": "msft-esr-2026",
+      "page": "PDF p.8"
+    },
+    {
+      "id": "msft-zero-waste-2030",
+      "category": "waste",
+      "type": "qualitative",
+      "description": "Become zero waste by 2030.",
+      "target": { "year": 2030 },
+      "validation": "not_stated",
+      "source": "msft-esr-2026",
+      "page": "PDF p.8"
+    }
+  ],
+  "frameworks": [{ "name": "GRI", "detail": "Selected metrics reference GRI Standards", "source": "msft-factsheet-2026", "page": "p.2" }],
+  "dataGaps": [],
+  "comparabilityNotes": [
+    "Scope 3 total and categories are market-based, GHG Protocol-aligned (Table 1A). An alternative management's-criteria total net of fuel certificates is in Table 1B and is not used here.",
+    "Microsoft restates prior years under its recalculation policy; FY2024 values here are as restated in the 2026 fact sheet."
+  ]
+}

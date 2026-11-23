@@ -1,0 +1,117 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "siemens",
+    "name": "Siemens",
+    "legalName": "Siemens Aktiengesellschaft",
+    "listings": [{ "exchange": "XETRA", "ticker": "SIE" }],
+    "hq": { "city": "Munich", "country": "Germany", "lat": 48.14, "lon": 11.58 },
+    "region": "Europe",
+    "industry": { "gics": "Industrial Conglomerates", "sasb": "Industrial Machinery & Goods (RT-IG) / Electrical & Electronic Equipment (RR-EE)" },
+    "peerGroup": "autos_industrials",
+    "fiscalYear": { "end": "09-30", "labelConvention": "end_year", "note": "Fiscal 2025 = 1 October 2024 to 30 September 2025." },
+    "website": "https://www.siemens.com",
+    "sustainabilityPage": "https://www.siemens.com/global/en/company/sustainability.html"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from the CSRD Sustainability Statement fiscal 2025 (part of the Combined Management Report). Group metrics include Siemens Healthineers (SHS); strategic targets are set for Siemens w/o SHS.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "siemens-ss-fy2025",
+    "boundary": "consolidated_group",
+    "consolidation": "not_stated",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers GmbH Wirtschaftsprüfungsgesellschaft", "scope": "Group Sustainability Report, ISAE 3000 (Revised), PDF p.114" }
+  },
+  "sources": [
+    {
+      "id": "siemens-ss-fy2025",
+      "organisation": "Siemens AG",
+      "title": "Sustainability Statement fiscal 2025",
+      "type": "annual_report",
+      "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:dea0c623-1ae9-4ef0-a69a-31d8eb7b39fb/sustainability-statement.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Printed page numbers match PDF pages in the sections used."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "annual_report", "source": "siemens-ss-fy2025", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers GmbH Wirtschaftsprüfungsgesellschaft", "scope": "Group Sustainability Report (ISAE 3000 Revised)" } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 288, "unit": "ktCO2e", "page": "p.33", "reportedWording": "Gross Scope 1 GHG emissions - 288 - - -" },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 633, "unit": "ktCO2e", "scope2Method": "location", "page": "p.33", "reportedWording": "Gross location-based Scope 2 GHG emissions - 633 - - -" },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 71, "unit": "ktCO2e", "scope2Method": "market", "page": "p.33", "reportedWording": "Gross market-based Scope 2 GHG emissions - 71 - - -" },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 159144, "unit": "ktCO2e", "page": "p.33", "reportedWording": "Total Gross indirect (Scope 3) GHG emissions 179,222 159,144" },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 9425, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c2", "year": 2025, "state": "disclosed", "value": 397, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 121, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 1101, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c5", "year": 2025, "state": "disclosed", "value": 21, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 214, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 177, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c8", "year": 2025, "state": "not_disclosed", "page": "p.33", "note": "n/a – already accounted for within Scope 1 & 2." },
+    { "metric": "ghg_scope3_c9", "year": 2025, "state": "disclosed", "value": 24, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c10", "year": 2025, "state": "not_disclosed", "page": "p.33", "note": "n/a – not material." },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 134133, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 3659, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c13", "year": 2025, "state": "disclosed", "value": 2963, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "ghg_scope3_c14", "year": 2025, "state": "not_disclosed", "page": "p.33", "note": "n/a – not applicable." },
+    { "metric": "ghg_scope3_c15", "year": 2025, "state": "disclosed", "value": 6911, "unit": "ktCO2e", "page": "p.33" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 2984738, "unit": "MWh", "page": "p.36", "reportedWording": "Total energy consumption 2,984,738" },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 86, "unit": "%", "coverage": "Siemens w/o Siemens Healthineers; purchased electricity", "page": "p.30; p.7", "reportedWording": "our purchased electricity originated from renewable sources continued to increase and now stands at 86%", "note": "RE100-compliant definition including the 15-year plant age limit." },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 12.963, "unit": "million m3", "page": "p.45", "reportedWording": "Water withdrawal 12.963" },
+    { "metric": "water_consumption", "year": 2025, "state": "disclosed", "value": 0.599, "unit": "million m3", "page": "p.45", "reportedWording": "Water consumption 0.599" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 188127, "unit": "t", "page": "p.56", "reportedWording": "Total amount of hazardous and non-hazardous waste generated 188,127" },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 81.2, "unit": "%", "status": "derived", "page": "p.56", "note": "Derived: waste diverted from disposal 152,789 t ÷ total generated 188,127 t = 81.2%." }
+  ],
+  "targets": [
+    {
+      "id": "siemens-s12-2030",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Reduce Scope 1 & 2 emissions by 90% by fiscal 2030 vs 2019 and compensate residual emissions (Siemens w/o SHS).",
+      "scopes": ["1", "2"],
+      "baseline": { "year": 2019 },
+      "target": { "year": 2030, "value": 90, "unit": "% reduction" },
+      "latest": { "year": 2025, "value": 66, "unit": "% reduction" },
+      "validation": "sbti_validated",
+      "source": "siemens-ss-fy2025",
+      "page": "p.7; validation p.6",
+      "note": "Report states science-based targets for fiscal 2030 and the net-zero 2050 target are validated by SBTi."
+    },
+    {
+      "id": "siemens-s3-2030",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Reduce Scope 3 emissions by 30% by fiscal 2030 vs 2019 and achieve net zero by 2050 (Siemens w/o SHS).",
+      "scopes": ["3"],
+      "baseline": { "year": 2019 },
+      "target": { "year": 2030, "value": 30, "unit": "% reduction" },
+      "latest": { "year": 2025, "value": 11, "unit": "% reduction" },
+      "validation": "sbti_validated",
+      "source": "siemens-ss-fy2025",
+      "page": "p.7"
+    },
+    {
+      "id": "siemens-re100-2030",
+      "category": "energy",
+      "type": "increase_to",
+      "description": "Transition to 100% electricity from renewable sources by fiscal 2030 (RE100).",
+      "baseline": { "year": 2021 },
+      "target": { "year": 2030, "value": 100, "unit": "%" },
+      "latest": { "year": 2025, "value": 86, "unit": "%" },
+      "validation": "not_stated",
+      "source": "siemens-ss-fy2025",
+      "page": "p.7; p.30"
+    }
+  ],
+  "frameworks": [{ "name": "ESRS", "detail": "CSRD sustainability statement", "source": "siemens-ss-fy2025", "page": "p.110" }],
+  "dataGaps": [],
+  "comparabilityNotes": [
+    "GHG, energy, water and waste figures are for the consolidated group including Siemens Healthineers; strategic targets and the renewable electricity share cover Siemens without Healthineers.",
+    "Fiscal year ends 30 September."
+  ]
+}

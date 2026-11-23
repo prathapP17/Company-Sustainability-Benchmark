@@ -1,0 +1,112 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "unilever",
+    "name": "Unilever",
+    "legalName": "Unilever PLC",
+    "listings": [
+      { "exchange": "LSE", "ticker": "ULVR" },
+      { "exchange": "Euronext Amsterdam", "ticker": "UNA" },
+      { "exchange": "NYSE", "ticker": "UL" }
+    ],
+    "hq": { "city": "London", "country": "United Kingdom", "lat": 51.51, "lon": -0.11 },
+    "region": "Europe",
+    "industry": { "gics": "Personal Care Products", "sasb": "Household & Personal Products (CG-HP)" },
+    "peerGroup": "consumer_staples",
+    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "website": "https://www.unilever.com",
+    "sustainabilityPage": "https://www.unilever.com/sustainability/"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from the Sustainability Statement in the Annual Report and Accounts 2025, read from the ESEF filing because unilever.com returned HTTP 403. 2025 metrics exclude Ice Cream (demerged 6 Dec 2025); 2024 comparatives include it, so only 2025 is recorded.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "unilever-ar-2025",
+    "boundary": "consolidated_group",
+    "consolidation": "operational_control",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "limited", "provider": "KPMG LLP", "scope": "Sustainability statement, ISAE (UK) 3000 (p.214; report p.271)" }
+  },
+  "sources": [
+    {
+      "id": "unilever-ar-2025",
+      "organisation": "Unilever PLC",
+      "title": "Annual Report and Accounts 2025 – Sustainability Statement (ESEF filing)",
+      "type": "annual_report",
+      "url": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ul-2025-12-31-1-en.xhtml",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Official ESEF XHTML filing hosted on filings.xbrl.org (unilever.com PDF returned 403). Citations use the printed page numbers shown in the filing."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "annual_report", "source": "unilever-ar-2025", "assurance": { "level": "limited", "provider": "KPMG LLP", "scope": "Sustainability statement (ISAE (UK) 3000)" } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 0.43, "unit": "MtCO2e", "page": "p.232", "reportedWording": "Gross Scope 1 GHG (e) | 0.43 | 0.48 | 0.57", "note": "Excludes Ice Cream (0.09 Mt Scope 1+2 shown separately)." },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 0.06, "unit": "MtCO2e", "scope2Method": "market", "page": "p.232", "reportedWording": "Gross market-based Scope 2 GHG emissions | 0.06 | 0.21 | 0.18" },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 0.82, "unit": "MtCO2e", "scope2Method": "location", "page": "p.232", "reportedWording": "Gross location-based Scope 2 GHG emissions | 0.82 | 1.26 | 1.16" },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 96.55, "unit": "MtCO2e", "status": "derived", "page": "p.232", "note": "Derived: Scope 3 in scope of net zero ambition (47.21) + Scope 3 indirect consumer use (49.34). Consistent with total Scope 1-3 market-based 97.04 minus Scope 1+2 0.49." },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 37.91, "unit": "MtCO2e", "page": "p.232", "reportedWording": "Purchased goods and services | 37.91" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 1.87, "unit": "MtCO2e", "page": "p.232", "reportedWording": "Upstream transportation and distribution (logistics)(c) | 1.87" },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 50.92, "unit": "MtCO2e", "status": "derived", "page": "p.232", "note": "Derived: use of sold products – HFC propellants (direct, 1.58) + indirect consumer use (49.34, e.g. heating water for shampoo). Indirect use-phase is optional under the GHG Protocol and excluded from Unilever's net zero scope." },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 3.73, "unit": "MtCO2e", "page": "p.232", "reportedWording": "End-of-life treatment of sold products(c)(d) | 3.73" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 5224, "unit": "GWh", "page": "p.233", "reportedWording": "Total Unilever energy consumption | 5,224 | 6,482", "note": "Reported in thousands MWh. Excludes Ice Cream (1,227) and collaborative manufacturers." },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 88, "unit": "%", "page": "p.234", "reportedWording": "Total Unilever renewable electricity | 88% | 85%", "note": "63 percentage points come from unbundled RECs." },
+    { "metric": "water_withdrawal", "year": 2025, "state": "not_found", "page": "pp.237-238", "note": "Only water consumption is tabulated; withdrawal volume is not reported." },
+    { "metric": "water_consumption", "year": 2025, "state": "disclosed", "value": 14, "unit": "million m3", "page": "p.238", "reportedWording": "Total water consumption | 14 | 17" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 493, "unit": "kt", "page": "p.246", "reportedWording": "Total waste generated | 493 | 731" },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 98.6, "unit": "%", "status": "derived", "page": "p.246", "note": "Derived: hazardous (19) + non-hazardous (467) diverted from disposal ÷ total generated (493) thousand tonnes = 98.6%. Includes 'other recovery operations'." },
+    { "metric": "fb_deforestation_free_share", "year": 2025, "state": "disclosed", "text": "> 95%", "page": "p.240", "reportedWording": "In 2025, we exceeded 95% purchase volumes of palm oil, paper and board, tea, soy and cocoa as deforestation-free", "note": "Only a threshold is given, not an exact share; stored as text." },
+    { "metric": "fb_recyclable_packaging_share", "year": 2025, "state": "disclosed", "value": 57, "unit": "%", "page": "p.244", "reportedWording": "100% of our plastic packaging to be reusable, recyclable or compostable(b) | 100% | 57% | 57% | 53%" },
+    { "metric": "fb_virgin_plastic_packaging", "year": 2025, "state": "not_found", "page": "p.244", "note": "Only the % change vs 2019 is reported ((29)%), not tonnes." }
+  ],
+  "targets": [
+    {
+      "id": "unilever-s12-2030",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Reduce absolute operational GHG emissions (Scope 1 and 2) by 100% by 2030 from a 2015 baseline; interim 80–90% by 2028.",
+      "scopes": ["1", "2"],
+      "baseline": { "year": 2015 },
+      "target": { "year": 2030, "value": 100, "unit": "% reduction" },
+      "validation": "sbti_validated",
+      "source": "unilever-ar-2025",
+      "page": "p.100",
+      "note": "'Scope 1 and 2 GHG target is SBTi validated.' Target not yet adjusted for the Ice Cream demerger."
+    },
+    {
+      "id": "unilever-net-zero-2039",
+      "category": "emissions",
+      "type": "net_zero",
+      "description": "Net zero goal by 2039.",
+      "target": { "year": 2039 },
+      "validation": "not_stated",
+      "source": "unilever-ar-2025",
+      "page": "p.76"
+    },
+    {
+      "id": "unilever-virgin-plastic-2028",
+      "category": "materials",
+      "type": "absolute",
+      "description": "Reduce virgin plastic footprint by 30% by 2026 and 40% by 2028 from a 2019 baseline.",
+      "baseline": { "year": 2019 },
+      "target": { "year": 2028, "value": 40, "unit": "% reduction" },
+      "latest": { "year": 2025, "value": 29, "unit": "% reduction" },
+      "validation": "not_stated",
+      "source": "unilever-ar-2025",
+      "page": "p.244"
+    }
+  ],
+  "frameworks": [{ "name": "ESRS", "source": "unilever-ar-2025" }],
+  "dataGaps": [
+    { "kind": "boundary_mismatch", "description": "2024 comparatives include Ice Cream; 2025 excludes it. No 2024 values recorded to avoid a false trend.", "source": "unilever-ar-2025", "page": "p.232 note (a)" },
+    { "kind": "ambiguous", "description": "Scope 3 categories 2, 3, 5, 6, 7, 9 and 14 are reported only as a combined 'Others' line (2.12 Mt).", "source": "unilever-ar-2025", "page": "p.232 note (h)" }
+  ],
+  "comparabilityNotes": [
+    "Unilever's Scope 3 includes 49.34 Mt of indirect consumer-use emissions (optional under the GHG Protocol). Peers that exclude indirect use will look much smaller.",
+    "Renewable electricity share relies mostly on unbundled RECs (63 of 88 percentage points)."
+  ]
+}

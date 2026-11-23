@@ -1,0 +1,38 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "tsmc",
+    "name": "TSMC",
+    "legalName": "Taiwan Semiconductor Manufacturing Company Limited",
+    "listings": [
+      { "exchange": "TWSE", "ticker": "2330" },
+      { "exchange": "NYSE", "ticker": "TSM" }
+    ],
+    "hq": { "city": "Hsinchu", "country": "Taiwan", "lat": 24.78, "lon": 120.99 },
+    "region": "Asia-Pacific",
+    "industry": { "gics": "Semiconductors", "sasb": "Semiconductors (TC-SC)" },
+    "peerGroup": "tech_hardware_semis",
+    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "website": "https://www.tsmc.com",
+    "sustainabilityPage": "https://esg.tsmc.com/en-US/"
+  },
+  "researchStatus": "profile_only",
+  "researchNotes": "Skipped for phase 1 by decision on 2026-11-23: esg.tsmc.com serves a Cloudflare bot challenge to automated requests. Not bypassed. All metrics are 'Not assessed'.",
+  "lastReviewed": "2026-11-23",
+  "sources": [
+    {
+      "id": "tsmc-sr-2025",
+      "organisation": "Taiwan Semiconductor Manufacturing Company Limited",
+      "title": "2025 TSMC Sustainability Report (English) – not retrieved",
+      "type": "sustainability_report",
+      "url": "https://esg.tsmc.com/file/public/2025-TSMC-Sustainability-Report-e.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "URL identified via web search; HTTP 403 with Cloudflare challenge (cf-mitigated: challenge). Needs the file supplied manually."
+    }
+  ],
+  "dataGaps": [
+    { "kind": "blocked_source", "description": "Official sustainability report blocked by Cloudflare bot protection. Ask the user for the PDF or use a regulator copy (TWSE MOPS ESG filing).", "source": "tsmc-sr-2025" }
+  ]
+}

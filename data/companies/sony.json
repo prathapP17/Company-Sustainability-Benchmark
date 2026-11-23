@@ -1,0 +1,37 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "sony",
+    "name": "Sony Group",
+    "legalName": "Sony Group Corporation",
+    "listings": [
+      { "exchange": "TSE", "ticker": "6758" },
+      { "exchange": "NYSE", "ticker": "SONY" }
+    ],
+    "hq": { "city": "Tokyo", "country": "Japan", "lat": 35.62, "lon": 139.74 },
+    "region": "Asia-Pacific",
+    "industry": { "gics": "Consumer Electronics", "sasb": "Hardware (TC-HW)" },
+    "peerGroup": "tech_hardware_semis",
+    "fiscalYear": { "end": "03-31", "labelConvention": "start_year", "note": "Japanese convention: FY2025 = April 2025 to March 2026." },
+    "website": "https://www.sony.com",
+    "sustainabilityPage": "https://www.sony.com/en/SonyInfo/csr_report/"
+  },
+  "researchStatus": "profile_only",
+  "researchNotes": "Skipped for phase 1 by decision on 2026-11-23: sony.com returned HTTP 403 to automated requests and is blocked in the browser pane. A 2026 edition of the Sustainability Report could not be confirmed. All metrics are 'Not assessed'.",
+  "lastReviewed": "2026-11-23",
+  "sources": [
+    {
+      "id": "sony-csr-hub",
+      "organisation": "Sony Group Corporation",
+      "title": "Sony Sustainability Report hub – not retrieved",
+      "type": "webpage",
+      "url": "https://www.sony.com/en/SonyInfo/csr_report/",
+      "accessed": "2026-11-23",
+      "verificationClass": "official_webpage",
+      "notes": "HTTP 403 to automated requests."
+    }
+  ],
+  "dataGaps": [
+    { "kind": "blocked_source", "description": "sony.com blocked automated access; latest Sustainability Report edition unconfirmed. Ask the user for the PDF (or use the EDINET securities report).", "source": "sony-csr-hub" }
+  ]
+}

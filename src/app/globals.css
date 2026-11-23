@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* Design tokens. Chart roles follow the validated reference palette (dataviz skill). */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --ink-muted: #6f6d68;
+  --hairline: #e1e0d9;
+  --axis: #c3c2b7;
+  --ring: rgba(11, 11, 11, 0.1);
+  --accent: #256abf;
+  /* Coverage: ordinal one-hue ramp (validated light, --ordinal) + neutral for "not assessed" */
+  --state-disclosed: #1c5cab;
+  --state-not-disclosed: #3987e5;
+  --state-not-found: #86b6ef;
+  --state-not-assessed: #e1e0d9;
+  --series-1: #2a78d6;
+  --warn-bg: #fff4d6;
+  --warn-ink: #6b4a00;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --ink-muted: #a3a199;
+    --hairline: #2c2c2a;
+    --axis: #383835;
+    --ring: rgba(255, 255, 255, 0.1);
+    --accent: #6da7ec;
+    /* dark ordinal steps validated against #1a1a19 */
+    --state-disclosed: #9ec5f4;
+    --state-not-disclosed: #3987e5;
+    --state-not-found: #184f95;
+    --state-not-assessed: #383835;
+    --series-1: #3987e5;
+    --warn-bg: #3a2c05;
+    --warn-ink: #fad27a;
+  }
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-muted: var(--ink-muted);
+  --color-hairline: var(--hairline);
+  --color-accent: var(--accent);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-ink: var(--warn-ink);
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* "Not assessed" carries a 45° texture so it never relies on colour alone. */
+.texture-not-assessed {
+  background-color: var(--state-not-assessed);
+  background-image: repeating-linear-gradient(45deg, transparent 0 4px, var(--ring) 4px 5px);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

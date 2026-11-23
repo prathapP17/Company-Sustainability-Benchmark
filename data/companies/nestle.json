@@ -1,0 +1,115 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "nestle",
+    "name": "Nestlé",
+    "legalName": "Nestlé S.A.",
+    "listings": [{ "exchange": "SIX", "ticker": "NESN" }],
+    "hq": { "city": "Vevey", "country": "Switzerland", "lat": 46.46, "lon": 6.84 },
+    "region": "Europe",
+    "industry": { "gics": "Packaged Foods & Meats", "sasb": "Processed Foods (FB-PF)" },
+    "peerGroup": "consumer_staples",
+    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "website": "https://www.nestle.com",
+    "sustainabilityPage": "https://www.nestle.com/sustainability"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from the Non-Financial Statement 2025: GHG tables (PDF pp.51-54) and Appendix 4 KPI tables (PDF pp.202-211). EY limited assurance on selected KPIs (PDF p.4).",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "nestle-nfs-2025",
+    "boundary": "consolidated_group",
+    "consolidation": "not_stated",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "limited", "provider": "Ernst & Young Ltd", "scope": "Selected ESG KPIs and non-financial matters (ISAE 3000/3410), PDF p.4" }
+  },
+  "sources": [
+    {
+      "id": "nestle-nfs-2025",
+      "organisation": "Nestlé S.A.",
+      "title": "Non-Financial Statement 2025",
+      "type": "sustainability_report",
+      "url": "https://www.nestle.com/sites/default/files/2026-02/non-financial-statement-2025.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Printed page numbers match PDF pages. KPI tables use columns (2018) 2022 2023 2024 2025."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "sustainability_report", "source": "nestle-nfs-2025", "assurance": { "level": "limited", "provider": "Ernst & Young Ltd", "scope": "Selected environmental, social and governance KPIs" } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 2.82, "unit": "MtCO2e", "page": "p.51; p.203", "reportedWording": "Gross Scope 1 greenhouse gas | Million metric | 3.21 3.23 3.06 3.02 2.82" },
+    { "metric": "ghg_scope1", "year": 2024, "state": "disclosed", "value": 3.02, "unit": "MtCO2e", "page": "p.203", "note": "Restated per Nestlé's recalculation policy." },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 0.22, "unit": "MtCO2e", "scope2Method": "market", "page": "p.51; p.203", "reportedWording": "Gross market-based Scope 2 | Million metric | 1.94 0.76 0.31 0.24 0.22" },
+    { "metric": "ghg_scope2_market", "year": 2024, "state": "disclosed", "value": 0.24, "unit": "MtCO2e", "scope2Method": "market", "page": "p.203" },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 2.48, "unit": "MtCO2e", "scope2Method": "location", "page": "p.54; p.203", "reportedWording": "Gross location-based Scope 2 GHG emissions | 2.48" },
+    { "metric": "ghg_scope2_location", "year": 2024, "state": "disclosed", "value": 2.42, "unit": "MtCO2e", "scope2Method": "location", "page": "p.203" },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 74.79, "unit": "MtCO2e", "status": "derived", "page": "p.53; p.203", "note": "Derived: Scope 3 in scope for Net Zero Roadmap (66.01) + Scope 3 not in scope (8.78). Nestlé's headline 'Gross Scope 3' (66.01) covers only the SBTi-scope categories." },
+    { "metric": "ghg_scope3_total", "year": 2024, "state": "disclosed", "value": 77.24, "unit": "MtCO2e", "status": "derived", "page": "p.203", "note": "Derived: 68.00 (in scope) + 9.24 (not in scope)." },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 56.43, "unit": "MtCO2e", "status": "derived", "page": "p.53", "note": "Derived: purchased goods (in scope) 51.10 + purchased services (out of scope) 5.33." },
+    { "metric": "ghg_scope3_c2", "year": 2025, "state": "disclosed", "value": 2.72, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 0.94, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 1.7, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c5", "year": 2025, "state": "disclosed", "value": 0.05, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 0.11, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 0.36, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c8", "year": 2025, "state": "disclosed", "value": 0.11, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c9", "year": 2025, "state": "disclosed", "value": 7.51, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c10", "year": 2025, "state": "not_disclosed", "page": "p.53", "note": "'Not relevant for Nestlé'." },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 0.4, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 1.46, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "ghg_scope3_c13", "year": 2025, "state": "not_disclosed", "page": "p.53", "note": "'Not relevant for Nestlé'." },
+    { "metric": "ghg_scope3_c14", "year": 2025, "state": "not_disclosed", "page": "p.53", "note": "'Not relevant for Nestlé'." },
+    { "metric": "ghg_scope3_c15", "year": 2025, "state": "disclosed", "value": 0.22, "unit": "MtCO2e", "page": "p.53" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 77120623, "unit": "GJ", "coverage": "Factories only", "page": "p.49; p.202", "reportedWording": "Total energy consumption related to own operations (factories only) 78 784 554 77 120 623" },
+    { "metric": "energy_total", "year": 2024, "state": "disclosed", "value": 78784554, "unit": "GJ", "coverage": "Factories only", "page": "p.202" },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 98.6, "unit": "%", "page": "p.42; p.202", "reportedWording": "We achieved 98.6% against our aim to source 100% renewable electricity", "note": "Manufacturing sites, owned R&D centres and owned distribution centres at year end; scope widened in 2025 from factories only (p.202 note)." },
+    { "metric": "renewable_electricity_share", "year": 2024, "state": "disclosed", "value": 95.3, "unit": "%", "coverage": "Factories only", "page": "p.202" },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 96.1, "unit": "million m3", "page": "p.209", "reportedWording": "Total water withdrawn Million cubic | 97.1 95.6 97.9 96.1" },
+    { "metric": "water_withdrawal", "year": 2024, "state": "disclosed", "value": 97.9, "unit": "million m3", "page": "p.209" },
+    { "metric": "water_consumption", "year": 2025, "state": "disclosed", "value": 44.7, "unit": "million m3", "page": "p.209", "reportedWording": "Total water consumed Million cubic | 43.9 47.2 45.0 44.7" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 1839067, "unit": "t", "page": "p.211", "reportedWording": "Total weight of waste generated | Metric tonnes 1 811 947 1 564 810 1 771 759 1 839 067" },
+    { "metric": "waste_total", "year": 2024, "state": "disclosed", "value": 1771759, "unit": "t", "page": "p.211" },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "not_found", "page": "pp.91, 211", "note": "Waste is broken down by hazard class, not by recovery vs disposal, in the KPI table." },
+    { "metric": "fb_deforestation_free_share", "year": 2025, "state": "disclosed", "value": 96.7, "unit": "%", "page": "p.42; p.73", "reportedWording": "We achieved 96.7% assessed deforestation-free primary supply chains" },
+    { "metric": "fb_recyclable_packaging_share", "year": 2025, "state": "disclosed", "value": 87.5, "unit": "%", "page": "p.83; p.211", "reportedWording": "Plastic packaging designed for | Percent 81.9 83.5 86.4 87.5" },
+    { "metric": "fb_recyclable_packaging_share", "year": 2024, "state": "disclosed", "value": 86.4, "unit": "%", "page": "p.211" },
+    { "metric": "fb_virgin_plastic_packaging", "year": 2025, "state": "not_found", "page": "pp.83, 211", "note": "Only the reduction vs 2018 (28.0%) and total plastic packaging weight (0.86 Mt) are reported; virgin weight is not stated." }
+  ],
+  "targets": [
+    {
+      "id": "nestle-ghg-2030",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Reduce GHG emissions 50% by 2030 from the 2018 baseline (20% by 2025), and reach net zero by 2050 at the latest.",
+      "scopes": ["1", "2", "3"],
+      "baseline": { "year": 2018, "value": 87.09, "unit": "MtCO2e" },
+      "target": { "year": 2030, "value": 50, "unit": "% reduction" },
+      "latest": { "year": 2025, "value": 24.52, "unit": "% net reduction" },
+      "validation": "sbti_validated",
+      "source": "nestle-nfs-2025",
+      "page": "PDF p.37; validation p.48; progress p.50",
+      "note": "Progress figure is net of removals (24.52%); gross reduction is 20.7% (p.51)."
+    },
+    {
+      "id": "nestle-deforestation-free",
+      "category": "nature",
+      "type": "increase_to",
+      "description": "100% assessed deforestation-free primary supply chains (meat, palm oil, pulp and paper, soy, sugar, cocoa, coffee).",
+      "target": { "year": 2025, "value": 100, "unit": "%" },
+      "latest": { "year": 2025, "value": 96.7, "unit": "%" },
+      "validation": "not_stated",
+      "source": "nestle-nfs-2025",
+      "page": "PDF p.42"
+    }
+  ],
+  "frameworks": [{ "name": "ESRS", "source": "nestle-nfs-2025" }, { "name": "GRI", "source": "nestle-nfs-2025", "page": "pp.202-211" }, { "name": "SASB", "source": "nestle-nfs-2025", "page": "pp.202-211" }],
+  "dataGaps": [],
+  "comparabilityNotes": [
+    "Nestlé's headline Scope 3 (66.01 Mt) covers only categories in scope of its SBTi Net Zero Roadmap; the total here adds the out-of-scope categories (derived).",
+    "Energy covers factories only."
+  ]
+}

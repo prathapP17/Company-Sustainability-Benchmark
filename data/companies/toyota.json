@@ -1,0 +1,133 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "toyota",
+    "name": "Toyota Motor",
+    "legalName": "Toyota Motor Corporation",
+    "listings": [
+      { "exchange": "TSE", "ticker": "7203" },
+      { "exchange": "NYSE", "ticker": "TM" }
+    ],
+    "hq": { "city": "Toyota City", "country": "Japan", "lat": 35.08, "lon": 137.16 },
+    "region": "Asia-Pacific",
+    "industry": { "gics": "Automobile Manufacturers", "sasb": "Automobiles (TR-AU)" },
+    "peerGroup": "autos_industrials",
+    "fiscalYear": {
+      "end": "03-31",
+      "labelConvention": "start_year",
+      "note": "Japanese convention: '2025' in the Data Book = 1 April 2025 to 31 March 2026 (p.63 note), stored as 2025."
+    },
+    "website": "https://global.toyota",
+    "sustainabilityPage": "https://global.toyota/en/sustainability/"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from the Sustainability Data Book 2026 (June 2026 update), Environment > Metrics and Targets (PDF pp.63-67). Items marked ◆ are covered by PwC's limited assurance.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "toyota-sdb-2026",
+    "boundary": "consolidated_group",
+    "consolidation": "operational_control",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "none", "scope": "Not marked ◆ in the Data Book" }
+  },
+  "sources": [
+    {
+      "id": "toyota-sdb-2026",
+      "organisation": "Toyota Motor Corporation",
+      "title": "Sustainability Data Book 2026 (updated June 2026)",
+      "type": "esg_data_book",
+      "url": "https://global.toyota/pages/global_toyota/sustainability/report/sdb/sdb26_en.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Printed page = PDF page − 1 in the environment data section (e.g. printed p.62 = PDF p.63). Citations use PDF pages."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "esg_data_book", "source": "toyota-sdb-2026", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC", "scope": "Identified Sustainability Information marked ◆ (ISAE 3000 / ISAE 3410), year ended 31 March 2026 (PDF p.75)" } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 2466, "unit": "ktCO2e", "page": "PDF p.63, table B", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Scope 1 | 2,627 | 2,518 2,466 ◆" },
+    { "metric": "ghg_scope1", "year": 2024, "state": "disclosed", "value": 2518, "unit": "ktCO2e", "page": "PDF p.63, table B" },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 4125, "unit": "ktCO2e", "scope2Method": "location", "page": "PDF p.63, table B", "reportedWording": "Location-based | 4,083 | 4,127 | 4,125" },
+    { "metric": "ghg_scope2_location", "year": 2024, "state": "disclosed", "value": 4127, "unit": "ktCO2e", "scope2Method": "location", "page": "PDF p.63, table B" },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 2057, "unit": "ktCO2e", "scope2Method": "market", "page": "PDF p.63, table B", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Market-based | 2,868 | 2,533 2,057 ◆" },
+    { "metric": "ghg_scope2_market", "year": 2024, "state": "disclosed", "value": 2533, "unit": "ktCO2e", "scope2Method": "market", "page": "PDF p.63, table B" },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 509458, "unit": "ktCO2e", "page": "PDF p.64, table C", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Total | 594,829* | 584,522* | 509,458 ◆", "note": "2025 excludes Toyota-brand vehicles from non-consolidated entities, which 2023-2024 included (footnote *4). Not comparable with prior years." },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 115461, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c2", "year": 2025, "state": "disclosed", "value": 6250, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 936, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 4709, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c5", "year": 2025, "state": "disclosed", "value": 112, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 324, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 60, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c8", "year": 2025, "state": "not_disclosed", "page": "PDF p.64, table C", "note": "Shown as '−'; footnote *3: recorded under Scopes 1 and 2." },
+    { "metric": "ghg_scope3_c9", "year": 2025, "state": "disclosed", "value": 186, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c10", "year": 2025, "state": "disclosed", "value": 11, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 368263, "unit": "ktCO2e", "page": "PDF p.64, table C", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" } },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 9811, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c13", "year": 2025, "state": "disclosed", "value": 154, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c14", "year": 2025, "state": "disclosed", "value": 2235, "unit": "ktCO2e", "page": "PDF p.64, table C" },
+    { "metric": "ghg_scope3_c15", "year": 2025, "state": "disclosed", "value": 946, "unit": "ktCO2e", "page": "PDF p.64, table C", "note": "Method changed in 2025 to include equity-method affiliates (footnote *5)." },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 20516, "unit": "GWh", "page": "PDF p.65, table G", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Grand total | 20,519 20,284 20,516 ◆" },
+    { "metric": "energy_total", "year": 2024, "state": "disclosed", "value": 20284, "unit": "GWh", "page": "PDF p.65, table G" },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 53.9, "unit": "%", "status": "derived", "page": "PDF p.65, table G", "note": "Derived: renewable electricity 5,243 GWh ÷ (fossil electricity 4,486 + renewable electricity 5,243 GWh) = 53.9%." },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 36, "unit": "million m3", "coverage": "Production processes only", "page": "PDF p.66, table H", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Total | 35 | 36 | 36 ◆" },
+    { "metric": "water_withdrawal", "year": 2024, "state": "disclosed", "value": 36, "unit": "million m3", "coverage": "Production processes only", "page": "PDF p.66, table H" },
+    { "metric": "water_consumption", "year": 2025, "state": "disclosed", "value": 3, "unit": "million m3", "coverage": "Production processes only", "page": "PDF p.66, table J", "reportedWording": "Water consumption | 2 | 3 | 3" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 260, "unit": "kt", "coverage": "Production processes only", "page": "PDF p.67, table M", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Total | 239 | 249 | 260 ◆" },
+    { "metric": "waste_total", "year": 2024, "state": "disclosed", "value": 249, "unit": "kt", "coverage": "Production processes only", "page": "PDF p.67, table M" },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 71.9, "unit": "%", "status": "derived", "coverage": "Production processes only", "page": "PDF p.67, table M", "note": "Derived: 'Recycling for a fee' 187 kt ÷ total 260 kt = 71.9%. Incineration (51 kt) may include energy recovery; not counted as diverted." },
+    { "metric": "au_electrified_sales", "year": 2025, "state": "disclosed", "value": 5040, "unit": "thousand units", "page": "PDF p.65, table F", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC" }, "reportedWording": "Total | 3,855 | 4,748 5,040 ◆", "note": "HEV 4,620 + PHEV 175 + BEV 243 + FCEV 1 (thousand). 48% of total sales." },
+    { "metric": "au_electrified_sales", "year": 2024, "state": "disclosed", "value": 4748, "unit": "thousand units", "page": "PDF p.65, table F" },
+    { "metric": "au_bev_sales", "year": 2025, "state": "disclosed", "value": 243, "unit": "thousand units", "page": "PDF p.65, table F", "reportedWording": "Battery electric vehicles (BEVs) | 117 | 145 | 243" },
+    { "metric": "au_bev_sales", "year": 2024, "state": "disclosed", "value": 145, "unit": "thousand units", "page": "PDF p.65, table F" }
+  ],
+  "targets": [
+    {
+      "id": "toyota-s12-2030",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Reduce Scope 1 and 2 GHG emissions 47% by 2030 and 68% by 2035 vs 2019; carbon neutral by 2050.",
+      "scopes": ["1", "2"],
+      "baseline": { "year": 2019 },
+      "target": { "year": 2030, "value": 47, "unit": "% reduction" },
+      "validation": "sbti_validated",
+      "source": "toyota-sdb-2026",
+      "page": "PDF p.32",
+      "note": "Report states Scope 1, 2 and Scope 3 category 11 targets are approved by SBTi; base year 2019 for all reduction targets (footnote *2)."
+    },
+    {
+      "id": "toyota-cat11-2030",
+      "category": "emissions",
+      "type": "intensity",
+      "description": "Reduce Scope 3 category 11 average well-to-wheel g CO2e/km per new passenger car and light commercial vehicle 33.3% by 2030 vs 2019.",
+      "scopes": ["3"],
+      "baseline": { "year": 2019 },
+      "target": { "year": 2030, "value": 33.3, "unit": "% reduction (gCO2e/km)" },
+      "validation": "sbti_validated",
+      "source": "toyota-sdb-2026",
+      "page": "PDF p.32"
+    },
+    {
+      "id": "toyota-bev-2030",
+      "category": "other",
+      "type": "increase_to",
+      "description": "Global BEV sales of 3.5 million units by 2030.",
+      "target": { "year": 2030, "value": 3500, "unit": "thousand units" },
+      "latest": { "year": 2025, "value": 243, "unit": "thousand units" },
+      "validation": "self_declared",
+      "source": "toyota-sdb-2026",
+      "page": "PDF p.22; latest PDF p.65"
+    }
+  ],
+  "frameworks": [{ "name": "GRI", "source": "toyota-sdb-2026", "page": "PDF p.173" }, { "name": "SASB", "source": "toyota-sdb-2026", "page": "PDF p.65" }, { "name": "TCFD", "source": "toyota-sdb-2026", "page": "PDF p.63" }],
+  "dataGaps": [
+    { "metric": "ghg_scope3_total", "year": 2024, "kind": "boundary_mismatch", "description": "2024 Scope 3 (584,522 kt) includes Toyota-brand vehicles from non-consolidated entities; 2025 excludes them. 2024 not recorded to avoid an invalid trend.", "source": "toyota-sdb-2026", "page": "PDF p.64, footnote *4" }
+  ],
+  "comparabilityNotes": [
+    "Toyota uses the Japanese start-year label: '2025' = April 2025 to March 2026. Compared with calendar-year peers it ends three months later.",
+    "Water and waste cover production processes only."
+  ]
+}

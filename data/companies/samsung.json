@@ -1,0 +1,124 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "samsung",
+    "name": "Samsung Electronics",
+    "legalName": "Samsung Electronics Co., Ltd.",
+    "listings": [{ "exchange": "KRX", "ticker": "005930" }],
+    "hq": { "city": "Suwon", "country": "South Korea", "lat": 37.26, "lon": 127.03 },
+    "region": "Asia-Pacific",
+    "industry": { "gics": "Technology Hardware, Storage & Peripherals", "sasb": "Hardware (TC-HW) and Semiconductors (TC-SC)" },
+    "peerGroup": "tech_hardware_semis",
+    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "website": "https://www.samsung.com",
+    "sustainabilityPage": "https://www.samsung.com/global/sustainability/"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Values from 'Facts & Figures – Environmental Performance' (pp.69-71) of the Sustainability Report 2026. The GHG verification statements (pp.79-80) are images and could not be read as text, so assurance level and provider are recorded as not stated.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "samsung-sr-2026",
+    "boundary": "not_stated",
+    "consolidation": "not_stated",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "not_stated", "scope": "Verification statements on Scope 1-2 (p.79) and Scope 3 (p.80) exist but are image-only; not read." }
+  },
+  "sources": [
+    {
+      "id": "samsung-sr-2026",
+      "organisation": "Samsung Electronics Co., Ltd.",
+      "title": "Samsung Electronics Sustainability Report 2026 (English)",
+      "type": "sustainability_report",
+      "url": "https://download.semiconductor.samsung.com/resources/others/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Official Samsung mirror; the samsung.com copy returned HTTP 403 to automated requests. Printed page numbers match PDF pages."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "sustainability_report", "source": "samsung-sr-2026", "assurance": { "level": "not_stated", "scope": "Third-party GHG verification statements present as images (pp.79-80)." } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 4646, "unit": "ktCO2e", "page": "p.69", "reportedWording": "Direct emissions (Scope 1) | 1,000 tonnes CO₂e | 3,733 | 4,725 | 4,646", "note": "Korean and global manufacturing sites (footnote 1)." },
+    { "metric": "ghg_scope1", "year": 2024, "state": "disclosed", "value": 4725, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 9511, "unit": "ktCO2e", "scope2Method": "market", "page": "p.69", "reportedWording": "Indirect emissions (Scope 2, Market based) 1,000 tonnes CO₂e | 9,558 | 10,164 | 9,51 1", "note": "Text layer shows \"9,51 1\" (PDF spacing artifact) for 9,511." },
+    { "metric": "ghg_scope2_market", "year": 2024, "state": "disclosed", "value": 10164, "unit": "ktCO2e", "scope2Method": "market", "page": "p.69", "note": "2023-2024 Korean Scope 2 uses the January 2019 national grid factor; 2025 uses the December 2025 factor (footnote 2). Year-on-year change is partly methodological." },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 15042, "unit": "ktCO2e", "scope2Method": "location", "page": "p.69", "reportedWording": "Indirect emissions (Scope 2, Region based) 1,000 tonnes CO₂e | 14,570 | 15,011 | 15,042", "note": "Samsung labels the location-based figure 'Region based'." },
+    { "metric": "ghg_scope2_location", "year": 2024, "state": "disclosed", "value": 15011, "unit": "ktCO2e", "scope2Method": "location", "page": "p.69" },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 103388, "unit": "ktCO2e", "page": "p.69", "reportedWording": "Scope 3 emissions | 1,000 tonnes CO₂e | 107,035 | 100,703 | 103,388" },
+    { "metric": "ghg_scope3_total", "year": 2024, "state": "disclosed", "value": 100703, "unit": "ktCO2e", "page": "p.69", "note": "Restated in the 2026 report after methodology changes (Scope 3 footnote 2)." },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 10945, "unit": "ktCO2e", "page": "p.69", "note": "Partly based on prior-year supplier data (Scope 3 footnote 1)." },
+    { "metric": "ghg_scope3_c2", "year": 2025, "state": "disclosed", "value": 3165, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 2915, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c4", "year": 2025, "state": "disclosed", "value": 3667, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c5", "year": 2025, "state": "disclosed", "value": 156, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 92, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 372, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c8", "year": 2025, "state": "disclosed", "value": 11, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c9", "year": 2025, "state": "disclosed", "value": 261, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c10", "year": 2025, "state": "disclosed", "value": 336, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 79582, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 1644, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c13", "year": 2025, "state": "disclosed", "value": 5, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "ghg_scope3_c14", "year": 2025, "state": "not_disclosed", "page": "p.69", "note": "Methodology table: 'No franchise operations'." },
+    { "metric": "ghg_scope3_c15", "year": 2025, "state": "disclosed", "value": 237, "unit": "ktCO2e", "page": "p.69" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 40249, "unit": "GWh", "page": "p.70", "reportedWording": "Energy consumption at business sites | GWh | 36,399 | 38,772 | 40,249" },
+    { "metric": "energy_total", "year": 2024, "state": "disclosed", "value": 38772, "unit": "GWh", "page": "p.70" },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 32.5, "unit": "%", "page": "p.70", "reportedWording": "% | 31.0 | 31.4 | 32.5", "note": "DX Division 94.8%, DS Division 26.2% (p.72)." },
+    { "metric": "renewable_electricity_share", "year": 2024, "state": "disclosed", "value": 31.4, "unit": "%", "page": "p.70" },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 197720, "unit": "thousand tonnes", "page": "p.71", "reportedWording": "Water Withdrawal | 1,000 tonnes | 177,361 | 188,540 | 197,720" },
+    { "metric": "water_withdrawal", "year": 2024, "state": "disclosed", "value": 188540, "unit": "thousand tonnes", "page": "p.71" },
+    { "metric": "waste_total", "year": 2025, "state": "disclosed", "value": 1420912, "unit": "t", "page": "p.71", "reportedWording": "Amount of waste generated | Tonnes | 1,314,923 | 1,348,979 | 1,420,912" },
+    { "metric": "waste_total", "year": 2024, "state": "disclosed", "value": 1348979, "unit": "t", "page": "p.71" },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 98, "unit": "%", "page": "p.71" },
+    { "metric": "sc_pfc_emissions", "year": 2025, "state": "disclosed", "value": 994, "unit": "ktCO2e", "page": "p.69", "reportedWording": "PFCs | 1,000 tonnes CO₂e | 1,533 | 913 | 994", "note": "Company-wide; DS Division 994 (p.72). NF3 (1,541) and SF6 (285) are reported separately." },
+    { "metric": "hw_ewaste_collected", "year": 2025, "state": "disclosed", "value": 636231, "unit": "t", "page": "p.70", "reportedWording": "Amount of e-waste collected | Tonnes | 599,153 | 611,354 | 636,231" }
+  ],
+  "targets": [
+    {
+      "id": "samsung-dx-net-zero-2030",
+      "category": "emissions",
+      "type": "net_zero",
+      "description": "DX Division net zero emissions (Scope 1 and 2) by 2030.",
+      "scopes": ["1", "2"],
+      "target": { "year": 2030 },
+      "validation": "not_stated",
+      "source": "samsung-sr-2026",
+      "page": "p.10",
+      "note": "Division-level target; read from the roadmap graphic's text layer."
+    },
+    {
+      "id": "samsung-company-net-zero-2050",
+      "category": "emissions",
+      "type": "net_zero",
+      "description": "Company-wide net zero emissions (Scope 1 and 2) by 2050.",
+      "scopes": ["1", "2"],
+      "target": { "year": 2050 },
+      "validation": "not_stated",
+      "source": "samsung-sr-2026",
+      "page": "p.10"
+    },
+    {
+      "id": "samsung-ewaste-2030",
+      "category": "materials",
+      "type": "increase_to",
+      "description": "Collect a cumulative 10 million tonnes of e-waste (since 2009) by 2030.",
+      "target": { "year": 2030, "value": 10000000, "unit": "t cumulative" },
+      "latest": { "year": 2025, "value": 7544747, "unit": "t cumulative" },
+      "validation": "not_stated",
+      "source": "samsung-sr-2026",
+      "page": "p.10; latest p.70"
+    }
+  ],
+  "frameworks": [{ "name": "GRI", "source": "samsung-sr-2026" }, { "name": "SASB", "source": "samsung-sr-2026" }, { "name": "TCFD", "source": "samsung-sr-2026" }],
+  "dataGaps": [
+    { "kind": "other", "description": "Scope 1-3 verification statements (pp.79-80) are images; assurance provider and level need OCR or manual reading.", "source": "samsung-sr-2026", "page": "pp.79-80" },
+    { "kind": "ambiguous", "description": "Report boundary is described as 'Korean and global manufacturing sites'; whether this equals the consolidated group is not stated.", "source": "samsung-sr-2026", "page": "p.69, footnote 1" }
+  ],
+  "comparabilityNotes": [
+    "Samsung covers both hardware (DX) and semiconductor (DS) businesses; DS dominates operational emissions and energy.",
+    "Korean Scope 2 emission factor changed between 2024 and 2025 (p.69 footnote 2)."
+  ]
+}

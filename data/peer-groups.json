@@ -1,0 +1,32 @@
+[
+  {
+    "id": "tech_hardware_semis",
+    "name": "Technology hardware & semiconductors",
+    "description": "Consumer electronics, hardware and semiconductor manufacturers.",
+    "sasbIndustries": ["Hardware (TC-HW)", "Semiconductors (TC-SC)"]
+  },
+  {
+    "id": "software_it",
+    "name": "Software & IT services",
+    "description": "Software, cloud and IT services companies.",
+    "sasbIndustries": ["Software & IT Services (TC-SI)"]
+  },
+  {
+    "id": "autos_industrials",
+    "name": "Autos & industrials",
+    "description": "Automobile manufacturers and industrial machinery / electrical equipment.",
+    "sasbIndustries": ["Automobiles (TR-AU)", "Industrial Machinery & Goods (RT-IG)", "Electrical & Electronic Equipment (RR-EE)"]
+  },
+  {
+    "id": "consumer_staples",
+    "name": "Consumer staples",
+    "description": "Processed foods, beverages and household & personal products.",
+    "sasbIndustries": ["Processed Foods (FB-PF)", "Household & Personal Products (CG-HP)"]
+  },
+  {
+    "id": "energy_conglomerates",
+    "name": "Energy & conglomerates",
+    "description": "Oil refining & petrochemicals with diversified consumer and telecom businesses.",
+    "sasbIndustries": ["Oil & Gas – Refining & Marketing (EM-RM)", "Chemicals (RT-CH)"]
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "$schemaVersion": 1,
+  "profile": {
+    "id": "apple",
+    "name": "Apple",
+    "legalName": "Apple Inc.",
+    "listings": [{ "exchange": "NASDAQ", "ticker": "AAPL" }],
+    "hq": { "city": "Cupertino", "country": "United States", "lat": 37.32, "lon": -122.03 },
+    "region": "Americas",
+    "industry": { "gics": "Technology Hardware, Storage & Peripherals", "sasb": "Hardware (TC-HW)" },
+    "peerGroup": "tech_hardware_semis",
+    "fiscalYear": {
+      "end": "09-27",
+      "labelConvention": "end_year",
+      "note": "52/53-week year ending on the last Saturday of September. FY2025 = 29 Sep 2024 to 27 Sep 2025 (assurance statement, p.101)."
+    },
+    "website": "https://www.apple.com",
+    "sustainabilityPage": "https://www.apple.com/environment/"
+  },
+  "researchStatus": "detailed",
+  "researchNotes": "Core metrics read from the data tables (pp.76, 80, 81) and the Apex assurance statement (pp.101-102) of the 2026 Environmental Progress Report.",
+  "lastReviewed": "2026-11-23",
+  "defaults": {
+    "source": "apple-epr-2026",
+    "boundary": "consolidated_group",
+    "consolidation": "not_stated",
+    "verificationClass": "primary_document",
+    "status": "reported",
+    "assurance": { "level": "reasonable", "provider": "Apex Companies, LLC", "scope": "Energy, water, Scope 1, Scope 2, Scope 3 business travel and employee commute (ISAE 3000 / ISO 14064-3)" }
+  },
+  "sources": [
+    {
+      "id": "apple-epr-2026",
+      "organisation": "Apple Inc.",
+      "title": "Environmental Progress Report 2026 (covering fiscal year 2025)",
+      "type": "sustainability_report",
+      "url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2026.pdf",
+      "accessed": "2026-11-23",
+      "reportingYear": 2025,
+      "verificationClass": "primary_document",
+      "notes": "Printed page numbers match PDF page numbers."
+    }
+  ],
+  "reports": [
+    { "year": 2025, "type": "sustainability_report", "source": "apple-epr-2026", "assurance": { "level": "reasonable", "provider": "Apex Companies, LLC", "scope": "Reasonable: energy, water, paper, Scope 1, 2 and Scope 3 business travel/commute. Limited: other Scope 3 categories and comprehensive carbon footprint." } }
+  ],
+  "metrics": [
+    { "metric": "ghg_scope1", "year": 2025, "state": "disclosed", "value": 55200, "unit": "tCO2e", "page": "p.76", "reportedWording": "Scope 1 | 55,200" },
+    { "metric": "ghg_scope1", "year": 2024, "state": "disclosed", "value": 55200, "unit": "tCO2e", "page": "p.76", "reportedWording": "Scope 1 | 55,200 | 55,200", "note": "Prior-year column of the FY2025 table." },
+    { "metric": "ghg_scope2_market", "year": 2025, "state": "disclosed", "value": 1100, "unit": "tCO2e", "scope2Method": "market", "page": "p.76", "reportedWording": "Scope 2 (market-based) | 1,100", "note": "Electricity 0; steam, heating and cooling 1,100." },
+    { "metric": "ghg_scope2_market", "year": 2024, "state": "disclosed", "value": 3300, "unit": "tCO2e", "scope2Method": "market", "page": "p.76", "reportedWording": "Scope 2 (market-based) | 1,100 | 3,300" },
+    { "metric": "ghg_scope2_location", "year": 2025, "state": "disclosed", "value": 1210200, "unit": "tCO2e", "scope2Method": "location", "page": "p.101 (assurance statement)", "reportedWording": "(Location-Based) | 1,210,200 | GHG Protocol", "note": "Only disclosed in the Apex assurance statement, not in the main data table." },
+    { "metric": "ghg_scope3_total", "year": 2025, "state": "disclosed", "value": 15223700, "unit": "tCO2e", "status": "derived", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "note": "Derived: corporate Scope 3 (513,700) + product life cycle gross emissions (Scope 3) (14,710,000). Apple reports these two lines separately." },
+    { "metric": "ghg_scope3_total", "year": 2024, "state": "disclosed", "value": 15208300, "unit": "tCO2e", "status": "derived", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "note": "Derived: corporate Scope 3 (608,300) + product life cycle gross emissions (14,600,000)." },
+    { "metric": "ghg_scope3_c1", "year": 2025, "state": "disclosed", "value": 8150000, "unit": "tCO2e", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "reportedWording": "Manufacturing (purchased goods and services) | 8,150,000", "note": "Product manufacturing line. 'Other cloud' (also purchased services) reported separately as 0." },
+    { "metric": "ghg_scope3_c3", "year": 2025, "state": "disclosed", "value": 163000, "unit": "tCO2e", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "reportedWording": "Other fuel and energy-related activities | 163,000", "note": "Transmission and distribution loss (market-based) reported separately as 0." },
+    { "metric": "ghg_scope3_c6", "year": 2025, "state": "disclosed", "value": 201700, "unit": "tCO2e", "page": "p.76", "reportedWording": "Business travel | 201,700" },
+    { "metric": "ghg_scope3_c7", "year": 2025, "state": "disclosed", "value": 143600, "unit": "tCO2e", "page": "p.76", "reportedWording": "Employee commute | 143,600", "note": "Work from home (market-based, 5,400) is reported on a separate line and not included here." },
+    { "metric": "ghg_scope3_c11", "year": 2025, "state": "disclosed", "value": 4120000, "unit": "tCO2e", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "reportedWording": "Product use (use of sold products) | 4,120,000" },
+    { "metric": "ghg_scope3_c12", "year": 2025, "state": "disclosed", "value": 70000, "unit": "tCO2e", "page": "p.76", "assurance": { "level": "limited", "provider": "Apex Companies, LLC" }, "reportedWording": "End-of-life processing | 70,000" },
+    { "metric": "energy_total", "year": 2025, "state": "disclosed", "value": 4183770, "unit": "MWh", "status": "derived", "page": "p.80", "note": "Derived: corporate electricity (3,737,000) + fuel (416,680) + steam, heating and cooling (30,090) MWh." },
+    { "metric": "renewable_electricity_share", "year": 2025, "state": "disclosed", "value": 100, "unit": "%", "page": "p.80", "reportedWording": "Renewable electricity percentage | % of total energy | 100", "note": "Row label says electricity; unit column says '% of total energy'. Footnote 4 states 100 percent of electricity for global facilities is renewable." },
+    { "metric": "renewable_electricity_share", "year": 2024, "state": "disclosed", "value": 100, "unit": "%", "page": "p.80", "reportedWording": "Renewable electricity percentage | % of total energy | 100 | 100" },
+    { "metric": "water_withdrawal", "year": 2025, "state": "disclosed", "value": 1796, "unit": "million gallons", "page": "p.81", "reportedWording": "Total | million gallons | 1,796", "note": "Corporate facilities total (freshwater 1,551 + recycled 218 + other alternative 27). Apex assures 'Water Withdrawal 1,800 Million gallons' (p.101, rounded)." },
+    { "metric": "water_withdrawal", "year": 2024, "state": "disclosed", "value": 1756, "unit": "million gallons", "page": "p.81", "reportedWording": "Total | million gallons | 1,796 | 1,756" },
+    { "metric": "waste_total", "year": 2025, "state": "not_found", "page": "p.81", "note": "No total is reported; disposition lines are given in pounds. Summing them is avoided because overlap between hazardous waste and other lines is not stated. See data gaps." },
+    { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 75, "unit": "%", "page": "p.81", "reportedWording": "Landfill diversion rate | % | 75" },
+    { "metric": "waste_diversion_rate", "year": 2024, "state": "disclosed", "value": 70, "unit": "%", "page": "p.81", "reportedWording": "Landfill diversion rate | % | 75 | 70" },
+    { "metric": "hw_recycled_material_share", "year": 2025, "state": "disclosed", "value": 30, "unit": "%", "page": "p.15", "assurance": { "level": "not_stated" }, "reportedWording": "came from recycled or renewable sources.", "note": "By weight, products shipped in 2025." }
+  ],
+  "targets": [
+    {
+      "id": "apple-2030-value-chain",
+      "category": "emissions",
+      "type": "absolute",
+      "description": "Achieve carbon neutrality across the entire value chain by 2030, reducing related emissions by 75 percent compared with 2015.",
+      "scopes": ["1", "2", "3"],
+      "baseline": { "year": 2015 },
+      "target": { "year": 2030, "value": 75, "unit": "% reduction" },
+      "validation": "not_stated",
+      "source": "apple-epr-2026",
+      "page": "p.11; progress p.5",
+      "note": "Report calls Apple 2030 a 'science-based commitment' (p.5) but does not state SBTi validation. Goals table shows 60% progress (p.5)."
+    },
+    {
+      "id": "apple-2030-water-replenish",
+      "category": "water",
+      "type": "increase_to",
+      "description": "Replenish all corporate freshwater withdrawals by 2030.",
+      "target": { "year": 2030, "value": 100, "unit": "% replenished" },
+      "latest": { "year": 2025, "value": 55, "unit": "% replenished" },
+      "validation": "not_stated",
+      "source": "apple-epr-2026",
+      "page": "p.5"
+    }
+  ],
+  "frameworks": [],
+  "initiatives": [],
+  "dataGaps": [
+    { "metric": "ghg_scope3_c4", "year": 2025, "kind": "ambiguous", "description": "Upstream and downstream transport are reported together ('Product transportation (upstream and downstream) 2,370,000'), so categories 4 and 9 cannot be separated.", "source": "apple-epr-2026", "page": "p.76" },
+    { "metric": "waste_total", "year": 2025, "kind": "ambiguous", "description": "Waste is reported only by disposition route in pounds; whether hazardous waste overlaps the other routes is not stated, so no total is recorded.", "source": "apple-epr-2026", "page": "p.81" }
+  ],
+  "comparabilityNotes": [
+    "Apple splits Scope 3 into 'corporate' and 'product life cycle' blocks; the Scope 3 total here is their sum (derived).",
+    "Corporate carbon neutrality relies on retired carbon credits (pp.76-77); all figures here are gross emissions before credits."
+  ]
+}
