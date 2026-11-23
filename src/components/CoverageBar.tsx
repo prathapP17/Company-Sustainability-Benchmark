@@ -1,4 +1,5 @@
-import { LABELS, type DisclosureState } from "@/lib/schema/enums";
+import { LABELS } from "@/lib/labels";
+import type { DisclosureState } from "@/lib/schema/enums";
 import { StateSwatch } from "./ui";
 
 const ORDER: DisclosureState[] = ["disclosed", "not_disclosed", "not_found", "not_assessed"];

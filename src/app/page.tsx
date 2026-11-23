@@ -67,7 +67,7 @@ export default function Dashboard() {
           Eight core metrics per company in its latest disclosed year: Scope 1, Scope 2 (market and location), Scope 3,
           energy, renewable electricity, water withdrawal and waste.
         </p>
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="border-b border-hairline text-left text-xs text-ink-muted">
@@ -120,7 +120,7 @@ export default function Dashboard() {
           Shown side by side, not ranked. ⚠ tags mark values that are not directly comparable (different boundary or
           partial coverage). Fiscal years differ by company.
         </p>
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="border-b border-hairline text-left text-xs text-ink-muted">

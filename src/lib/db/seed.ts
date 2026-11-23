@@ -16,6 +16,8 @@ import { resolveMetric } from "../schema/validate";
 import { getMetric, toCanonical } from "../metrics/dictionary";
 import { periodEnd } from "../fiscal";
 import { dbPath, migrate, openWritable } from "./connection";
+import { transparency } from "../scoring/transparency";
+import { performance } from "../scoring/performance";
 
 export interface SeedResult {
   dbFile: string;
@@ -41,7 +43,17 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
     const removed: string[] = [];
 
     const tx = db.transaction(() => {
-      const childTables = ["metric_values", "targets", "data_gaps", "sources", "reports", "company_coverage"];
+      const childTables = [
+        "metric_values",
+        "targets",
+        "data_gaps",
+        "sources",
+        "reports",
+        "company_coverage",
+        "company_scores",
+        "transparency_items",
+        "performance_indicators",
+      ];
       const ids = new Set(companies.map((c) => c.profile.id));
       const existing = (db.prepare("SELECT id FROM companies").all() as { id: string }[]).map((r) => r.id);
       for (const id of existing.filter((x) => !ids.has(x))) {
@@ -75,14 +87,17 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
       const insMetric = db.prepare(`
         INSERT INTO metric_values (company_id, metric_id, year, period_end, state, value, text, unit, canonical_value,
           canonical_unit, boundary, consolidation, scope2_method, coverage, assurance_level, assurance_provider,
-          verification_class, status, low_confidence, source_id, page, reported_wording, note)
+          verification_class, status, low_confidence, source_id, page, reported_wording, note, trend_break, internal_note)
         VALUES (@company_id, @metric_id, @year, @period_end, @state, @value, @text, @unit, @canonical_value,
           @canonical_unit, @boundary, @consolidation, @scope2_method, @coverage, @assurance_level, @assurance_provider,
-          @verification_class, @status, @low_confidence, @source_id, @page, @reported_wording, @note)`);
+          @verification_class, @status, @low_confidence, @source_id, @page, @reported_wording, @note, @trend_break, @internal_note)`);
       const insTarget = db.prepare(`
         INSERT INTO targets VALUES (@company_id, @id, @category, @type, @description, @scopes, @by, @bv, @bu, @ty, @tv, @tu,
           @ly, @lv, @lu, @validation, @source_id, @page, @note)`);
       const insGap = db.prepare(`INSERT INTO data_gaps VALUES (@company_id, @metric_id, @year, @kind, @description, @source_id, @page)`);
+      const insScore = db.prepare(`INSERT INTO company_scores VALUES (@company_id, @ts, @tm, @ta, @tr, @ps, @pa, @pr)`);
+      const insItem = db.prepare(`INSERT INTO transparency_items VALUES (@company_id, @item_id, @label, @grp, @met, @evidence)`);
+      const insInd = db.prepare(`INSERT INTO performance_indicators VALUES (@company_id, @id, @label, @raw, @unit, @score, @detail)`);
       const insCoverage = db.prepare(`INSERT INTO company_coverage VALUES (@company_id, @year, @total, @disclosed, @not_disclosed, @not_found, @not_assessed)`);
 
       for (const c of companies) {
@@ -126,7 +141,7 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
             coverage: m.coverage ?? null, assurance_level: m.assurance.level, assurance_provider: m.assurance.provider ?? null,
             verification_class: m.verificationClass, status: m.status, low_confidence: m.lowConfidence ? 1 : 0,
             source_id: m.source ?? null, page: m.page ?? null, reported_wording: m.reportedWording ?? null,
-            note: m.note ?? null,
+            note: m.note ?? null, trend_break: m.trendBreak ? 1 : 0, internal_note: m.internalNote ?? null,
           });
           metricValues++;
         }
@@ -148,6 +163,19 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
         }
         const cov = coverageFor(c);
         insCoverage.run({ company_id: p.id, year: cov.year ?? null, total: cov.total, ...cov.counts });
+
+        const t = transparency(c);
+        const perf = performance(c);
+        insScore.run({
+          company_id: p.id, ts: t.score, tm: t.met, ta: t.applicable, tr: t.reason ?? null,
+          ps: perf.score, pa: perf.available, pr: perf.reason ?? null,
+        });
+        for (const i of t.items) {
+          insItem.run({ company_id: p.id, item_id: i.id, label: i.label, grp: i.group, met: i.met === null ? null : i.met ? 1 : 0, evidence: i.evidence });
+        }
+        for (const i of perf.indicators) {
+          insInd.run({ company_id: p.id, id: i.id, label: i.label, raw: i.raw, unit: i.rawUnit, score: i.score, detail: i.detail });
+        }
       }
 
       db.prepare("INSERT INTO seed_runs (at, companies, metric_values, data_hash) VALUES (?, ?, ?, ?)").run(

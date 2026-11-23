@@ -1,4 +1,5 @@
-import { LABELS, type Boundary } from "@/lib/schema/enums";
+import { LABELS } from "@/lib/labels";
+import type { Boundary } from "@/lib/schema/enums";
 import type { MetricValueRow } from "@/lib/db/queries";
 import { Tag } from "./ui";
 

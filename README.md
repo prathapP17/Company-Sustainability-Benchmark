@@ -12,6 +12,15 @@ Benchmarks the sustainability disclosures of large operating companies. See
 - `src/lib/db/`: additive-only migrations, backup-before-migrate, seeding into `data/benchmark.db` (SQLite, WAL)
 - Pages: dashboard (`/`) and company profile (`/companies/[id]`)
 
+## Phase 2 (dashboards)
+
+- `/compare`: pick companies and a topic; values side by side with comparability flags; one-metric chart
+- `/peers`, `/peers/[group]`: peer benchmarks; median only with 3+ comparable values
+- `/targets`: targets with progress vs a straight-line path (derived)
+- `/transparency`: 18-item checklist; `/rankings`: transparency and performance rankings
+- `/methodology`, `/downloads`: CSV, XLSX and PDF exports with provenance (internal notes stripped)
+- Scoring code: `src/lib/scoring/`; scores are computed at seed time
+
 ## Commands
 
 ```bash

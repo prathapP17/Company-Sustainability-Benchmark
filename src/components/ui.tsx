@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
-import { LABELS, type DisclosureState } from "@/lib/schema/enums";
+import { LABELS } from "@/lib/labels";
+import type { DisclosureState } from "@/lib/schema/enums";
 
 export function Card({ title, children, id, action }: { title?: string; children: ReactNode; id?: string; action?: ReactNode }) {
   return (
-    <section id={id} className="rounded-xl border border-hairline bg-surface p-4 sm:p-5">
+    // `relative` contains absolutely positioned sr-only text inside horizontally scrolling tables.
+    <section id={id} className="relative rounded-xl border border-hairline bg-surface p-4 sm:p-5">
       {title && (
         <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-base font-semibold text-ink">{title}</h2>

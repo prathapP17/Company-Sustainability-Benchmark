@@ -72,13 +72,51 @@ async function main() {
       check((await page.getByText("Company not found").count()) === 1, "unknown company shows not-found UI");
       check((await page.locator('meta[name="robots"][content="noindex"]').count()) >= 1, "unknown company page is noindex");
 
+      // Phase 2 pages
+      await page.goto(`${BASE}/compare`);
+      check((await page.locator("h1").textContent()) === "Compare companies", "compare page");
+      await page.getByRole("button", { name: "Clear" }).click();
+      check((await page.getByText("Select at least one company.").count()) === 1, "compare: clearing selection");
+      await page.getByRole("button", { name: "Reliance Industries" }).click();
+      await page.getByRole("button", { name: "Apple" }).click();
+      check((await page.getByText("Not directly comparable").count()) >= 1, "compare: Reliance vs Apple flagged not comparable");
+
+      await page.goto(`${BASE}/peers/tech_hardware_semis`);
+      check((await page.getByText("needs 3").count()) >= 1, "peer median withheld below 3 comparable values");
+
+      await page.goto(`${BASE}/targets`);
+      check((await page.getByText(/Ahead of straight-line path/).count()) >= 1, "targets: progress vs straight-line path");
+
+      await page.goto(`${BASE}/transparency`);
+      check((await page.locator("tbody tr").count()) >= 18, "transparency checklist rows");
+
+      await page.goto(`${BASE}/rankings`);
+      check((await page.getByText(/insufficient coverage/).count()) >= 1, "rankings list unscored companies with reasons");
+
+      await page.goto(`${BASE}/methodology`);
+      check((await page.getByText("Transparency score").count()) >= 1, "methodology page");
+
+      // Downloads
+      for (const [url, type] of [
+        ["/api/export/values.csv", "text/csv"],
+        ["/api/export/benchmark.xlsx", "spreadsheetml"],
+        ["/api/export/report.pdf", "application/pdf"],
+        ["/api/export/report/nestle", "application/pdf"],
+      ] as const) {
+        const r = await fetch(`${BASE}${url}`);
+        const body = Buffer.from(await r.arrayBuffer());
+        check(r.ok && (r.headers.get("content-type") ?? "").includes(type) && body.length > 500, `download ${url} (${r.status}, ${body.length} bytes)`);
+      }
+      const missing = await fetch(`${BASE}/api/export/report/does-not-exist`);
+      check(missing.status === 404, `unknown company PDF returns 404 (got ${missing.status})`);
+
       // Responsive checks + screenshots
       for (const [name, width] of Object.entries(WIDTHS)) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/", "/companies/toyota"]) {
+        for (const route of ["/", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/transparency", "/rankings", "/methodology", "/downloads"]) {
           await page.goto(`${BASE}${route}`);
           check(await noHorizontalScroll(page), `no horizontal page scroll at ${name} (${width}px) on ${route}`);
-          const file = `${route === "/" ? "dashboard" : route.split("/").pop()}-${name}.png`;
+          const file = `${route === "/" ? "dashboard" : route.slice(1).replace(/\//g, "_")}-${name}.png`;
           await page.screenshot({ path: path.join(OUT, file), fullPage: true });
         }
       }

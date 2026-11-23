@@ -5,12 +5,18 @@ import { Card, StateBadge, Tag } from "@/components/ui";
 import { CoverageBar, CoverageLegend } from "@/components/CoverageBar";
 import { ContextTags } from "@/components/ContextTags";
 import { Scope3Chart, type Scope3Datum } from "@/components/Scope3Chart";
+import { ScoreBar } from "@/components/ScoreBar";
+import { TargetProgressBar } from "@/components/TargetProgressBar";
+import { progressFromRow } from "@/lib/scoring/targets";
 import {
   dataGapsFor,
   getCompany,
   listCompanyIds,
   metricValuesFor,
   reportsFor,
+  scoreFor,
+  allIndicators,
+  allTransparencyItems,
   sourcesFor,
   targetsFor,
   type MetricValueRow,
@@ -144,6 +150,9 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[id]
   const reports = reportsFor(id);
   const targets = targetsFor(id);
   const gaps = dataGapsFor(id);
+  const score = scoreFor(id);
+  const indicators = allIndicators().filter((i) => i.company_id === id);
+  const missedItems = allTransparencyItems().filter((i) => i.company_id === id && i.met === 0);
   const listings = JSON.parse(c.listings) as { exchange: string; ticker: string }[];
   const frameworks = JSON.parse(c.frameworks) as { name: string; detail?: string }[];
   const notes = JSON.parse(c.comparability_notes) as string[];
@@ -233,6 +242,43 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[id]
         </div>
       </Card>
 
+      <Card title="Scores" action={<Link href="/methodology" className="text-xs text-accent hover:underline">How scores work</Link>}>
+        <div className="grid gap-6 md:grid-cols-2">
+          <div>
+            <div className="mb-1 text-sm font-medium text-ink">Transparency</div>
+            <ScoreBar value={score?.transparency_score ?? null} label="Transparency score" />
+            <div className="mt-1 text-xs text-ink-muted">
+              {score?.transparency_reason ?? `${score?.transparency_met} of ${score?.transparency_applicable} checklist items met`}
+            </div>
+            {missedItems.length > 0 && score?.transparency_score !== null && (
+              <ul className="mt-2 list-disc pl-5 text-xs text-ink-2">
+                {missedItems.map((i) => (
+                  <li key={i.item_id}>
+                    Not met: {i.label}
+                    {i.evidence ? <span className="text-ink-muted"> ({i.evidence})</span> : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <div className="mb-1 text-sm font-medium text-ink">Performance</div>
+            <ScoreBar value={score?.performance_score ?? null} label="Performance score" />
+            {score?.performance_reason && <div className="mt-1 text-xs text-ink-muted">{score.performance_reason}</div>}
+            <ul className="mt-2 flex flex-col gap-1 text-xs">
+              {indicators.map((i) => (
+                <li key={i.indicator_id} className="flex justify-between gap-3">
+                  <span className="text-ink-2">{i.label}</span>
+                  <span className="tabular shrink-0 text-right text-ink-muted" title={i.detail ?? ""}>
+                    {i.score !== null ? `${Math.round(i.score)} (${i.raw_value}${i.raw_unit?.startsWith("%") ? "%" : ""})` : "–"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Card>
+
       {notes.length > 0 && (
         <div className="rounded-xl border border-hairline bg-warn-bg p-4 text-sm text-warn-ink">
           <div className="mb-1 font-medium">
@@ -286,6 +332,9 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[id]
                       <Tag tone={t.validation === "sbti_validated" ? "neutral" : "warn"}>
                         {t.validation === "sbti_validated" ? "SBTi validated" : t.validation === "self_declared" ? "Self-declared" : "Validation not stated"}
                       </Tag>
+                    </div>
+                    <div className="mt-2">
+                      <TargetProgressBar p={progressFromRow(t)} />
                     </div>
                     <div className="tabular mt-1 text-xs text-ink-muted">
                       {t.baseline_year ? `Baseline ${t.baseline_year}${t.baseline_value !== null ? `: ${t.baseline_value} ${t.baseline_unit ?? ""}` : ""} · ` : ""}

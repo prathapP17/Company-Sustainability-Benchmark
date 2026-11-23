@@ -8,6 +8,17 @@ export const metadata: Metadata = {
     "Benchmarks the sustainability disclosures of large operating companies. Every value traces to a source page.",
 };
 
+const NAV: [string, string][] = [
+  ["/", "Dashboard"],
+  ["/compare", "Compare"],
+  ["/peers", "Peers"],
+  ["/targets", "Targets"],
+  ["/transparency", "Transparency"],
+  ["/rankings", "Rankings"],
+  ["/methodology", "Methodology"],
+  ["/downloads", "Downloads"],
+];
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
@@ -17,13 +28,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/" className="text-sm font-semibold text-ink">
               Corporate Sustainability Intelligence
             </Link>
-            <nav className="flex gap-4 text-sm text-ink-2">
-              <Link href="/" className="hover:text-ink">
-                Dashboard
-              </Link>
-              <Link href="/#companies" className="hover:text-ink">
-                Companies
-              </Link>
+            <nav aria-label="Main" className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-2">
+              {NAV.map(([href, label]) => (
+                <Link key={href} href={href} className="hover:text-ink">
+                  {label}
+                </Link>
+              ))}
             </nav>
           </div>
         </header>

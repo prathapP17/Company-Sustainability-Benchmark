@@ -150,4 +150,44 @@ CREATE TABLE seed_runs (
 );
 `,
   },
+  {
+    version: 2,
+    name: "phase 2: trend breaks, internal notes, scores",
+    sql: `
+ALTER TABLE metric_values ADD COLUMN trend_break INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE metric_values ADD COLUMN internal_note TEXT;
+
+CREATE TABLE company_scores (
+  company_id TEXT PRIMARY KEY REFERENCES companies(id),
+  transparency_score REAL,
+  transparency_met INTEGER NOT NULL,
+  transparency_applicable INTEGER NOT NULL,
+  transparency_reason TEXT,
+  performance_score REAL,
+  performance_available INTEGER NOT NULL,
+  performance_reason TEXT
+);
+
+CREATE TABLE transparency_items (
+  company_id TEXT NOT NULL REFERENCES companies(id),
+  item_id TEXT NOT NULL,
+  label TEXT NOT NULL,
+  item_group TEXT NOT NULL,
+  met INTEGER,                    -- 1 met, 0 not met, NULL not assessable
+  evidence TEXT,
+  PRIMARY KEY (company_id, item_id)
+);
+
+CREATE TABLE performance_indicators (
+  company_id TEXT NOT NULL REFERENCES companies(id),
+  indicator_id TEXT NOT NULL,
+  label TEXT NOT NULL,
+  raw_value REAL,
+  raw_unit TEXT,
+  score REAL,
+  detail TEXT,
+  PRIMARY KEY (company_id, indicator_id)
+);
+`,
+  },
 ];

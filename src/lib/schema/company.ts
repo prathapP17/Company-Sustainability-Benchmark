@@ -78,7 +78,15 @@ export const MetricEntry = z.strictObject({
   page: z.string().optional(),
   /** Short verbatim excerpt of the line the value was read from. */
   reportedWording: z.string().optional(),
+  /** Public methodology note; exported. */
   note: z.string().optional(),
+  /** Reviewer-only note; never shown publicly and stripped from every export. */
+  internalNote: z.string().optional(),
+  /**
+   * True when this value is not comparable with the prior year (method, factor
+   * or scope change). Year-on-year indicators skip it.
+   */
+  trendBreak: z.boolean().optional(),
 });
 export type MetricEntry = z.infer<typeof MetricEntry>;
 

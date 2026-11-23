@@ -98,6 +98,9 @@ export interface MetricValueRow {
   page: string | null;
   reported_wording: string | null;
   note: string | null;
+  trend_break: number;
+  /** Reviewer-only; never render or export. */
+  internal_note: string | null;
 }
 
 export function metricValuesFor(companyId: string): MetricValueRow[] {
@@ -204,4 +207,74 @@ export function totals(): Totals {
     gaps: one("SELECT count(*) n FROM data_gaps"),
     lastSeed: (d.prepare("SELECT max(at) at FROM seed_runs").get() as { at: string | null }).at,
   };
+}
+
+// ---------------------------------------------------------------- phase 2
+
+export function allMetricValues(): MetricValueRow[] {
+  return db().prepare("SELECT * FROM metric_values ORDER BY company_id, metric_id, year DESC").all() as MetricValueRow[];
+}
+
+export function allSources(): SourceRow[] {
+  return db().prepare("SELECT * FROM sources ORDER BY company_id, id").all() as SourceRow[];
+}
+
+export interface TargetWithCompany extends TargetRow {
+  company_id: string;
+  company_name: string;
+}
+
+export function allTargets(): TargetWithCompany[] {
+  return db()
+    .prepare(
+      `SELECT t.*, c.name AS company_name FROM targets t JOIN companies c ON c.id = t.company_id
+       ORDER BY c.name, t.target_year, t.id`,
+    )
+    .all() as TargetWithCompany[];
+}
+
+export interface ScoreRow {
+  company_id: string;
+  transparency_score: number | null;
+  transparency_met: number;
+  transparency_applicable: number;
+  transparency_reason: string | null;
+  performance_score: number | null;
+  performance_available: number;
+  performance_reason: string | null;
+}
+
+export function allScores(): ScoreRow[] {
+  return db().prepare("SELECT * FROM company_scores").all() as ScoreRow[];
+}
+
+export function scoreFor(companyId: string): ScoreRow | undefined {
+  return db().prepare("SELECT * FROM company_scores WHERE company_id = ?").get(companyId) as ScoreRow | undefined;
+}
+
+export interface TransparencyItemRow {
+  company_id: string;
+  item_id: string;
+  label: string;
+  item_group: string;
+  met: 0 | 1 | null;
+  evidence: string | null;
+}
+
+export function allTransparencyItems(): TransparencyItemRow[] {
+  return db().prepare("SELECT * FROM transparency_items ORDER BY rowid").all() as TransparencyItemRow[];
+}
+
+export interface IndicatorRow {
+  company_id: string;
+  indicator_id: string;
+  label: string;
+  raw_value: number | null;
+  raw_unit: string | null;
+  score: number | null;
+  detail: string | null;
+}
+
+export function allIndicators(): IndicatorRow[] {
+  return db().prepare("SELECT * FROM performance_indicators ORDER BY rowid").all() as IndicatorRow[];
 }

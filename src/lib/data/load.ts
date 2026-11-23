@@ -7,6 +7,7 @@ import path from "node:path";
 import { PeerGroup, type CompanyFile } from "../schema/company";
 import { validateCompany, type Issue } from "../schema/validate";
 import { z } from "zod";
+import { findDuplicateKeys } from "./json-dupes";
 
 export interface LoadResult {
   companies: CompanyFile[];
@@ -35,7 +36,11 @@ export function loadCompanies(dataDir: string = defaultDataDir()): LoadResult {
     const rel = `data/companies/${f}`;
     let raw: unknown;
     try {
-      raw = JSON.parse(readFileSync(path.join(dir, f), "utf8"));
+      const text = readFileSync(path.join(dir, f), "utf8");
+      for (const d of findDuplicateKeys(text)) {
+        issues.push({ file: rel, path: d, message: "duplicate key (JSON keeps only the last one)", level: "error" });
+      }
+      raw = JSON.parse(text);
     } catch (e) {
       issues.push({ file: rel, path: "", message: `invalid JSON: ${(e as Error).message}`, level: "error" });
       continue;
