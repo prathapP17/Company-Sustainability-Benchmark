@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Card, Tag } from "@/components/ui";
 import { LogoutButton, UploadForm } from "@/components/review/ReviewClient";
 import { listCompanies } from "@/lib/db/queries";
-import { listDocuments, queueStats } from "@/lib/pipeline/queries";
+import { awaitingFetchCount, listDocuments, openAlertCount, queueStats } from "@/lib/pipeline/queries";
 import { aiEnabled } from "@/lib/pipeline/extract/ai";
 import { currentAccess } from "./gate";
 import { Denied } from "./Denied";
@@ -35,6 +35,8 @@ async function ReviewHome() {
   const stats = new Map(queueStats().map((s) => [s.status, s.n]));
   const companies = listCompanies().map((c) => ({ id: c.id, name: c.name }));
   const companyName = new Map(companies.map((c) => [c.id, c.name]));
+  const alerts = openAlertCount();
+  const awaiting = awaitingFetchCount();
 
   return (
     <>
@@ -44,7 +46,13 @@ async function ReviewHome() {
           {stats.get("running") ?? 0} running, {stats.get("failed") ?? 0} failed · Claude extraction{" "}
           {aiEnabled() ? "on" : "off (no ANTHROPIC_API_KEY)"}
         </span>
-        <span className="flex gap-4">
+        <span className="flex flex-wrap gap-4">
+          <Link href="/review/alerts" className="text-accent hover:underline">
+            Alerts{alerts ? ` (${alerts} open)` : ""}
+          </Link>
+          <Link href="/review/discovered" className="text-accent hover:underline">
+            Discovered{awaiting ? ` (${awaiting} to fetch)` : ""}
+          </Link>
           <Link href="/review/audit" className="text-accent hover:underline">
             Audit log
           </Link>

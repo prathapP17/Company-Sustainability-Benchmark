@@ -46,3 +46,4 @@ __pycache__/
 /data/uploads/
 .env*.local
 !.env.example
+/data/logs/

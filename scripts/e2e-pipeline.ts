@@ -38,6 +38,35 @@ function rawGet(pathname: string, host: string, extra: Record<string, string> = 
   });
 }
 
+function runAsync(cmd: string, args: string[], env: NodeJS.ProcessEnv): Promise<{ status: number | null; stdout: string }> {
+  return new Promise((resolve) => {
+    const p = spawn(cmd, args, { env });
+    let stdout = "";
+    p.stdout.on("data", (d) => (stdout += d));
+    p.stderr.on("data", (d) => (stdout += d));
+    p.on("close", (status) => resolve({ status, stdout }));
+  });
+}
+
+/** Local stand-in for a company website (discovery must never hit real sites in tests). */
+async function startSite(pdf: Buffer): Promise<{ url: string; close: () => void }> {
+  const srv = http.createServer((req, res) => {
+    if (req.url === "/robots.txt") return res.writeHead(200).end("User-agent: *\nAllow: /\n");
+    if (req.url === "/sustainability/") {
+      res.writeHead(200, { "content-type": "text/html" });
+      return res.end('<a href="/r/sustainability-report-2026.pdf">Sustainability Report 2026</a><a href="/r/environmental-report-2019.pdf">Environmental Report 2019</a>');
+    }
+    if (req.url?.endsWith(".pdf")) {
+      res.writeHead(200, { "content-type": "application/pdf", "content-length": pdf.length, etag: '"e2e"' });
+      return res.end(req.method === "HEAD" ? undefined : pdf);
+    }
+    res.writeHead(404).end();
+  });
+  await new Promise<void>((r) => srv.listen(0, "127.0.0.1", () => r()));
+  const port = (srv.address() as { port: number }).port;
+  return { url: `http://127.0.0.1:${port}`, close: () => srv.close() };
+}
+
 async function main() {
   mkdirSync(OUT, { recursive: true });
   const dataDir = mkdtempSync(path.join(tmpdir(), "csi-e2e-"));
@@ -47,6 +76,15 @@ async function main() {
   spawnSync("npx", ["tsx", "scripts/seed.ts"], { env, stdio: "ignore" });
   const pdf = path.join(dataDir, "fixture.pdf");
   writeFileSync(pdf, await makeGhgPdf({ scannedPage: true }));
+  const siteServer = await startSite(await makeGhgPdf({ scope1: ["51,000", "53,300", "56,100"] }));
+  writeFileSync(
+    path.join(dataDir, "discovery.json"),
+    JSON.stringify({
+      $schemaVersion: 1,
+      defaults: { maxAutoFetchPerRun: 3, autoFetchMinYearOffset: 1, maxPagesPerCompany: 3, hostIntervalMs: 250 },
+      companies: { apple: { seedUrls: [`${siteServer.url}/sustainability/`], allowedDomains: ["127.0.0.1"], autoFetch: true } },
+    }),
+  );
 
   const server = spawn("npx", ["next", "start", "-p", String(PORT)], { env, stdio: "ignore" });
   try {
@@ -121,12 +159,31 @@ async function main() {
       const conflictItem = page.locator("li", { hasText: "Scope 1 GHG emissions" }).filter({ hasText: "FY2025" }).first();
       check(await conflictItem.getByRole("button", { name: "Approve as restatement" }).isDisabled(), "restatement disabled until a reason is given");
 
+      // Discovery (phase 4): refresh against the local site, then review discovered reports and alerts.
+      // Async spawn: the local test site runs in this process and must keep serving.
+      const refresh = await runAsync("npx", ["tsx", "scripts/refresh.ts"], env);
+      if (refresh.status !== 0 || !/1 auto-fetched/.test(refresh.stdout)) console.log(refresh.stdout);
+      check(refresh.status === 0 && /1 auto-fetched/.test(refresh.stdout), "refresh discovered and auto-fetched the recent official report");
+      await page.goto(`${BASE}/review/discovered`);
+      check((await page.getByText("Sustainability Report 2026").count()) >= 1, "discovered page lists the found report");
+      const old = page.locator("li", { hasText: "Environmental Report 2019" });
+      check((await old.getByText("Awaiting fetch").count()) === 1, "older report waits for a manual fetch");
+      await old.getByRole("button", { name: "Fetch" }).click();
+      await page.locator("li", { hasText: "Environmental Report 2019" }).getByText("Fetched").waitFor();
+      check(true, "manual Fetch downloaded the report into the pipeline");
+      await page.goto(`${BASE}/review/alerts`);
+      const restatement = page.locator("li", { hasText: "Possible restatement" }).first();
+      check((await restatement.count()) === 1, "restatement alert raised for the auto-fetched report");
+      await restatement.getByRole("button", { name: "Acknowledge" }).click();
+      await page.getByText("Recently acknowledged").waitFor();
+      check(true, "alert acknowledged");
+
       await page.goto(`${BASE}/review/audit`);
       check((await page.getByText("E2E Reviewer").count()) >= 2, "audit log records the reviewer's actions");
 
       for (const [name, width] of [["phone", 375], ["tablet", 768], ["desktop", 1280]] as const) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/review", "/review/documents/1"]) {
+        for (const route of ["/review", "/review/documents/1", "/review/discovered", "/review/alerts"]) {
           await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
           await page.locator("h1").first().waitFor();
           const ok = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
@@ -139,6 +196,7 @@ async function main() {
     }
   } finally {
     server.kill();
+    siteServer.close();
     rmSync(dataDir, { recursive: true, force: true });
   }
   console.log(`\n${failures.length ? `${failures.length} FAILED` : "All pipeline e2e checks passed"}.`);

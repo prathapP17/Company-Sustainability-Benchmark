@@ -14,6 +14,8 @@ import { toCanonical } from "../metrics/dictionary";
 import { seed } from "../db/seed";
 import { audit, nowIso, type DocumentRow, type ExtractionRow, type PageRow } from "./db";
 import { verifyEvidence } from "./evidence";
+import { raiseAlert } from "../discovery/alerts";
+import { formatReported } from "../format";
 import type { Candidate } from "./extract/rules";
 import type { SourceType, VerificationClass } from "../schema/enums";
 
@@ -77,7 +79,7 @@ export function saveCandidates(db: DB, dataDir: string, doc: DocumentRow, cands:
           })
         : { ok: false, detail: `page ${c.pageNumber} not in stored text` };
       const conflict = detectConflict(company, c);
-      ins.run({
+      const info = ins.run({
         document_id: doc.id, company_id: doc.company_id, metric_id: c.metricId, year: c.year, value: c.value, unit: c.unit,
         page_number: c.pageNumber, page_label: c.pageLabel, cell: c.cell, reported_wording: c.reportedWording,
         boundary: c.boundary, consolidation: c.consolidation, scope2_method: c.scope2Method, method, confidence: c.confidence,
@@ -85,6 +87,18 @@ export function saveCandidates(db: DB, dataDir: string, doc: DocumentRow, cands:
         conflict: conflict ? JSON.stringify(conflict) : null, created_at: nowIso(),
       });
       stored++;
+      // Rule 8: a new document reporting a different value for a curated year is a possible restatement.
+      if (conflict?.type === "conflict" && conflict.existing.state === "disclosed" && ev.ok) {
+        raiseAlert(db, {
+          companyId: doc.company_id,
+          kind: "restatement",
+          title: `Possible restatement: ${c.metricId} ${c.year} is ${formatReported(c.value, c.unit)} in "${doc.title}" vs ${formatReported(conflict.existing.value ?? null, conflict.existing.unit ?? null)} curated`,
+          documentId: doc.id,
+          extractionId: Number(info.lastInsertRowid),
+          details: { metric: c.metricId, year: c.year, value: c.value, unit: c.unit, page: c.pageLabel, existing: conflict.existing },
+          dedupeKey: `restatement:${doc.company_id}:${c.metricId}:${c.year}:${c.boundary}:${c.scope2Method ?? ""}:${c.value}:${c.unit}`,
+        });
+      }
     }
     audit(db, "worker", `extracted_${method}`, "document", doc.id, { candidates: stored });
   })();

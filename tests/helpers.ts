@@ -9,6 +9,7 @@ export const REAL_DATA = path.resolve(import.meta.dirname, "..", "data");
 export function tempDataDir(withCompanies = true): { dir: string; cleanup: () => void } {
   const dir = mkdtempSync(path.join(tmpdir(), "csi-test-"));
   cpSync(path.join(REAL_DATA, "peer-groups.json"), path.join(dir, "peer-groups.json"));
+  cpSync(path.join(REAL_DATA, "discovery.json"), path.join(dir, "discovery.json"));
   if (withCompanies) cpSync(path.join(REAL_DATA, "companies"), path.join(dir, "companies"), { recursive: true });
   return { dir, cleanup: () => rmSync(dir, { recursive: true, force: true }) };
 }

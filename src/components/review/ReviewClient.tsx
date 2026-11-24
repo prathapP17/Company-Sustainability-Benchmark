@@ -228,3 +228,55 @@ export function ReviewActions({
     </div>
   );
 }
+
+export function DiscoveredActions({ id, canFetch }: { id: number; canFetch: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const act = async (action: "fetch" | "skip") => {
+    setBusy(true);
+    setError(null);
+    const r = await post(`/api/pipeline/discovered/${id}`, { action });
+    setBusy(false);
+    if (!r.ok) setError(String(r.data.error ?? "failed"));
+    else router.refresh();
+  };
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-2">
+        {canFetch && (
+          <button className={BTN_PRIMARY} disabled={busy} onClick={() => act("fetch")}>
+            {busy ? "Fetching…" : "Fetch"}
+          </button>
+        )}
+        <button className={BTN} disabled={busy} onClick={() => act("skip")}>
+          Skip
+        </button>
+      </div>
+      {error && (
+        <p role="alert" className="text-xs text-warn-ink">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+export function AcknowledgeButton({ id }: { id: number }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  return (
+    <button
+      className={BTN}
+      disabled={busy}
+      onClick={async () => {
+        setBusy(true);
+        await post(`/api/pipeline/alerts/${id}`, {});
+        setBusy(false);
+        router.refresh();
+      }}
+    >
+      Acknowledge
+    </button>
+  );
+}

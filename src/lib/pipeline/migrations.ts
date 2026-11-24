@@ -105,4 +105,73 @@ CREATE TRIGGER audit_log_no_delete BEFORE DELETE ON audit_log
 BEGIN SELECT RAISE(ABORT, 'audit_log is append-only'); END;
 `,
   },
+  {
+    version: 2,
+    name: "phase 4: discovery, crawl runs, alerts, robots cache",
+    sql: `
+CREATE TABLE discovered_documents (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id TEXT NOT NULL,
+  url TEXT NOT NULL UNIQUE,
+  final_url TEXT,
+  origin TEXT NOT NULL,            -- crawl | sec
+  source_page TEXT,
+  title TEXT NOT NULL,
+  report_type TEXT NOT NULL,       -- guessed: sustainability_report | annual_report | esg_data_book | regulatory_filing
+  year INTEGER,                    -- year printed in the link or file name, if any
+  language TEXT NOT NULL,
+  official INTEGER NOT NULL,       -- final URL on the company's allow-listed domains
+  content_type TEXT,
+  content_length INTEGER,
+  etag TEXT,
+  last_modified TEXT,
+  sha256 TEXT,
+  document_id INTEGER REFERENCES documents(id),
+  status TEXT NOT NULL,            -- new | awaiting_fetch | fetched | skipped | blocked | failed
+  first_seen TEXT NOT NULL,
+  last_checked TEXT NOT NULL,
+  last_changed TEXT,
+  error TEXT
+);
+CREATE INDEX discovered_company ON discovered_documents(company_id, status);
+
+CREATE TABLE crawl_runs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  trigger TEXT NOT NULL,           -- schedule | manual | test
+  companies TEXT NOT NULL,         -- JSON array
+  pages_read INTEGER NOT NULL DEFAULT 0,
+  found INTEGER NOT NULL DEFAULT 0,
+  fetched INTEGER NOT NULL DEFAULT 0,
+  alerts INTEGER NOT NULL DEFAULT 0,
+  error TEXT
+);
+
+CREATE TABLE alerts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT NOT NULL,
+  company_id TEXT,
+  kind TEXT NOT NULL,              -- new_report | changed_report | restatement | blocked | fetch_failed | source_changed
+  title TEXT NOT NULL,
+  details TEXT,
+  url TEXT,
+  document_id INTEGER,
+  extraction_id INTEGER,
+  dedupe_key TEXT NOT NULL,
+  status TEXT NOT NULL,            -- open | acknowledged
+  acknowledged_by TEXT,
+  acknowledged_at TEXT
+);
+CREATE INDEX alerts_status ON alerts(status, created_at);
+CREATE INDEX alerts_dedupe ON alerts(dedupe_key, status);
+
+CREATE TABLE robots_cache (
+  origin TEXT PRIMARY KEY,
+  fetched_at TEXT NOT NULL,
+  status INTEGER NOT NULL,
+  body TEXT
+);
+`,
+  },
 ];

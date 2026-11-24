@@ -1,6 +1,9 @@
 /** Read helpers for the review pages. */
 import "server-only";
 import { pipelineDb, type DocumentRow, type ExtractionRow, type JobRow, type PageRow } from "./db";
+import type { DiscoveredRow } from "../discovery/discover";
+import type { AlertRow } from "../discovery/alerts";
+
 
 export interface DocumentSummary extends DocumentRow {
   pending: number;
@@ -69,4 +72,48 @@ export function queueStats() {
   return pipelineDb()
     .prepare("SELECT status, count(*) n FROM jobs GROUP BY status")
     .all() as { status: string; n: number }[];
+}
+
+// ---------------------------------------------------------------- phase 4
+
+
+export function listDiscovered(): DiscoveredRow[] {
+  return pipelineDb()
+    .prepare(
+      `SELECT * FROM discovered_documents
+       ORDER BY CASE status WHEN 'awaiting_fetch' THEN 0 WHEN 'new' THEN 1 WHEN 'blocked' THEN 2 WHEN 'failed' THEN 3 ELSE 4 END,
+                company_id, year DESC, title`,
+    )
+    .all() as DiscoveredRow[];
+}
+
+export function listAlerts(status: "open" | "acknowledged" | "all" = "open", limit = 300): AlertRow[] {
+  const where = status === "all" ? "" : "WHERE status = ?";
+  const args = status === "all" ? [limit] : [status, limit];
+  return pipelineDb().prepare(`SELECT * FROM alerts ${where} ORDER BY id DESC LIMIT ?`).all(...args) as AlertRow[];
+}
+
+export function openAlertCount(): number {
+  return (pipelineDb().prepare("SELECT count(*) n FROM alerts WHERE status = 'open'").get() as { n: number }).n;
+}
+
+export function awaitingFetchCount(): number {
+  return (pipelineDb().prepare("SELECT count(*) n FROM discovered_documents WHERE status IN ('awaiting_fetch','new')").get() as { n: number }).n;
+}
+
+export interface CrawlRunRow {
+  id: number;
+  started_at: string;
+  finished_at: string | null;
+  trigger: string;
+  companies: string;
+  pages_read: number;
+  found: number;
+  fetched: number;
+  alerts: number;
+  error: string | null;
+}
+
+export function recentRuns(limit = 5): CrawlRunRow[] {
+  return pipelineDb().prepare("SELECT * FROM crawl_runs ORDER BY id DESC LIMIT ?").all(limit) as CrawlRunRow[];
 }

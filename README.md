@@ -34,6 +34,24 @@ Benchmarks the sustainability disclosures of large operating companies. See
 - Setup: copy `.env.example` to `.env.local`, set `REVIEWER_TOKEN`, run `npm run dev` (or `build` + `start`) and `npm run worker`.
   Public pages are prerendered: run `npm run build` again to publish approved values.
 
+## Phase 4 (automated discovery and scheduled refresh)
+
+- `data/discovery.json`: per company, the official pages to crawl, the company's own domains, and an optional SEC CIK
+  (checked against the filer name, so a wrong CIK is ignored)
+- `npm run refresh`: crawls the configured pages (plus one level of same-site report pages) and SEC EDGAR, records report
+  links, detects new or changed files (ETag / Last-Modified / size), then runs the worker for anything fetched
+- Polite crawling: robots.txt checked on every request and redirect, 2 s per host, size caps, a generic bot name;
+  bot-protection pages (Cloudflare, Imperva, plain 403) are recorded as blockers and never worked around
+- **Auto-fetch rule (decided 2026-11-24):** reports on a company's own allow-listed domain, in English, from this year or
+  last, at most 3 per company per run, are downloaded automatically. Everything else (other domains, SEC filings, older or
+  non-English reports) waits on `/review/discovered` until a reviewer clicks Fetch. Extracted values still need review.
+- A company's first run records a silent baseline; later runs raise alerts for new reports, changed reports, changed
+  benchmark sources, possible restatements (extracted value differs from a curated value), blocked sites and failed fetches
+  on `/review/alerts`
+- Weekly schedule (macOS): `npm run launchd:print` shows the job; `npm run launchd:install` installs it (Mondays 07:00,
+  log in `data/logs/refresh.log`); `npm run launchd:uninstall` removes it
+- SEC EDGAR needs `SEC_USER_AGENT` (your organisation and a contact email) in `.env.local`
+
 ## Commands
 
 ```bash
@@ -46,6 +64,7 @@ npm run build         # runs validate + seed first
 npm run test:e2e      # needs a build; uses installed Chrome (CHROME_PATH to override)
 npm run test:e2e:pipeline   # review pipeline end to end, in a temporary data folder
 npm run worker        # extraction worker (add -- --once to drain the queue and exit)
+npm run refresh       # discovery + extraction now (add -- --company apple to limit)
 npm run extract-text -- <file.pdf>   # page-marked text for manual research
 ```
 

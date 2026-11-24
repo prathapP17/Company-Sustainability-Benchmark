@@ -1,0 +1,67 @@
+{
+  "$schemaVersion": 1,
+  "defaults": {
+    "maxAutoFetchPerRun": 3,
+    "autoFetchMinYearOffset": 1,
+    "maxPagesPerCompany": 12,
+    "hostIntervalMs": 2000
+  },
+  "companies": {
+    "apple": {
+      "seedUrls": ["https://www.apple.com/environment/"],
+      "allowedDomains": ["apple.com"],
+      "autoFetch": true,
+      "sec": { "cik": "0000320193", "nameIncludes": "APPLE" }
+    },
+    "microsoft": {
+      "seedUrls": ["https://www.microsoft.com/en-us/corporate-responsibility/reports-hub"],
+      "allowedDomains": ["microsoft.com"],
+      "autoFetch": true,
+      "sec": { "cik": "0000789019", "nameIncludes": "MICROSOFT" }
+    },
+    "nestle": {
+      "seedUrls": ["https://www.nestle.com/sustainability"],
+      "allowedDomains": ["nestle.com"],
+      "autoFetch": true
+    },
+    "reliance": {
+      "seedUrls": ["https://www.ril.com/sustainability"],
+      "allowedDomains": ["ril.com"],
+      "autoFetch": true
+    },
+    "samsung": {
+      "seedUrls": ["https://www.samsung.com/global/sustainability/"],
+      "allowedDomains": ["samsung.com"],
+      "autoFetch": true
+    },
+    "siemens": {
+      "seedUrls": ["https://www.siemens.com/global/en/company/sustainability.html"],
+      "allowedDomains": ["siemens.com"],
+      "autoFetch": true
+    },
+    "sony": {
+      "seedUrls": ["https://www.sony.com/en/SonyInfo/csr_report/"],
+      "allowedDomains": ["sony.com"],
+      "autoFetch": true,
+      "sec": { "cik": "0000313838", "nameIncludes": "SONY" }
+    },
+    "toyota": {
+      "seedUrls": ["https://global.toyota/en/sustainability/report/sdb/"],
+      "allowedDomains": ["global.toyota"],
+      "autoFetch": true,
+      "sec": { "cik": "0001094517", "nameIncludes": "TOYOTA" }
+    },
+    "tsmc": {
+      "seedUrls": ["https://esg.tsmc.com/en-US/"],
+      "allowedDomains": ["tsmc.com"],
+      "autoFetch": true,
+      "sec": { "cik": "0001046179", "nameIncludes": "TAIWAN SEMICONDUCTOR" }
+    },
+    "unilever": {
+      "seedUrls": ["https://www.unilever.com/sustainability/"],
+      "allowedDomains": ["unilever.com"],
+      "autoFetch": true,
+      "sec": { "cik": "0000217410", "nameIncludes": "UNILEVER" }
+    }
+  }
+}

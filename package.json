@@ -15,7 +15,11 @@
     "test:e2e": "tsx scripts/e2e.ts",
     "extract-text": "tsx scripts/extract-text.ts",
     "worker": "tsx scripts/worker.ts",
-    "test:e2e:pipeline": "tsx scripts/e2e-pipeline.ts"
+    "test:e2e:pipeline": "tsx scripts/e2e-pipeline.ts",
+    "refresh": "tsx scripts/refresh.ts",
+    "launchd:print": "zsh ops/launchd/install.sh --print",
+    "launchd:install": "zsh ops/launchd/install.sh",
+    "launchd:uninstall": "zsh ops/launchd/uninstall.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.13.0",
