@@ -43,3 +43,6 @@ __pycache__/
 /data/backups/
 /data/public-url.txt
 /scratch/
+/data/uploads/
+.env*.local
+!.env.example

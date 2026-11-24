@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
-import { MIGRATIONS } from "./migrations";
+import { MIGRATIONS, type Migration } from "./migrations";
 import { defaultDataDir } from "../data/load";
 
 export type DB = Database.Database;
@@ -34,11 +34,11 @@ export function openWritable(file: string): DB {
   return db;
 }
 
-export function pendingMigrations(db: DB) {
+export function pendingMigrations(db: DB, migrations: Migration[] = MIGRATIONS) {
   const applied = new Set(
     (db.prepare("SELECT version FROM schema_migrations").all() as { version: number }[]).map((r) => r.version),
   );
-  return MIGRATIONS.filter((m) => !applied.has(m.version));
+  return migrations.filter((m) => !applied.has(m.version));
 }
 
 /**
@@ -46,15 +46,26 @@ export function pendingMigrations(db: DB) {
  * taken only when the database already holds data and a migration is pending.
  * Returns the backup path, if one was written.
  */
-export function migrate(db: DB, file: string, now = new Date()): string | undefined {
-  const pending = pendingMigrations(db);
+export function migrate(
+  db: DB,
+  file: string,
+  now = new Date(),
+  migrations: Migration[] = MIGRATIONS,
+  backupPrefix = "benchmark",
+): string | undefined {
+  const pending = pendingMigrations(db, migrations);
   if (pending.length === 0) return undefined;
   let backup: string | undefined;
-  const hasTables = (db.prepare("SELECT count(*) n FROM sqlite_master WHERE type='table' AND name='companies'").get() as { n: number }).n > 0;
+  const hasTables =
+    (
+      db
+        .prepare("SELECT count(*) n FROM sqlite_master WHERE type='table' AND name NOT IN ('schema_migrations','sqlite_sequence')")
+        .get() as { n: number }
+    ).n > 0;
   if (hasTables) {
     const dir = path.join(path.dirname(file), "backups");
     mkdirSync(dir, { recursive: true });
-    backup = path.join(dir, `benchmark-${now.toISOString().replace(/[:.]/g, "-")}.db`);
+    backup = path.join(dir, `${backupPrefix}-${now.toISOString().replace(/[:.]/g, "-")}.db`);
     db.pragma("wal_checkpoint(TRUNCATE)");
     copyFileSync(file, backup);
   }

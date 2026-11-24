@@ -4,12 +4,26 @@
     "id": "microsoft",
     "name": "Microsoft",
     "legalName": "Microsoft Corporation",
-    "listings": [{ "exchange": "NASDAQ", "ticker": "MSFT" }],
-    "hq": { "city": "Redmond", "country": "United States", "lat": 47.67, "lon": -122.12 },
+    "listings": [
+      { "exchange": "NASDAQ", "ticker": "MSFT" }
+    ],
+    "hq": {
+      "city": "Redmond",
+      "country": "United States",
+      "lat": 47.67,
+      "lon": -122.12
+    },
     "region": "Americas",
-    "industry": { "gics": "Systems Software", "sasb": "Software & IT Services (TC-SI)" },
+    "industry": {
+      "gics": "Systems Software",
+      "sasb": "Software & IT Services (TC-SI)"
+    },
     "peerGroup": "software_it",
-    "fiscalYear": { "end": "06-30", "labelConvention": "end_year", "note": "FY25 = year ended 30 June 2025 (Data Fact Sheet p.2)." },
+    "fiscalYear": {
+      "end": "06-30",
+      "labelConvention": "end_year",
+      "note": "FY25 = year ended 30 June 2025 (Data Fact Sheet p.2)."
+    },
     "website": "https://www.microsoft.com",
     "sustainabilityPage": "https://www.microsoft.com/en-us/corporate-responsibility/sustainability"
   },
@@ -22,30 +36,15 @@
     "consolidation": "operational_control",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "limited", "provider": "Deloitte & Touche LLP", "scope": "Review engagement (AICPA AR-C/AT-C 210) on Section 1 of the Data Fact Sheet, FY25 only." }
+    "assurance": {
+      "level": "limited",
+      "provider": "Deloitte & Touche LLP",
+      "scope": "Review engagement (AICPA AR-C/AT-C 210) on Section 1 of the Data Fact Sheet, FY25 only."
+    }
   },
   "sources": [
-    {
-      "id": "msft-factsheet-2026",
-      "organisation": "Microsoft Corporation",
-      "title": "2026 Environmental Data Fact Sheet (fiscal year 2025)",
-      "type": "esg_data_book",
-      "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Data-Fact-Sheet-PDF.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Printed page numbers match PDF pages."
-    },
-    {
-      "id": "msft-esr-2026",
-      "organisation": "Microsoft Corporation",
-      "title": "2026 Environmental Sustainability Report",
-      "type": "sustainability_report",
-      "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Sustainability-Report-PDF.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document"
-    }
+    { "id": "msft-factsheet-2026", "organisation": "Microsoft Corporation", "title": "2026 Environmental Data Fact Sheet (fiscal year 2025)", "type": "esg_data_book", "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Data-Fact-Sheet-PDF.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Printed page numbers match PDF pages." },
+    { "id": "msft-esr-2026", "organisation": "Microsoft Corporation", "title": "2026 Environmental Sustainability Report", "type": "sustainability_report", "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Sustainability-Report-PDF.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document" }
   ],
   "reports": [
     { "year": 2025, "type": "esg_data_book", "source": "msft-factsheet-2026", "assurance": { "level": "limited", "provider": "Deloitte & Touche LLP", "scope": "Review of Section 1 for FY25; prior years and goals not reviewed (p.2)." } }
@@ -83,42 +82,13 @@
     { "metric": "sw_datacenter_pue", "year": 2025, "state": "disclosed", "value": 1.17, "unit": "ratio", "source": "msft-esr-2026", "page": "PDF p.23", "assurance": { "level": "none" }, "reportedWording": "our datacenters delivered a global average PUE" }
   ],
   "targets": [
-    {
-      "id": "msft-carbon-negative-2030",
-      "category": "emissions",
-      "type": "net_zero",
-      "description": "Become carbon negative by 2030 by reducing emissions across operations and value chain and removing more carbon than emitted.",
-      "scopes": ["1", "2", "3"],
-      "target": { "year": 2030 },
-      "validation": "not_stated",
-      "source": "msft-esr-2026",
-      "page": "PDF p.8"
-    },
-    {
-      "id": "msft-water-positive-2030",
-      "category": "water",
-      "type": "qualitative",
-      "description": "Become water positive by 2030 by reducing water use and replenishing more than withdrawn.",
-      "target": { "year": 2030 },
-      "validation": "not_stated",
-      "source": "msft-esr-2026",
-      "page": "PDF p.8"
-    },
-    {
-      "id": "msft-zero-waste-2030",
-      "category": "waste",
-      "type": "qualitative",
-      "description": "Become zero waste by 2030.",
-      "target": { "year": 2030 },
-      "validation": "not_stated",
-      "source": "msft-esr-2026",
-      "page": "PDF p.8"
-    }
+    { "id": "msft-carbon-negative-2030", "category": "emissions", "type": "net_zero", "description": "Become carbon negative by 2030 by reducing emissions across operations and value chain and removing more carbon than emitted.", "scopes": ["1", "2", "3"], "target": { "year": 2030 }, "validation": "not_stated", "source": "msft-esr-2026", "page": "PDF p.8" },
+    { "id": "msft-water-positive-2030", "category": "water", "type": "qualitative", "description": "Become water positive by 2030 by reducing water use and replenishing more than withdrawn.", "target": { "year": 2030 }, "validation": "not_stated", "source": "msft-esr-2026", "page": "PDF p.8" },
+    { "id": "msft-zero-waste-2030", "category": "waste", "type": "qualitative", "description": "Become zero waste by 2030.", "target": { "year": 2030 }, "validation": "not_stated", "source": "msft-esr-2026", "page": "PDF p.8" }
   ],
-  "frameworks": [{ "name": "GRI", "detail": "Selected metrics reference GRI Standards", "source": "msft-factsheet-2026", "page": "p.2" }],
+  "frameworks": [
+    { "name": "GRI", "detail": "Selected metrics reference GRI Standards", "source": "msft-factsheet-2026", "page": "p.2" }
+  ],
   "dataGaps": [],
-  "comparabilityNotes": [
-    "Scope 3 total and categories are market-based, GHG Protocol-aligned (Table 1A). An alternative management's-criteria total net of fuel certificates is in Table 1B and is not used here.",
-    "Microsoft restates prior years under its recalculation policy; FY2024 values here are as restated in the 2026 fact sheet."
-  ]
+  "comparabilityNotes": ["Scope 3 total and categories are market-based, GHG Protocol-aligned (Table 1A). An alternative management's-criteria total net of fuel certificates is in Table 1B and is not used here.", "Microsoft restates prior years under its recalculation policy; FY2024 values here are as restated in the 2026 fact sheet."]
 }

@@ -12,6 +12,13 @@ export interface PdfPage {
   /** 1-based physical page index in the PDF file ("PDF p.N"). */
   pageNumber: number;
   text: string;
+  /** Page paints at least one image (used to detect scanned pages). */
+  hasImages: boolean;
+}
+
+/** A page is treated as scanned when it has images but (almost) no text layer. */
+export function looksScanned(p: PdfPage): boolean {
+  return p.hasImages && p.text.replace(/\s/g, "").length < 40;
 }
 
 interface TextItemLike {
@@ -38,7 +45,10 @@ export async function extractPdfPages(filePath: string): Promise<PdfPage[]> {
     for (let n = 1; n <= doc.numPages; n++) {
       const page = await doc.getPage(n);
       const content = await page.getTextContent();
-      pages.push({ pageNumber: n, text: itemsToLines(content.items as TextItemLike[]) });
+      const ops = await page.getOperatorList();
+      const imageOps = new Set([pdfjs.OPS.paintImageXObject, pdfjs.OPS.paintInlineImageXObject, pdfjs.OPS.paintImageMaskXObject]);
+      const hasImages = ops.fnArray.some((fn: number) => imageOps.has(fn));
+      pages.push({ pageNumber: n, text: itemsToLines(content.items as TextItemLike[]), hasImages });
       page.cleanup();
     }
   } finally {

@@ -21,7 +21,13 @@ function decode(s: string): string {
     .replace(/&[a-z]+;|&#160;/gi, (m) => ENTITIES[m] ?? m);
 }
 
-export function xhtmlToMarkedText(xhtml: string): string {
+export interface XhtmlPage {
+  pageNumber: number;
+  text: string;
+}
+
+/** Splits an ESEF/iXBRL report into pages of plain text (1-based, skipping near-empty pages). */
+export function xhtmlPages(xhtml: string): XhtmlPage[] {
   // Drop head, scripts, styles and hidden iXBRL header data.
   let body = xhtml
     .replace(/<head[\s\S]*?<\/head>/i, "")
@@ -44,16 +50,21 @@ export function xhtmlToMarkedText(xhtml: string): string {
       .replace(/<[^>]+>/g, ""),
   );
 
-  const pages = text.split(PAGE);
-  return pages
-    .map((p, i) => {
-      const clean = p
+  return text
+    .split(PAGE)
+    .map((p, i) => ({
+      pageNumber: i,
+      text: p
         .split("\n")
         .map((l) => l.replace(/[ \t]+/g, " ").trim())
         .filter((l) => l && l !== "|")
-        .join("\n");
-      return `\n=== XHTML page ${i} ===\n${clean}`;
-    })
-    .filter((p) => p.trim().length > 25)
+        .join("\n"),
+    }))
+    .filter((p) => p.text.length > 25);
+}
+
+export function xhtmlToMarkedText(xhtml: string): string {
+  return xhtmlPages(xhtml)
+    .map((p) => `\n=== XHTML page ${p.pageNumber} ===\n${p.text}`)
     .join("\n");
 }

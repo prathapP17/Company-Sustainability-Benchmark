@@ -4,10 +4,20 @@
     "id": "apple",
     "name": "Apple",
     "legalName": "Apple Inc.",
-    "listings": [{ "exchange": "NASDAQ", "ticker": "AAPL" }],
-    "hq": { "city": "Cupertino", "country": "United States", "lat": 37.32, "lon": -122.03 },
+    "listings": [
+      { "exchange": "NASDAQ", "ticker": "AAPL" }
+    ],
+    "hq": {
+      "city": "Cupertino",
+      "country": "United States",
+      "lat": 37.32,
+      "lon": -122.03
+    },
     "region": "Americas",
-    "industry": { "gics": "Technology Hardware, Storage & Peripherals", "sasb": "Hardware (TC-HW)" },
+    "industry": {
+      "gics": "Technology Hardware, Storage & Peripherals",
+      "sasb": "Hardware (TC-HW)"
+    },
     "peerGroup": "tech_hardware_semis",
     "fiscalYear": {
       "end": "09-27",
@@ -26,20 +36,14 @@
     "consolidation": "not_stated",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "reasonable", "provider": "Apex Companies, LLC", "scope": "Energy, water, Scope 1, Scope 2, Scope 3 business travel and employee commute (ISAE 3000 / ISO 14064-3)" }
+    "assurance": {
+      "level": "reasonable",
+      "provider": "Apex Companies, LLC",
+      "scope": "Energy, water, Scope 1, Scope 2, Scope 3 business travel and employee commute (ISAE 3000 / ISO 14064-3)"
+    }
   },
   "sources": [
-    {
-      "id": "apple-epr-2026",
-      "organisation": "Apple Inc.",
-      "title": "Environmental Progress Report 2026 (covering fiscal year 2025)",
-      "type": "sustainability_report",
-      "url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2026.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Printed page numbers match PDF page numbers."
-    }
+    { "id": "apple-epr-2026", "organisation": "Apple Inc.", "title": "Environmental Progress Report 2026 (covering fiscal year 2025)", "type": "sustainability_report", "url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2026.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Printed page numbers match PDF page numbers." }
   ],
   "reports": [
     { "year": 2025, "type": "sustainability_report", "source": "apple-epr-2026", "assurance": { "level": "reasonable", "provider": "Apex Companies, LLC", "scope": "Reasonable: energy, water, paper, Scope 1, 2 and Scope 3 business travel/commute. Limited: other Scope 3 categories and comprehensive carbon footprint." } }
@@ -69,30 +73,8 @@
     { "metric": "hw_recycled_material_share", "year": 2025, "state": "disclosed", "value": 30, "unit": "%", "page": "p.15", "assurance": { "level": "not_stated" }, "reportedWording": "came from recycled or renewable sources.", "note": "By weight, products shipped in 2025." }
   ],
   "targets": [
-    {
-      "id": "apple-2030-value-chain",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Achieve carbon neutrality across the entire value chain by 2030, reducing related emissions by 75 percent compared with 2015.",
-      "scopes": ["1", "2", "3"],
-      "baseline": { "year": 2015 },
-      "target": { "year": 2030, "value": 75, "unit": "% reduction" },
-      "validation": "not_stated",
-      "source": "apple-epr-2026",
-      "page": "p.11; progress p.5",
-      "note": "Report calls Apple 2030 a 'science-based commitment' (p.5) but does not state SBTi validation. Goals table shows 60% progress (p.5)."
-    },
-    {
-      "id": "apple-2030-water-replenish",
-      "category": "water",
-      "type": "increase_to",
-      "description": "Replenish all corporate freshwater withdrawals by 2030.",
-      "target": { "year": 2030, "value": 100, "unit": "% replenished" },
-      "latest": { "year": 2025, "value": 55, "unit": "% replenished" },
-      "validation": "not_stated",
-      "source": "apple-epr-2026",
-      "page": "p.5"
-    }
+    { "id": "apple-2030-value-chain", "category": "emissions", "type": "absolute", "description": "Achieve carbon neutrality across the entire value chain by 2030, reducing related emissions by 75 percent compared with 2015.", "scopes": ["1", "2", "3"], "baseline": { "year": 2015 }, "target": { "year": 2030, "value": 75, "unit": "% reduction" }, "validation": "not_stated", "source": "apple-epr-2026", "page": "p.11; progress p.5", "note": "Report calls Apple 2030 a 'science-based commitment' (p.5) but does not state SBTi validation. Goals table shows 60% progress (p.5)." },
+    { "id": "apple-2030-water-replenish", "category": "water", "type": "increase_to", "description": "Replenish all corporate freshwater withdrawals by 2030.", "target": { "year": 2030, "value": 100, "unit": "% replenished" }, "latest": { "year": 2025, "value": 55, "unit": "% replenished" }, "validation": "not_stated", "source": "apple-epr-2026", "page": "p.5" }
   ],
   "frameworks": [],
   "initiatives": [],
@@ -100,8 +82,5 @@
     { "metric": "ghg_scope3_c4", "year": 2025, "kind": "ambiguous", "description": "Upstream and downstream transport are reported together ('Product transportation (upstream and downstream) 2,370,000'), so categories 4 and 9 cannot be separated.", "source": "apple-epr-2026", "page": "p.76" },
     { "metric": "waste_total", "year": 2025, "kind": "ambiguous", "description": "Waste is reported only by disposition route in pounds; whether hazardous waste overlaps the other routes is not stated, so no total is recorded.", "source": "apple-epr-2026", "page": "p.81" }
   ],
-  "comparabilityNotes": [
-    "Apple splits Scope 3 into 'corporate' and 'product life cycle' blocks; the Scope 3 total here is their sum (derived).",
-    "Corporate carbon neutrality relies on retired carbon credits (pp.76-77); all figures here are gross emissions before credits."
-  ]
+  "comparabilityNotes": ["Apple splits Scope 3 into 'corporate' and 'product life cycle' blocks; the Scope 3 total here is their sum (derived).", "Corporate carbon neutrality relies on retired carbon credits (pp.76-77); all figures here are gross emissions before credits."]
 }

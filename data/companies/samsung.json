@@ -4,12 +4,25 @@
     "id": "samsung",
     "name": "Samsung Electronics",
     "legalName": "Samsung Electronics Co., Ltd.",
-    "listings": [{ "exchange": "KRX", "ticker": "005930" }],
-    "hq": { "city": "Suwon", "country": "South Korea", "lat": 37.26, "lon": 127.03 },
+    "listings": [
+      { "exchange": "KRX", "ticker": "005930" }
+    ],
+    "hq": {
+      "city": "Suwon",
+      "country": "South Korea",
+      "lat": 37.26,
+      "lon": 127.03
+    },
     "region": "Asia-Pacific",
-    "industry": { "gics": "Technology Hardware, Storage & Peripherals", "sasb": "Hardware (TC-HW) and Semiconductors (TC-SC)" },
+    "industry": {
+      "gics": "Technology Hardware, Storage & Peripherals",
+      "sasb": "Hardware (TC-HW) and Semiconductors (TC-SC)"
+    },
     "peerGroup": "tech_hardware_semis",
-    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "fiscalYear": {
+      "end": "12-31",
+      "labelConvention": "end_year"
+    },
     "website": "https://www.samsung.com",
     "sustainabilityPage": "https://www.samsung.com/global/sustainability/"
   },
@@ -22,20 +35,13 @@
     "consolidation": "not_stated",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "not_stated", "scope": "Verification statements on Scope 1-2 (p.79) and Scope 3 (p.80) exist but are image-only; not read." }
+    "assurance": {
+      "level": "not_stated",
+      "scope": "Verification statements on Scope 1-2 (p.79) and Scope 3 (p.80) exist but are image-only; not read."
+    }
   },
   "sources": [
-    {
-      "id": "samsung-sr-2026",
-      "organisation": "Samsung Electronics Co., Ltd.",
-      "title": "Samsung Electronics Sustainability Report 2026 (English)",
-      "type": "sustainability_report",
-      "url": "https://download.semiconductor.samsung.com/resources/others/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Official Samsung mirror; the samsung.com copy returned HTTP 403 to automated requests. Printed page numbers match PDF pages."
-    }
+    { "id": "samsung-sr-2026", "organisation": "Samsung Electronics Co., Ltd.", "title": "Samsung Electronics Sustainability Report 2026 (English)", "type": "sustainability_report", "url": "https://download.semiconductor.samsung.com/resources/others/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Official Samsung mirror; the samsung.com copy returned HTTP 403 to automated requests. Printed page numbers match PDF pages." }
   ],
   "reports": [
     { "year": 2025, "type": "sustainability_report", "source": "samsung-sr-2026", "assurance": { "level": "not_stated", "scope": "Third-party GHG verification statements present as images (pp.79-80)." } }
@@ -77,48 +83,18 @@
     { "metric": "hw_ewaste_collected", "year": 2025, "state": "disclosed", "value": 636231, "unit": "t", "page": "p.70", "reportedWording": "Amount of e-waste collected | Tonnes | 599,153 | 611,354 | 636,231" }
   ],
   "targets": [
-    {
-      "id": "samsung-dx-net-zero-2030",
-      "category": "emissions",
-      "type": "net_zero",
-      "description": "DX Division net zero emissions (Scope 1 and 2) by 2030.",
-      "scopes": ["1", "2"],
-      "target": { "year": 2030 },
-      "validation": "not_stated",
-      "source": "samsung-sr-2026",
-      "page": "p.10",
-      "note": "Division-level target; read from the roadmap graphic's text layer."
-    },
-    {
-      "id": "samsung-company-net-zero-2050",
-      "category": "emissions",
-      "type": "net_zero",
-      "description": "Company-wide net zero emissions (Scope 1 and 2) by 2050.",
-      "scopes": ["1", "2"],
-      "target": { "year": 2050 },
-      "validation": "not_stated",
-      "source": "samsung-sr-2026",
-      "page": "p.10"
-    },
-    {
-      "id": "samsung-ewaste-2030",
-      "category": "materials",
-      "type": "increase_to",
-      "description": "Collect a cumulative 10 million tonnes of e-waste (since 2009) by 2030.",
-      "target": { "year": 2030, "value": 10000000, "unit": "t cumulative" },
-      "latest": { "year": 2025, "value": 7544747, "unit": "t cumulative" },
-      "validation": "not_stated",
-      "source": "samsung-sr-2026",
-      "page": "p.10; latest p.70"
-    }
+    { "id": "samsung-dx-net-zero-2030", "category": "emissions", "type": "net_zero", "description": "DX Division net zero emissions (Scope 1 and 2) by 2030.", "scopes": ["1", "2"], "target": { "year": 2030 }, "validation": "not_stated", "source": "samsung-sr-2026", "page": "p.10", "note": "Division-level target; read from the roadmap graphic's text layer." },
+    { "id": "samsung-company-net-zero-2050", "category": "emissions", "type": "net_zero", "description": "Company-wide net zero emissions (Scope 1 and 2) by 2050.", "scopes": ["1", "2"], "target": { "year": 2050 }, "validation": "not_stated", "source": "samsung-sr-2026", "page": "p.10" },
+    { "id": "samsung-ewaste-2030", "category": "materials", "type": "increase_to", "description": "Collect a cumulative 10 million tonnes of e-waste (since 2009) by 2030.", "target": { "year": 2030, "value": 10000000, "unit": "t cumulative" }, "latest": { "year": 2025, "value": 7544747, "unit": "t cumulative" }, "validation": "not_stated", "source": "samsung-sr-2026", "page": "p.10; latest p.70" }
   ],
-  "frameworks": [{ "name": "GRI", "source": "samsung-sr-2026" }, { "name": "SASB", "source": "samsung-sr-2026" }, { "name": "TCFD", "source": "samsung-sr-2026" }],
+  "frameworks": [
+    { "name": "GRI", "source": "samsung-sr-2026" },
+    { "name": "SASB", "source": "samsung-sr-2026" },
+    { "name": "TCFD", "source": "samsung-sr-2026" }
+  ],
   "dataGaps": [
     { "kind": "other", "description": "Scope 1-3 verification statements (pp.79-80) are images; assurance provider and level need OCR or manual reading.", "source": "samsung-sr-2026", "page": "pp.79-80" },
     { "kind": "ambiguous", "description": "Report boundary is described as 'Korean and global manufacturing sites'; whether this equals the consolidated group is not stated.", "source": "samsung-sr-2026", "page": "p.69, footnote 1" }
   ],
-  "comparabilityNotes": [
-    "Samsung covers both hardware (DX) and semiconductor (DS) businesses; DS dominates operational emissions and energy.",
-    "Korean Scope 2 emission factor changed between 2024 and 2025 (p.69 footnote 2)."
-  ]
+  "comparabilityNotes": ["Samsung covers both hardware (DX) and semiconductor (DS) businesses; DS dominates operational emissions and energy.", "Korean Scope 2 emission factor changed between 2024 and 2025 (p.69 footnote 2)."]
 }

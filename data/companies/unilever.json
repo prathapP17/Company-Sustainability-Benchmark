@@ -9,11 +9,22 @@
       { "exchange": "Euronext Amsterdam", "ticker": "UNA" },
       { "exchange": "NYSE", "ticker": "UL" }
     ],
-    "hq": { "city": "London", "country": "United Kingdom", "lat": 51.51, "lon": -0.11 },
+    "hq": {
+      "city": "London",
+      "country": "United Kingdom",
+      "lat": 51.51,
+      "lon": -0.11
+    },
     "region": "Europe",
-    "industry": { "gics": "Personal Care Products", "sasb": "Household & Personal Products (CG-HP)" },
+    "industry": {
+      "gics": "Personal Care Products",
+      "sasb": "Household & Personal Products (CG-HP)"
+    },
     "peerGroup": "consumer_staples",
-    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "fiscalYear": {
+      "end": "12-31",
+      "labelConvention": "end_year"
+    },
     "website": "https://www.unilever.com",
     "sustainabilityPage": "https://www.unilever.com/sustainability/"
   },
@@ -26,20 +37,14 @@
     "consolidation": "operational_control",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "limited", "provider": "KPMG LLP", "scope": "Sustainability statement, ISAE (UK) 3000 (p.214; report p.271)" }
+    "assurance": {
+      "level": "limited",
+      "provider": "KPMG LLP",
+      "scope": "Sustainability statement, ISAE (UK) 3000 (p.214; report p.271)"
+    }
   },
   "sources": [
-    {
-      "id": "unilever-ar-2025",
-      "organisation": "Unilever PLC",
-      "title": "Annual Report and Accounts 2025 – Sustainability Statement (ESEF filing)",
-      "type": "annual_report",
-      "url": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ul-2025-12-31-1-en.xhtml",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Official ESEF XHTML filing hosted on filings.xbrl.org (unilever.com PDF returned 403). Citations use the printed page numbers shown in the filing."
-    }
+    { "id": "unilever-ar-2025", "organisation": "Unilever PLC", "title": "Annual Report and Accounts 2025 – Sustainability Statement (ESEF filing)", "type": "annual_report", "url": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ul-2025-12-31-1-en.xhtml", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Official ESEF XHTML filing hosted on filings.xbrl.org (unilever.com PDF returned 403). Citations use the printed page numbers shown in the filing." }
   ],
   "reports": [
     { "year": 2025, "type": "annual_report", "source": "unilever-ar-2025", "assurance": { "level": "limited", "provider": "KPMG LLP", "scope": "Sustainability statement (ISAE (UK) 3000)" } }
@@ -64,49 +69,16 @@
     { "metric": "fb_virgin_plastic_packaging", "year": 2025, "state": "not_found", "page": "p.244", "note": "Only the % change vs 2019 is reported ((29)%), not tonnes." }
   ],
   "targets": [
-    {
-      "id": "unilever-s12-2030",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Reduce absolute operational GHG emissions (Scope 1 and 2) by 100% by 2030 from a 2015 baseline; interim 80–90% by 2028.",
-      "scopes": ["1", "2"],
-      "baseline": { "year": 2015 },
-      "target": { "year": 2030, "value": 100, "unit": "% reduction" },
-      "validation": "sbti_validated",
-      "source": "unilever-ar-2025",
-      "page": "p.100",
-      "note": "'Scope 1 and 2 GHG target is SBTi validated.' Target not yet adjusted for the Ice Cream demerger."
-    },
-    {
-      "id": "unilever-net-zero-2039",
-      "category": "emissions",
-      "type": "net_zero",
-      "description": "Net zero goal by 2039.",
-      "target": { "year": 2039 },
-      "validation": "not_stated",
-      "source": "unilever-ar-2025",
-      "page": "p.76"
-    },
-    {
-      "id": "unilever-virgin-plastic-2028",
-      "category": "materials",
-      "type": "absolute",
-      "description": "Reduce virgin plastic footprint by 30% by 2026 and 40% by 2028 from a 2019 baseline.",
-      "baseline": { "year": 2019 },
-      "target": { "year": 2028, "value": 40, "unit": "% reduction" },
-      "latest": { "year": 2025, "value": 29, "unit": "% reduction" },
-      "validation": "not_stated",
-      "source": "unilever-ar-2025",
-      "page": "p.244"
-    }
+    { "id": "unilever-s12-2030", "category": "emissions", "type": "absolute", "description": "Reduce absolute operational GHG emissions (Scope 1 and 2) by 100% by 2030 from a 2015 baseline; interim 80–90% by 2028.", "scopes": ["1", "2"], "baseline": { "year": 2015 }, "target": { "year": 2030, "value": 100, "unit": "% reduction" }, "validation": "sbti_validated", "source": "unilever-ar-2025", "page": "p.100", "note": "'Scope 1 and 2 GHG target is SBTi validated.' Target not yet adjusted for the Ice Cream demerger." },
+    { "id": "unilever-net-zero-2039", "category": "emissions", "type": "net_zero", "description": "Net zero goal by 2039.", "target": { "year": 2039 }, "validation": "not_stated", "source": "unilever-ar-2025", "page": "p.76" },
+    { "id": "unilever-virgin-plastic-2028", "category": "materials", "type": "absolute", "description": "Reduce virgin plastic footprint by 30% by 2026 and 40% by 2028 from a 2019 baseline.", "baseline": { "year": 2019 }, "target": { "year": 2028, "value": 40, "unit": "% reduction" }, "latest": { "year": 2025, "value": 29, "unit": "% reduction" }, "validation": "not_stated", "source": "unilever-ar-2025", "page": "p.244" }
   ],
-  "frameworks": [{ "name": "ESRS", "source": "unilever-ar-2025" }],
+  "frameworks": [
+    { "name": "ESRS", "source": "unilever-ar-2025" }
+  ],
   "dataGaps": [
     { "kind": "boundary_mismatch", "description": "2024 comparatives include Ice Cream; 2025 excludes it. No 2024 values recorded to avoid a false trend.", "source": "unilever-ar-2025", "page": "p.232 note (a)" },
     { "kind": "ambiguous", "description": "Scope 3 categories 2, 3, 5, 6, 7, 9 and 14 are reported only as a combined 'Others' line (2.12 Mt).", "source": "unilever-ar-2025", "page": "p.232 note (h)" }
   ],
-  "comparabilityNotes": [
-    "Unilever's Scope 3 includes 49.34 Mt of indirect consumer-use emissions (optional under the GHG Protocol). Peers that exclude indirect use will look much smaller.",
-    "Renewable electricity share relies mostly on unbundled RECs (63 of 88 percentage points)."
-  ]
+  "comparabilityNotes": ["Unilever's Scope 3 includes 49.34 Mt of indirect consumer-use emissions (optional under the GHG Protocol). Peers that exclude indirect use will look much smaller.", "Renewable electricity share relies mostly on unbundled RECs (63 of 88 percentage points)."]
 }

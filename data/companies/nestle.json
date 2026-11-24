@@ -4,12 +4,25 @@
     "id": "nestle",
     "name": "Nestlé",
     "legalName": "Nestlé S.A.",
-    "listings": [{ "exchange": "SIX", "ticker": "NESN" }],
-    "hq": { "city": "Vevey", "country": "Switzerland", "lat": 46.46, "lon": 6.84 },
+    "listings": [
+      { "exchange": "SIX", "ticker": "NESN" }
+    ],
+    "hq": {
+      "city": "Vevey",
+      "country": "Switzerland",
+      "lat": 46.46,
+      "lon": 6.84
+    },
     "region": "Europe",
-    "industry": { "gics": "Packaged Foods & Meats", "sasb": "Processed Foods (FB-PF)" },
+    "industry": {
+      "gics": "Packaged Foods & Meats",
+      "sasb": "Processed Foods (FB-PF)"
+    },
     "peerGroup": "consumer_staples",
-    "fiscalYear": { "end": "12-31", "labelConvention": "end_year" },
+    "fiscalYear": {
+      "end": "12-31",
+      "labelConvention": "end_year"
+    },
     "website": "https://www.nestle.com",
     "sustainabilityPage": "https://www.nestle.com/sustainability"
   },
@@ -22,20 +35,14 @@
     "consolidation": "not_stated",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "limited", "provider": "Ernst & Young Ltd", "scope": "Selected ESG KPIs and non-financial matters (ISAE 3000/3410), PDF p.4" }
+    "assurance": {
+      "level": "limited",
+      "provider": "Ernst & Young Ltd",
+      "scope": "Selected ESG KPIs and non-financial matters (ISAE 3000/3410), PDF p.4"
+    }
   },
   "sources": [
-    {
-      "id": "nestle-nfs-2025",
-      "organisation": "Nestlé S.A.",
-      "title": "Non-Financial Statement 2025",
-      "type": "sustainability_report",
-      "url": "https://www.nestle.com/sites/default/files/2026-02/non-financial-statement-2025.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Printed page numbers match PDF pages. KPI tables use columns (2018) 2022 2023 2024 2025."
-    }
+    { "id": "nestle-nfs-2025", "organisation": "Nestlé S.A.", "title": "Non-Financial Statement 2025", "type": "sustainability_report", "url": "https://www.nestle.com/sites/default/files/2026-02/non-financial-statement-2025.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Printed page numbers match PDF pages. KPI tables use columns (2018) 2022 2023 2024 2025." }
   ],
   "reports": [
     { "year": 2025, "type": "sustainability_report", "source": "nestle-nfs-2025", "assurance": { "level": "limited", "provider": "Ernst & Young Ltd", "scope": "Selected environmental, social and governance KPIs" } }
@@ -80,36 +87,14 @@
     { "metric": "fb_virgin_plastic_packaging", "year": 2025, "state": "not_found", "page": "pp.83, 211", "note": "Only the reduction vs 2018 (28.0%) and total plastic packaging weight (0.86 Mt) are reported; virgin weight is not stated." }
   ],
   "targets": [
-    {
-      "id": "nestle-ghg-2030",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Reduce GHG emissions 50% by 2030 from the 2018 baseline (20% by 2025), and reach net zero by 2050 at the latest.",
-      "scopes": ["1", "2", "3"],
-      "baseline": { "year": 2018, "value": 87.09, "unit": "MtCO2e" },
-      "target": { "year": 2030, "value": 50, "unit": "% reduction" },
-      "latest": { "year": 2025, "value": 24.52, "unit": "% net reduction" },
-      "validation": "sbti_validated",
-      "source": "nestle-nfs-2025",
-      "page": "PDF p.37; validation p.48; progress p.50",
-      "note": "Progress figure is net of removals (24.52%); gross reduction is 20.7% (p.51)."
-    },
-    {
-      "id": "nestle-deforestation-free",
-      "category": "nature",
-      "type": "increase_to",
-      "description": "100% assessed deforestation-free primary supply chains (meat, palm oil, pulp and paper, soy, sugar, cocoa, coffee).",
-      "target": { "year": 2025, "value": 100, "unit": "%" },
-      "latest": { "year": 2025, "value": 96.7, "unit": "%" },
-      "validation": "not_stated",
-      "source": "nestle-nfs-2025",
-      "page": "PDF p.42"
-    }
+    { "id": "nestle-ghg-2030", "category": "emissions", "type": "absolute", "description": "Reduce GHG emissions 50% by 2030 from the 2018 baseline (20% by 2025), and reach net zero by 2050 at the latest.", "scopes": ["1", "2", "3"], "baseline": { "year": 2018, "value": 87.09, "unit": "MtCO2e" }, "target": { "year": 2030, "value": 50, "unit": "% reduction" }, "latest": { "year": 2025, "value": 24.52, "unit": "% net reduction" }, "validation": "sbti_validated", "source": "nestle-nfs-2025", "page": "PDF p.37; validation p.48; progress p.50", "note": "Progress figure is net of removals (24.52%); gross reduction is 20.7% (p.51)." },
+    { "id": "nestle-deforestation-free", "category": "nature", "type": "increase_to", "description": "100% assessed deforestation-free primary supply chains (meat, palm oil, pulp and paper, soy, sugar, cocoa, coffee).", "target": { "year": 2025, "value": 100, "unit": "%" }, "latest": { "year": 2025, "value": 96.7, "unit": "%" }, "validation": "not_stated", "source": "nestle-nfs-2025", "page": "PDF p.42" }
   ],
-  "frameworks": [{ "name": "ESRS", "source": "nestle-nfs-2025" }, { "name": "GRI", "source": "nestle-nfs-2025", "page": "pp.202-211" }, { "name": "SASB", "source": "nestle-nfs-2025", "page": "pp.202-211" }],
+  "frameworks": [
+    { "name": "ESRS", "source": "nestle-nfs-2025" },
+    { "name": "GRI", "source": "nestle-nfs-2025", "page": "pp.202-211" },
+    { "name": "SASB", "source": "nestle-nfs-2025", "page": "pp.202-211" }
+  ],
   "dataGaps": [],
-  "comparabilityNotes": [
-    "Nestlé's headline Scope 3 (66.01 Mt) covers only categories in scope of its SBTi Net Zero Roadmap; the total here adds the out-of-scope categories (derived).",
-    "Energy covers factories only."
-  ]
+  "comparabilityNotes": ["Nestlé's headline Scope 3 (66.01 Mt) covers only categories in scope of its SBTi Net Zero Roadmap; the total here adds the out-of-scope categories (derived).", "Energy covers factories only."]
 }

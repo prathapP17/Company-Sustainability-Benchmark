@@ -13,9 +13,12 @@
     "seed": "tsx scripts/seed.ts",
     "test": "vitest run",
     "test:e2e": "tsx scripts/e2e.ts",
-    "extract-text": "tsx scripts/extract-text.ts"
+    "extract-text": "tsx scripts/extract-text.ts",
+    "worker": "tsx scripts/worker.ts",
+    "test:e2e:pipeline": "tsx scripts/e2e-pipeline.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.13.0",
     "better-sqlite3": "^13.2.0",
     "exceljs": "^4.4.0",
     "next": "16.4.6",

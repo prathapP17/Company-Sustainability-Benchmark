@@ -8,9 +8,17 @@
       { "exchange": "NSE", "ticker": "RELIANCE" },
       { "exchange": "BSE", "ticker": "500325" }
     ],
-    "hq": { "city": "Mumbai", "country": "India", "lat": 18.93, "lon": 72.82 },
+    "hq": {
+      "city": "Mumbai",
+      "country": "India",
+      "lat": 18.93,
+      "lon": 72.82
+    },
     "region": "South Asia",
-    "industry": { "gics": "Oil & Gas Refining & Marketing", "sasb": "Oil & Gas – Refining & Marketing (EM-RM)" },
+    "industry": {
+      "gics": "Oil & Gas Refining & Marketing",
+      "sasb": "Oil & Gas – Refining & Marketing (EM-RM)"
+    },
     "peerGroup": "energy_conglomerates",
     "fiscalYear": {
       "end": "03-31",
@@ -29,20 +37,14 @@
     "consolidation": "not_stated",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "reasonable", "provider": "Deloitte Haskins & Sells LLP", "scope": "BRSR Core and other selected indicators (PDF p.4, item 15)" }
+    "assurance": {
+      "level": "reasonable",
+      "provider": "Deloitte Haskins & Sells LLP",
+      "scope": "BRSR Core and other selected indicators (PDF p.4, item 15)"
+    }
   },
   "sources": [
-    {
-      "id": "ril-brsr-fy2026",
-      "organisation": "Reliance Industries Limited",
-      "title": "Business Responsibility & Sustainability Report FY 2025-26",
-      "type": "regulatory_filing",
-      "url": "https://www.ril.com/ar2025-26/pdf/BRSR202526.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2026,
-      "verificationClass": "primary_document",
-      "notes": "PDF pages are two-page spreads; citations use PDF page numbers. Indian number grouping (lakh/crore) in source, e.g. 3,63,50,070 = 36,350,070."
-    }
+    { "id": "ril-brsr-fy2026", "organisation": "Reliance Industries Limited", "title": "Business Responsibility & Sustainability Report FY 2025-26", "type": "regulatory_filing", "url": "https://www.ril.com/ar2025-26/pdf/BRSR202526.pdf", "accessed": "2026-11-23", "reportingYear": 2026, "verificationClass": "primary_document", "notes": "PDF pages are two-page spreads; citations use PDF page numbers. Indian number grouping (lakh/crore) in source, e.g. 3,63,50,070 = 36,350,070." }
   ],
   "reports": [
     { "year": 2026, "type": "regulatory_filing", "source": "ril-brsr-fy2026", "assurance": { "level": "reasonable", "provider": "Deloitte Haskins & Sells LLP", "scope": "BRSR Core indicators and other indicators listed in Appendix I" } }
@@ -65,24 +67,15 @@
     { "metric": "og_ghg_intensity_revenue_ppp", "year": 2026, "state": "disclosed", "value": 0.000142, "unit": "tCO2e / USD PPP", "page": "PDF p.36, P6 Q7", "reportedWording": "Total Scope 1 and Scope 2 emissions per rupee of | 0.000142 | 0.000141", "note": "PPP rate 20.34 (IMF 2026 update), per p.35 note." }
   ],
   "targets": [
-    {
-      "id": "ril-net-carbon-zero-2035",
-      "category": "emissions",
-      "type": "net_zero",
-      "description": "Achieve Net Carbon Zero by 2035.",
-      "target": { "year": 2035 },
-      "validation": "not_stated",
-      "source": "ril-brsr-fy2026",
-      "page": "PDF p.16",
-      "note": "Scopes covered are not stated in the BRSR."
-    }
+    { "id": "ril-net-carbon-zero-2035", "category": "emissions", "type": "net_zero", "description": "Achieve Net Carbon Zero by 2035.", "target": { "year": 2035 }, "validation": "not_stated", "source": "ril-brsr-fy2026", "page": "PDF p.16", "note": "Scopes covered are not stated in the BRSR." }
   ],
-  "frameworks": [{ "name": "BRSR", "detail": "SEBI BRSR with BRSR Core reasonable assurance", "source": "ril-brsr-fy2026", "page": "PDF p.4" }, { "name": "GRI", "source": "ril-brsr-fy2026", "page": "PDF p.16" }],
+  "frameworks": [
+    { "name": "BRSR", "detail": "SEBI BRSR with BRSR Core reasonable assurance", "source": "ril-brsr-fy2026", "page": "PDF p.4" },
+    { "name": "GRI", "source": "ril-brsr-fy2026", "page": "PDF p.16" }
+  ],
   "dataGaps": [
     { "metric": "ghg_scope2_market", "year": 2025, "kind": "ambiguous", "description": "FY 2024-25 Scope 2 (14,70,097 tCO2e) is shown without a method; the note says only the current year uses the market-based method. Not recorded.", "source": "ril-brsr-fy2026", "page": "PDF p.36" },
     { "kind": "boundary_mismatch", "description": "BRSR is standalone (RIL only). Group-level data (Jio, Retail, etc.) needs the Integrated Annual Report; not researched yet. Do not compare these values with consolidated peers without a warning.", "source": "ril-brsr-fy2026", "page": "PDF p.4, item 13" }
   ],
-  "comparabilityNotes": [
-    "All values are standalone (parent only). Peers report consolidated group figures, so Reliance values are shown side by side with a boundary warning, never added or ranked directly against them."
-  ]
+  "comparabilityNotes": ["All values are standalone (parent only). Peers report consolidated group figures, so Reliance values are shown side by side with a boundary warning, never added or ranked directly against them."]
 }

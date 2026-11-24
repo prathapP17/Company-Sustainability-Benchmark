@@ -8,9 +8,17 @@
       { "exchange": "TSE", "ticker": "7203" },
       { "exchange": "NYSE", "ticker": "TM" }
     ],
-    "hq": { "city": "Toyota City", "country": "Japan", "lat": 35.08, "lon": 137.16 },
+    "hq": {
+      "city": "Toyota City",
+      "country": "Japan",
+      "lat": 35.08,
+      "lon": 137.16
+    },
     "region": "Asia-Pacific",
-    "industry": { "gics": "Automobile Manufacturers", "sasb": "Automobiles (TR-AU)" },
+    "industry": {
+      "gics": "Automobile Manufacturers",
+      "sasb": "Automobiles (TR-AU)"
+    },
     "peerGroup": "autos_industrials",
     "fiscalYear": {
       "end": "03-31",
@@ -29,20 +37,13 @@
     "consolidation": "operational_control",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "none", "scope": "Not marked ◆ in the Data Book" }
+    "assurance": {
+      "level": "none",
+      "scope": "Not marked ◆ in the Data Book"
+    }
   },
   "sources": [
-    {
-      "id": "toyota-sdb-2026",
-      "organisation": "Toyota Motor Corporation",
-      "title": "Sustainability Data Book 2026 (updated June 2026)",
-      "type": "esg_data_book",
-      "url": "https://global.toyota/pages/global_toyota/sustainability/report/sdb/sdb26_en.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Printed page = PDF page − 1 in the environment data section (e.g. printed p.62 = PDF p.63). Citations use PDF pages."
-    }
+    { "id": "toyota-sdb-2026", "organisation": "Toyota Motor Corporation", "title": "Sustainability Data Book 2026 (updated June 2026)", "type": "esg_data_book", "url": "https://global.toyota/pages/global_toyota/sustainability/report/sdb/sdb26_en.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Printed page = PDF page − 1 in the environment data section (e.g. printed p.62 = PDF p.63). Citations use PDF pages." }
   ],
   "reports": [
     { "year": 2025, "type": "esg_data_book", "source": "toyota-sdb-2026", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers Sustainability LLC", "scope": "Identified Sustainability Information marked ◆ (ISAE 3000 / ISAE 3410), year ended 31 March 2026 (PDF p.75)" } }
@@ -85,49 +86,17 @@
     { "metric": "au_bev_sales", "year": 2024, "state": "disclosed", "value": 145, "unit": "thousand units", "page": "PDF p.65, table F" }
   ],
   "targets": [
-    {
-      "id": "toyota-s12-2030",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Reduce Scope 1 and 2 GHG emissions 47% by 2030 and 68% by 2035 vs 2019; carbon neutral by 2050.",
-      "scopes": ["1", "2"],
-      "baseline": { "year": 2019 },
-      "target": { "year": 2030, "value": 47, "unit": "% reduction" },
-      "validation": "sbti_validated",
-      "source": "toyota-sdb-2026",
-      "page": "PDF p.32",
-      "note": "Report states Scope 1, 2 and Scope 3 category 11 targets are approved by SBTi; base year 2019 for all reduction targets (footnote *2)."
-    },
-    {
-      "id": "toyota-cat11-2030",
-      "category": "emissions",
-      "type": "intensity",
-      "description": "Reduce Scope 3 category 11 average well-to-wheel g CO2e/km per new passenger car and light commercial vehicle 33.3% by 2030 vs 2019.",
-      "scopes": ["3"],
-      "baseline": { "year": 2019 },
-      "target": { "year": 2030, "value": 33.3, "unit": "% reduction (gCO2e/km)" },
-      "validation": "sbti_validated",
-      "source": "toyota-sdb-2026",
-      "page": "PDF p.32"
-    },
-    {
-      "id": "toyota-bev-2030",
-      "category": "other",
-      "type": "increase_to",
-      "description": "Global BEV sales of 3.5 million units by 2030.",
-      "target": { "year": 2030, "value": 3500, "unit": "thousand units" },
-      "latest": { "year": 2025, "value": 243, "unit": "thousand units" },
-      "validation": "self_declared",
-      "source": "toyota-sdb-2026",
-      "page": "PDF p.22; latest PDF p.65"
-    }
+    { "id": "toyota-s12-2030", "category": "emissions", "type": "absolute", "description": "Reduce Scope 1 and 2 GHG emissions 47% by 2030 and 68% by 2035 vs 2019; carbon neutral by 2050.", "scopes": ["1", "2"], "baseline": { "year": 2019 }, "target": { "year": 2030, "value": 47, "unit": "% reduction" }, "validation": "sbti_validated", "source": "toyota-sdb-2026", "page": "PDF p.32", "note": "Report states Scope 1, 2 and Scope 3 category 11 targets are approved by SBTi; base year 2019 for all reduction targets (footnote *2)." },
+    { "id": "toyota-cat11-2030", "category": "emissions", "type": "intensity", "description": "Reduce Scope 3 category 11 average well-to-wheel g CO2e/km per new passenger car and light commercial vehicle 33.3% by 2030 vs 2019.", "scopes": ["3"], "baseline": { "year": 2019 }, "target": { "year": 2030, "value": 33.3, "unit": "% reduction (gCO2e/km)" }, "validation": "sbti_validated", "source": "toyota-sdb-2026", "page": "PDF p.32" },
+    { "id": "toyota-bev-2030", "category": "other", "type": "increase_to", "description": "Global BEV sales of 3.5 million units by 2030.", "target": { "year": 2030, "value": 3500, "unit": "thousand units" }, "latest": { "year": 2025, "value": 243, "unit": "thousand units" }, "validation": "self_declared", "source": "toyota-sdb-2026", "page": "PDF p.22; latest PDF p.65" }
   ],
-  "frameworks": [{ "name": "GRI", "source": "toyota-sdb-2026", "page": "PDF p.173" }, { "name": "SASB", "source": "toyota-sdb-2026", "page": "PDF p.65" }, { "name": "TCFD", "source": "toyota-sdb-2026", "page": "PDF p.63" }],
+  "frameworks": [
+    { "name": "GRI", "source": "toyota-sdb-2026", "page": "PDF p.173" },
+    { "name": "SASB", "source": "toyota-sdb-2026", "page": "PDF p.65" },
+    { "name": "TCFD", "source": "toyota-sdb-2026", "page": "PDF p.63" }
+  ],
   "dataGaps": [
     { "metric": "ghg_scope3_total", "year": 2024, "kind": "boundary_mismatch", "description": "2024 Scope 3 (584,522 kt) includes Toyota-brand vehicles from non-consolidated entities; 2025 excludes them. 2024 not recorded to avoid an invalid trend.", "source": "toyota-sdb-2026", "page": "PDF p.64, footnote *4" }
   ],
-  "comparabilityNotes": [
-    "Toyota uses the Japanese start-year label: '2025' = April 2025 to March 2026. Compared with calendar-year peers it ends three months later.",
-    "Water and waste cover production processes only."
-  ]
+  "comparabilityNotes": ["Toyota uses the Japanese start-year label: '2025' = April 2025 to March 2026. Compared with calendar-year peers it ends three months later.", "Water and waste cover production processes only."]
 }

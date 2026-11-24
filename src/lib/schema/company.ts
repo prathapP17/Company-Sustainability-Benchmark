@@ -44,7 +44,8 @@ export const Source = z.strictObject({
   organisation: z.string().min(1),
   title: z.string().min(1),
   type: SourceType,
-  url: z.url(),
+  /** Public URL, or "upload:sha256:<hex>" for a user-uploaded file with no public link. */
+  url: z.union([z.url(), z.string().regex(/^upload:sha256:[0-9a-f]{64}$/)]),
   accessed: IsoDate,
   reportingYear: z.number().int().optional(),
   verificationClass: VerificationClass,
@@ -59,6 +60,20 @@ export const Report = z.strictObject({
   assurance: Assurance,
 });
 export type Report = z.infer<typeof Report>;
+
+/** A value this entry replaced (rule 8: restatements are explicit and keep history). */
+export const Restatement = z.strictObject({
+  state: DisclosureState,
+  value: z.number().optional(),
+  text: z.string().optional(),
+  unit: z.string().optional(),
+  source: Id.optional(),
+  page: z.string().optional(),
+  replacedOn: IsoDate,
+  approver: z.string().min(1),
+  reason: z.string().min(1),
+});
+export type Restatement = z.infer<typeof Restatement>;
 
 export const MetricEntry = z.strictObject({
   metric: z.string().min(1),
@@ -87,6 +102,8 @@ export const MetricEntry = z.strictObject({
    * or scope change). Year-on-year indicators skip it.
    */
   trendBreak: z.boolean().optional(),
+  /** Earlier values for the same metric/year/boundary that this entry restated. */
+  restatements: z.array(Restatement).optional(),
 });
 export type MetricEntry = z.infer<typeof MetricEntry>;
 

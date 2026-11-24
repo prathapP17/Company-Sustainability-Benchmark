@@ -4,12 +4,26 @@
     "id": "siemens",
     "name": "Siemens",
     "legalName": "Siemens Aktiengesellschaft",
-    "listings": [{ "exchange": "XETRA", "ticker": "SIE" }],
-    "hq": { "city": "Munich", "country": "Germany", "lat": 48.14, "lon": 11.58 },
+    "listings": [
+      { "exchange": "XETRA", "ticker": "SIE" }
+    ],
+    "hq": {
+      "city": "Munich",
+      "country": "Germany",
+      "lat": 48.14,
+      "lon": 11.58
+    },
     "region": "Europe",
-    "industry": { "gics": "Industrial Conglomerates", "sasb": "Industrial Machinery & Goods (RT-IG) / Electrical & Electronic Equipment (RR-EE)" },
+    "industry": {
+      "gics": "Industrial Conglomerates",
+      "sasb": "Industrial Machinery & Goods (RT-IG) / Electrical & Electronic Equipment (RR-EE)"
+    },
     "peerGroup": "autos_industrials",
-    "fiscalYear": { "end": "09-30", "labelConvention": "end_year", "note": "Fiscal 2025 = 1 October 2024 to 30 September 2025." },
+    "fiscalYear": {
+      "end": "09-30",
+      "labelConvention": "end_year",
+      "note": "Fiscal 2025 = 1 October 2024 to 30 September 2025."
+    },
     "website": "https://www.siemens.com",
     "sustainabilityPage": "https://www.siemens.com/global/en/company/sustainability.html"
   },
@@ -22,20 +36,14 @@
     "consolidation": "not_stated",
     "verificationClass": "primary_document",
     "status": "reported",
-    "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers GmbH Wirtschaftsprüfungsgesellschaft", "scope": "Group Sustainability Report, ISAE 3000 (Revised), PDF p.114" }
+    "assurance": {
+      "level": "limited",
+      "provider": "PricewaterhouseCoopers GmbH Wirtschaftsprüfungsgesellschaft",
+      "scope": "Group Sustainability Report, ISAE 3000 (Revised), PDF p.114"
+    }
   },
   "sources": [
-    {
-      "id": "siemens-ss-fy2025",
-      "organisation": "Siemens AG",
-      "title": "Sustainability Statement fiscal 2025",
-      "type": "annual_report",
-      "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:dea0c623-1ae9-4ef0-a69a-31d8eb7b39fb/sustainability-statement.pdf",
-      "accessed": "2026-11-23",
-      "reportingYear": 2025,
-      "verificationClass": "primary_document",
-      "notes": "Printed page numbers match PDF pages in the sections used."
-    }
+    { "id": "siemens-ss-fy2025", "organisation": "Siemens AG", "title": "Sustainability Statement fiscal 2025", "type": "annual_report", "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:dea0c623-1ae9-4ef0-a69a-31d8eb7b39fb/sustainability-statement.pdf", "accessed": "2026-11-23", "reportingYear": 2025, "verificationClass": "primary_document", "notes": "Printed page numbers match PDF pages in the sections used." }
   ],
   "reports": [
     { "year": 2025, "type": "annual_report", "source": "siemens-ss-fy2025", "assurance": { "level": "limited", "provider": "PricewaterhouseCoopers GmbH Wirtschaftsprüfungsgesellschaft", "scope": "Group Sustainability Report (ISAE 3000 Revised)" } }
@@ -68,50 +76,13 @@
     { "metric": "waste_diversion_rate", "year": 2025, "state": "disclosed", "value": 81.2, "unit": "%", "status": "derived", "page": "p.56", "note": "Derived: waste diverted from disposal 152,789 t ÷ total generated 188,127 t = 81.2%." }
   ],
   "targets": [
-    {
-      "id": "siemens-s12-2030",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Reduce Scope 1 & 2 emissions by 90% by fiscal 2030 vs 2019 and compensate residual emissions (Siemens w/o SHS).",
-      "scopes": ["1", "2"],
-      "baseline": { "year": 2019 },
-      "target": { "year": 2030, "value": 90, "unit": "% reduction" },
-      "latest": { "year": 2025, "value": 66, "unit": "% reduction" },
-      "validation": "sbti_validated",
-      "source": "siemens-ss-fy2025",
-      "page": "p.7; validation p.6",
-      "note": "Report states science-based targets for fiscal 2030 and the net-zero 2050 target are validated by SBTi."
-    },
-    {
-      "id": "siemens-s3-2030",
-      "category": "emissions",
-      "type": "absolute",
-      "description": "Reduce Scope 3 emissions by 30% by fiscal 2030 vs 2019 and achieve net zero by 2050 (Siemens w/o SHS).",
-      "scopes": ["3"],
-      "baseline": { "year": 2019 },
-      "target": { "year": 2030, "value": 30, "unit": "% reduction" },
-      "latest": { "year": 2025, "value": 11, "unit": "% reduction" },
-      "validation": "sbti_validated",
-      "source": "siemens-ss-fy2025",
-      "page": "p.7"
-    },
-    {
-      "id": "siemens-re100-2030",
-      "category": "energy",
-      "type": "increase_to",
-      "description": "Transition to 100% electricity from renewable sources by fiscal 2030 (RE100).",
-      "baseline": { "year": 2021 },
-      "target": { "year": 2030, "value": 100, "unit": "%" },
-      "latest": { "year": 2025, "value": 86, "unit": "%" },
-      "validation": "not_stated",
-      "source": "siemens-ss-fy2025",
-      "page": "p.7; p.30"
-    }
+    { "id": "siemens-s12-2030", "category": "emissions", "type": "absolute", "description": "Reduce Scope 1 & 2 emissions by 90% by fiscal 2030 vs 2019 and compensate residual emissions (Siemens w/o SHS).", "scopes": ["1", "2"], "baseline": { "year": 2019 }, "target": { "year": 2030, "value": 90, "unit": "% reduction" }, "latest": { "year": 2025, "value": 66, "unit": "% reduction" }, "validation": "sbti_validated", "source": "siemens-ss-fy2025", "page": "p.7; validation p.6", "note": "Report states science-based targets for fiscal 2030 and the net-zero 2050 target are validated by SBTi." },
+    { "id": "siemens-s3-2030", "category": "emissions", "type": "absolute", "description": "Reduce Scope 3 emissions by 30% by fiscal 2030 vs 2019 and achieve net zero by 2050 (Siemens w/o SHS).", "scopes": ["3"], "baseline": { "year": 2019 }, "target": { "year": 2030, "value": 30, "unit": "% reduction" }, "latest": { "year": 2025, "value": 11, "unit": "% reduction" }, "validation": "sbti_validated", "source": "siemens-ss-fy2025", "page": "p.7" },
+    { "id": "siemens-re100-2030", "category": "energy", "type": "increase_to", "description": "Transition to 100% electricity from renewable sources by fiscal 2030 (RE100).", "baseline": { "year": 2021 }, "target": { "year": 2030, "value": 100, "unit": "%" }, "latest": { "year": 2025, "value": 86, "unit": "%" }, "validation": "not_stated", "source": "siemens-ss-fy2025", "page": "p.7; p.30" }
   ],
-  "frameworks": [{ "name": "ESRS", "detail": "CSRD sustainability statement", "source": "siemens-ss-fy2025", "page": "p.110" }],
+  "frameworks": [
+    { "name": "ESRS", "detail": "CSRD sustainability statement", "source": "siemens-ss-fy2025", "page": "p.110" }
+  ],
   "dataGaps": [],
-  "comparabilityNotes": [
-    "GHG, energy, water and waste figures are for the consolidated group including Siemens Healthineers; strategic targets and the renewable electricity share cover Siemens without Healthineers.",
-    "Fiscal year ends 30 September."
-  ]
+  "comparabilityNotes": ["GHG, energy, water and waste figures are for the consolidated group including Siemens Healthineers; strategic targets and the renewable electricity share cover Siemens without Healthineers.", "Fiscal year ends 30 September."]
 }
