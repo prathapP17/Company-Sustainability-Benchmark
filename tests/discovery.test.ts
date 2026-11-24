@@ -10,10 +10,11 @@ import { closePipelineDbs, pipelineDb } from "@/lib/pipeline/db";
 import { claim, complete, fail } from "@/lib/pipeline/queue";
 import { runJob } from "@/lib/pipeline/jobs";
 import { runDiscovery, type DiscoveredRow } from "@/lib/discovery/discover";
-import { classifyLink, extractLinks } from "@/lib/discovery/classify";
+import { classifyLink, extractLinks, titleForLink } from "@/lib/discovery/classify";
 import { robotsFrom } from "@/lib/discovery/robots";
 import { detectChallenge, PoliteHttp } from "@/lib/discovery/http";
 import { onAllowedDomain } from "@/lib/discovery/config";
+import { refilterDiscovered } from "@/lib/discovery/refilter";
 import { seed } from "@/lib/db/seed";
 import { tempDataDir } from "./helpers";
 import { makeGhgPdf } from "./pdf-fixture";
@@ -56,6 +57,10 @@ beforeAll(async () => {
     if (url === "/sustainability/reports-archive") {
       res.writeHead(200, { "content-type": "text/html" });
       return res.end(`<a href="/reports/esg-data-book-2025.pdf">ESG Data Book 2025</a>`);
+    }
+    if (url.startsWith("/blockedfiles/")) {
+      res.writeHead(403, { "content-type": "text/html", "cf-mitigated": "challenge" });
+      return res.end("<title>Just a moment...</title>");
     }
     if (url === "/blocked/") {
       res.writeHead(403, { "content-type": "text/html", "cf-mitigated": "challenge" });
@@ -160,7 +165,88 @@ describe("discovery against a local site", () => {
   });
 });
 
+describe("discovery filtering (lessons from the first real run)", () => {
+  const config = (companies: Record<string, unknown>) =>
+    writeFileSync(
+      path.join(dir, "discovery.json"),
+      JSON.stringify({ $schemaVersion: 1, defaults: { maxAutoFetchPerRun: 3, autoFetchMinYearOffset: 1, maxPagesPerCompany: 10, hostIntervalMs: 250 }, companies }),
+    );
+
+  it("refilter: re-applies new rules to queued links, removes only pending proposals, and audits every change", async () => {
+    await run(); // old rules: the 2026 report is fetched
+    const db = pipelineDb(dir);
+    const doc = byName("sustainability-report-2026.pdf").document_id!;
+    const insert = db.prepare(
+      `INSERT INTO extractions (document_id, company_id, metric_id, year, value, unit, page_number, page_label, reported_wording, boundary, consolidation, method, confidence, evidence_status, status, created_at)
+       VALUES (?, 'apple', 'ghg_scope1', 2025, ?, 'tCO2e', 1, 'PDF p.1', 'Scope 1', 'not_stated', 'not_stated', 'rule', 0.8, 'verified', ?, '2026-11-24T08:00:00Z')`,
+    );
+    insert.run(doc, 1, "pending");
+    insert.run(doc, 2, "approved");
+    // New rule: that report belongs to another entity.
+    config({ apple: { seedUrls: [`${base}/sustainability/`], allowedDomains: ["127.0.0.1"], autoFetch: true, excludePatterns: ["sustainability-report-2026"] } });
+
+    const dry = refilterDiscovered(db, dir, { apply: false, now: NOW });
+    const c = dry.find((x) => x.url.includes("sustainability-report-2026.pdf"))!;
+    expect(c).toMatchObject({ status: { from: "fetched", to: "skipped" }, proposalsRemoved: 1 });
+    expect(byName("sustainability-report-2026.pdf").status).toBe("fetched"); // dry run changes nothing
+
+    refilterDiscovered(db, dir, { apply: true, now: NOW });
+    expect(byName("sustainability-report-2026.pdf")).toMatchObject({ status: "skipped", error: expect.stringMatching(/company exclusion rule/) });
+    expect(db.prepare("SELECT status FROM extractions WHERE document_id = ? ORDER BY value").all(doc)).toEqual([{ status: "approved" }]);
+    expect((db.prepare("SELECT count(*) n FROM audit_log WHERE action = 'refilter_discovered'").get() as { n: number }).n).toBeGreaterThanOrEqual(1);
+    expect(refilterDiscovered(db, dir, { apply: false, now: NOW }).filter((x) => x.status)).toEqual([]); // idempotent
+  });
+
+  it("leaves out product sheets and country reports, titles generic links from the file name, and notes unreadable seed pages", async () => {
+    site.extraLink = `
+      <a href="/environment/pdf/products/iPhone_Duo_PER_Sept2026.pdf">View (PDF)</a>
+      <a href="/reports/sustainability-report-2026-peru.pdf">Sustainability Report 2026 Peru</a>
+      <a href="/reports/Apple_Environmental_Progress_Report_2025.pdf">View (PDF)</a>`;
+    config({ apple: { seedUrls: [`${base}/sustainability/`, `${base}/missing-page/`], allowedDomains: ["127.0.0.1"], autoFetch: true } });
+    const s = await run();
+    expect(rows().some((r) => r.url.includes("_PER_"))).toBe(false);
+    expect(rows().some((r) => r.url.includes("peru"))).toBe(false);
+    expect(byName("Apple_Environmental_Progress_Report_2025.pdf").title).toBe("Apple Environmental Progress Report 2025");
+    expect(s.notes.join("\n")).toMatch(/1 link left out: country report \(Peru\)/);
+    expect(s.notes.join("\n")).toMatch(/seed page not read: .*missing-page.*HTTP 404/);
+  });
+
+  it("applies company exclusion rules (a listed subsidiary is not the group)", async () => {
+    site.extraLink = `<a href="/reports/Sustainability-at-Siemens-Limited-2026.pdf">Learn more</a><a href="/reports/Siemens-2026-BRSR.pdf">BRSR</a>`;
+    config({ apple: { seedUrls: [`${base}/sustainability/`], allowedDomains: ["127.0.0.1"], autoFetch: true, excludePatterns: ["siemens[ _-]?limited", "\\bBRSR\\b"] } });
+    const s = await run();
+    expect(rows().some((r) => /Siemens/.test(r.url))).toBe(false);
+    expect(s.notes.join()).toMatch(/2 links left out: company exclusion rule/);
+  });
+
+  it("raises one blocked alert per host when report files are refused", async () => {
+    site.extraLink = `<a href="/blockedfiles/sustainability-report-2025.pdf">Sustainability Report 2025</a><a href="/blockedfiles/esg-data-book-2024.pdf">ESG Data Book 2024</a>`;
+    config({ apple: { seedUrls: [`${base}/sustainability/`], allowedDomains: ["127.0.0.1"], autoFetch: true } });
+    const s = await run();
+    expect(byName("blockedfiles/sustainability-report-2025.pdf").status).toBe("blocked");
+    expect(alerts().filter((a) => a.kind === "blocked")).toHaveLength(1);
+    expect(s.blocked).toHaveLength(1);
+    expect(s.blocked[0]).toMatch(/report files \(Cloudflare challenge/);
+  });
+});
+
 describe("polite HTTP behaviour", () => {
+  it("follows robots.txt redirects (RFC 9309) and treats a final 404 as no restrictions", async () => {
+    const h = new PoliteHttp(pipelineDb(dir), {
+      hostIntervalMs: 250,
+      sleep: noSleep,
+      fetchImpl: async (u) => {
+        if (u === "https://site.test/robots.txt") return new Response(null, { status: 301, headers: { location: "https://site.test/robots.txt/" } });
+        if (u === "https://site.test/robots.txt/") return new Response("<html>not found</html>", { status: 404 });
+        if (u === "https://loop.test/robots.txt") return new Response(null, { status: 302, headers: { location: "https://loop.test/robots.txt" } });
+        return new Response("ok", { status: 200 });
+      },
+    });
+    expect((await h.request("https://site.test/sustainability/", { maxBytes: 1000 })).ok).toBe(true);
+    // A redirect loop never yields a robots file: treated as unreachable, so nothing is fetched.
+    expect((await h.request("https://loop.test/page", { maxBytes: 1000 })).error).toBe("disallowed by robots.txt");
+  });
+
   it("spaces requests to the same host", async () => {
     let clock = 0;
     const waits: number[] = [];
@@ -236,6 +322,33 @@ describe("parsing helpers", () => {
     expect(classifyLink("https://x.test/BRSR202526.pdf", "BRSR", 2026)).toMatchObject({ relevant: true, reportType: "regulatory_filing" });
     expect(classifyLink("https://x.test/2025-TSMC-Sustainability-Report-c.pdf", "", 2026).language).toBe("zh");
     expect(classifyLink("https://x.test/menu.pdf", "Canteen menu", 2026).relevant).toBe(false);
+  });
+  it("ignores folder names, reads fiscal ranges, and leaves out non-reports", () => {
+    // Microsoft keeps every document under /CSR/: the folder name must not make a report.
+    expect(classifyLink("https://x.test/documents/CSR/Microsoft-Digital-Defense-Report-2025.pdf", "2025 Microsoft Digital Defense Report", 2026).relevant).toBe(false);
+    expect(classifyLink("https://x.test/CSR/Microsoft-RY2025-Conflict-Minerals-Report.pdf", "2025 Conflict Minerals Report", 2026).relevant).toBe(false);
+    expect(classifyLink("https://x.test/Responsible-Minerals-Sustainability-Report-2025.pdf", "", 2026).excluded).toBe("minerals sourcing report");
+    expect(classifyLink("https://x.test/CSR/Microsoft-ISO50001-Certification-Redmond-ED2026.pdf", "ISO50001 Certification - Redmond", 2026).relevant).toBe(false);
+    expect(classifyLink("https://x.test/a/Emissions-per-employee-2025.pdf", "Climate report 2025", 2026).relevant).toBe(true); // "per" is not "PER"
+    expect(classifyLink("https://x.test/CSR/Microsoft-2026-CDP-Response.pdf", "CDP Response", 2026)).toMatchObject({ relevant: true, reportType: "sustainability_report", year: 2026 });
+    // Upload-folder dates are not report years; ranges give the end year.
+    const ar = classifyLink("https://x.test/files/2022-08/RIL-AR-2021.pdf", "Annual Report for the year 2020-2021", 2026);
+    expect(ar).toMatchObject({ relevant: true, reportType: "annual_report", year: 2021, yearFromRange: true });
+    expect(classifyLink("https://x.test/files/reports/CSR202526.pdf", "", 2026)).toMatchObject({ year: 2026, yearFromRange: true });
+    expect(classifyLink("https://x.test/Apple_Environmental_Progress_Report_2026.pdf", "View (PDF)", 2026)).toMatchObject({ year: 2026, yearFromRange: false });
+    // Country reports are left out unless the country is the company's home country.
+    expect(classifyLink("https://x.test/Microsoft-Impact-Report-Spain-2023.pdf", "Learn more", 2026, { hqCountry: "United States" }).excluded).toBe("country report (Spain)");
+    expect(classifyLink("https://x.test/RIL-India-Sustainability-Report-2026.pdf", "", 2026, { hqCountry: "India" }).relevant).toBe(true);
+    expect(classifyLink("https://x.test/Samsung-Korea-Sustainability-Report-2026.pdf", "", 2026, { hqCountry: "South Korea" }).relevant).toBe(true);
+  });
+  it("titles links from their text only when the text describes the report", () => {
+    expect(titleForLink("https://x.test/2025-TSMC-Climate-and-Nature-Report-e.pdf", "Download Report")).toBe("2025 TSMC Climate and Nature Report e");
+    expect(titleForLink("https://x.test/RIL-Integrated-Annual-Report-2025-26.pdf", "Learn more")).toBe("RIL Integrated Annual Report 2025-26");
+    expect(titleForLink("https://x.test/a.pdf", "Download 2025 Sustainability Report")).toBe("2025 Sustainability Report");
+    expect(titleForLink("https://x.test/a.pdf", "Annual Report for the year 2025-2026")).toBe("Annual Report for the year 2025-2026");
+    expect(titleForLink("https://x.test/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf", "Samsung_Electronics_Sustainability_Report_2026_ENG.pdf")).toBe(
+      "Samsung Electronics Sustainability Report 2026 ENG",
+    );
   });
   it("evaluates robots.txt groups and wildcards", () => {
     const r = robotsFrom("User-agent: *\nDisallow: /a/\nAllow: /a/public\nDisallow: /*.xlsx$\n\nUser-agent: CorporateSustainabilityIntelligence\nDisallow: /bot-only/", 200, "CorporateSustainabilityIntelligence/0.4");

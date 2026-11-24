@@ -18,7 +18,7 @@ import { audit, nowIso } from "../pipeline/db";
 import { MAX_UPLOAD_BYTES, storeUpload } from "../pipeline/ingest";
 import { loadCompanies } from "../data/load";
 import { loadDiscoveryConfig, onAllowedDomain, type CompanyDiscovery, type DiscoveryConfig } from "./config";
-import { classifyLink, extractLinks, fileKindOf, type Link } from "./classify";
+import { classifyLink, extractLinks, fileKindOf, titleForLink, type Link } from "./classify";
 import { PoliteHttp, type FetchLike } from "./http";
 import { raiseAlert } from "./alerts";
 
@@ -71,13 +71,20 @@ export interface RunSummary {
 }
 
 function titleFor(link: Link): string {
-  const fromUrl = decodeURIComponent(new URL(link.url).pathname.split("/").pop() ?? link.url);
-  const t = link.text && link.text.length > 3 && !/^(download|pdf|here|click here|read more)$/i.test(link.text) ? link.text : fromUrl;
-  return t.slice(0, 200);
+  return titleForLink(link.url, link.text);
 }
 
+/** Auto-fetch order: newest first, then the report types most likely to hold group data. */
+const TYPE_PRIORITY: Record<string, number> = { sustainability_report: 0, esg_data_book: 1, annual_report: 2, regulatory_filing: 3, other: 4 };
+
 /** Crawls one company's seed pages; returns candidate report links. */
-async function crawlCompany(http: PoliteHttp, companyId: string, cfg: CompanyDiscovery, maxPages: number, state: { pagesRead: number; blocked: string[]; db: DB }) {
+async function crawlCompany(
+  http: PoliteHttp,
+  companyId: string,
+  cfg: CompanyDiscovery,
+  maxPages: number,
+  state: { pagesRead: number; blocked: string[]; db: DB; notes: string[] },
+) {
   const queue = cfg.seedUrls.map((u) => ({ url: u, depth: 0 }));
   const seenPages = new Set<string>();
   const reports = new Map<string, Link & { sourcePage: string }>();
@@ -98,7 +105,11 @@ async function crawlCompany(http: PoliteHttp, companyId: string, cfg: CompanyDis
       });
       continue;
     }
-    if (!res.ok || !res.body) continue;
+    if (!res.ok || !res.body) {
+      // Seed pages that cannot be read are reported, never skipped silently.
+      if (depth === 0) state.notes.push(`${companyId}: seed page not read: ${url} (${res.error ?? `HTTP ${res.status}`})`);
+      continue;
+    }
     state.pagesRead++;
     const html = res.body.toString("utf8");
     for (const link of extractLinks(html, res.finalUrl)) {
@@ -214,7 +225,7 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
   const http = makeHttp(db, cfg, opts);
   const secUa = opts.secUserAgent ?? null;
   const secHttp = secUa ? makeHttp(db, cfg, opts, secUa) : null;
-  const state = { pagesRead: 0, blocked: [] as string[], db };
+  const state = { pagesRead: 0, blocked: [] as string[], db, notes: [] as string[] };
   const summary: RunSummary = { runId, pagesRead: 0, found: 0, fetched: 0, alerts: 0, blocked: [], notes: [] };
   const year = now().getUTCFullYear();
 
@@ -228,6 +239,11 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
     log(`discovering ${companyId}`);
     const baseline = (db.prepare("SELECT count(*) n FROM discovered_documents WHERE company_id = ?").get(companyId) as { n: number }).n === 0;
     const curatedUrls = new Set(company.sources.map((s) => s.url));
+    const classifyOpts = {
+      hqCountry: company.profile.hq.country,
+      excludePatterns: (c.excludePatterns ?? []).map((p) => new RegExp(p, "i")),
+    };
+    const excludedCount = new Map<string, number>();
 
     const links: (Link & { sourcePage: string | null; origin: "crawl" | "sec"; yearHint?: number | null })[] = (
       await crawlCompany(http, companyId, c, cfg.defaults.maxPagesPerCompany, state)
@@ -244,8 +260,13 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
 
     const autoCandidates: DiscoveredRow[] = [];
     for (const link of links) {
-      const cls = classifyLink(link.url, link.text, year);
-      if (link.origin === "crawl" && !cls.relevant) continue;
+      const cls = classifyLink(link.url, link.text, year, classifyOpts);
+      if (link.origin === "crawl" && !cls.relevant) {
+        if (cls.excluded) excludedCount.set(cls.excluded, (excludedCount.get(cls.excluded) ?? 0) + 1);
+        continue;
+      }
+      // A fiscal range ("2025-26") is labelled by its start year for start-year companies.
+      const yearLabel = cls.year !== null && cls.yearFromRange && company.profile.fiscalYear.labelConvention === "start_year" ? cls.year - 1 : cls.year;
       const head = await (link.origin === "sec" && secHttp ? secHttp : http).request(link.url, { method: "HEAD", maxBytes: MAX_UPLOAD_BYTES });
       const finalUrl = head.finalUrl;
       const official = link.origin === "crawl" && onAllowedDomain(new URL(finalUrl).hostname, c.allowedDomains) ? 1 : 0;
@@ -271,10 +292,24 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
           )
           .run(
             companyId, link.url, finalUrl, link.origin, link.sourcePage, titleFor(link),
-            link.origin === "sec" ? "regulatory_filing" : cls.reportType, link.yearHint ?? cls.year, cls.language, official,
+            link.origin === "sec" ? "regulatory_filing" : cls.reportType, link.yearHint ?? yearLabel, cls.language, official,
             meta.content_type, meta.content_length, meta.etag, meta.last_modified, status, ts, ts, head.blocked ?? (robotsSays ? head.error : null),
           );
         const row = db.prepare("SELECT * FROM discovered_documents WHERE id = ?").get(Number(info.lastInsertRowid)) as DiscoveredRow;
+        if (status === "blocked") {
+          // Report files refused by the site: one alert per host (same key as a blocked page).
+          const host = new URL(finalUrl).host;
+          const line = `${companyId}: ${host} report files (${head.blocked})`;
+          if (!state.blocked.includes(line)) state.blocked.push(line);
+          raiseAlert(db, {
+            companyId,
+            kind: "blocked",
+            title: `${host} blocked automated access to report files (${head.blocked})`,
+            url: row.url,
+            details: { reason: head.blocked, example: row.url },
+            dedupeKey: `blocked:${companyId}:${host}`,
+          });
+        }
         if (status === "new") {
           if (!baseline) {
             raiseAlert(db, {
@@ -318,7 +353,10 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
       }
     }
 
+    for (const [why, n] of excludedCount) summary.notes.push(`${companyId}: ${n} link${n === 1 ? "" : "s"} left out: ${why}`);
+
     // Auto-fetch policy: official domain, auto-fetch on, English, recent, capped per run.
+    autoCandidates.sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || (TYPE_PRIORITY[a.report_type] ?? 9) - (TYPE_PRIORITY[b.report_type] ?? 9));
     let fetchedHere = 0;
     for (const row of autoCandidates) {
       const eligible =
@@ -340,6 +378,7 @@ export async function runDiscovery(db: DB, opts: RunOptions): Promise<RunSummary
     }
   }
 
+  summary.notes.unshift(...state.notes);
   summary.pagesRead = state.pagesRead;
   summary.blocked = state.blocked;
   summary.alerts = (db.prepare("SELECT count(*) n FROM alerts").get() as { n: number }).n - alertsBefore;

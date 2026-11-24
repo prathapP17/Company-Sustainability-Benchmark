@@ -108,9 +108,19 @@ export class PoliteHttp {
       body = row.body;
     } else {
       try {
-        const res = await this.raw(`${origin}/robots.txt`, "GET", "text/plain");
+        // RFC 9309 §2.3.1.2: follow at least five redirects for robots.txt.
+        let target = `${origin}/robots.txt`;
+        let res = await this.raw(target, "GET", "text/plain");
+        for (let hop = 0; hop < 5 && res.status >= 300 && res.status < 400 && res.headers.get("location"); hop++) {
+          await res.body?.cancel();
+          target = new URL(res.headers.get("location")!, target).toString();
+          res = await this.raw(target, "GET", "text/plain");
+        }
         status = res.status;
-        body = res.status < 300 ? (await res.text()).slice(0, 500_000) : null;
+        // A redirect loop that never resolves counts as unreachable (treated like 5xx: disallow).
+        if (status >= 300 && status < 400) status = 599;
+        body = status < 300 ? (await res.text()).slice(0, 500_000) : null;
+        if (body === null) await res.body?.cancel().catch(() => {});
       } catch {
         status = 599;
         body = null;

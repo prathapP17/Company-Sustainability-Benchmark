@@ -37,7 +37,12 @@ Benchmarks the sustainability disclosures of large operating companies. See
 ## Phase 4 (automated discovery and scheduled refresh)
 
 - `data/discovery.json`: per company, the official pages to crawl, the company's own domains, and an optional SEC CIK
-  (checked against the filer name, so a wrong CIK is ignored)
+  (checked against the filer name, so a wrong CIK is ignored). Optional `excludePatterns` (case-insensitive regexes) leave
+  out links that belong to another entity or product line, e.g. Siemens Limited (India) for Siemens AG, or Apple's
+  per-product environmental reports
+- Report filter: report words are matched on the file name and link text only (never folder names); product sheets,
+  policies, certificates, legal statements and minerals reports are left out, as are reports naming a country other than
+  the company's headquarters country (country or subsidiary reports). Each run's notes count what was left out and why
 - `npm run refresh`: crawls the configured pages (plus one level of same-site report pages) and SEC EDGAR, records report
   links, detects new or changed files (ETag / Last-Modified / size), then runs the worker for anything fetched
 - Polite crawling: robots.txt checked on every request and redirect, 2 s per host, size caps, a generic bot name;
@@ -65,6 +70,7 @@ npm run test:e2e      # needs a build; uses installed Chrome (CHROME_PATH to ove
 npm run test:e2e:pipeline   # review pipeline end to end, in a temporary data folder
 npm run worker        # extraction worker (add -- --once to drain the queue and exit)
 npm run refresh       # discovery + extraction now (add -- --company apple to limit)
+npm run refilter      # re-apply changed filters to queued links (dry run; add -- --apply, which backs up first)
 npm run extract-text -- <file.pdf>   # page-marked text for manual research
 ```
 

@@ -11,6 +11,7 @@
       "seedUrls": ["https://www.apple.com/environment/"],
       "allowedDomains": ["apple.com"],
       "autoFetch": true,
+      "excludePatterns": ["\\b(?:iphone|ipad|ipod|macbook|imac|mac[ -]?pro|mac[ -]?mini|mac[ -]?studio|apple[ -]?watch|airpods|homepod|apple[ -]?tv|vision[ -]?pro|cinema[ -]?display|studio[ -]?display|pro[ -]?display)\\b"],
       "sec": { "cik": "0000320193", "nameIncludes": "APPLE" }
     },
     "microsoft": {
@@ -37,7 +38,8 @@
     "siemens": {
       "seedUrls": ["https://www.siemens.com/global/en/company/sustainability.html"],
       "allowedDomains": ["siemens.com"],
-      "autoFetch": true
+      "autoFetch": true,
+      "excludePatterns": ["siemens[ _-]?limited", "\\bSIL\\b", "\\bBRSR\\b", "healthineers"]
     },
     "sony": {
       "seedUrls": ["https://www.sony.com/en/SonyInfo/csr_report/"],

@@ -17,6 +17,19 @@ const CompanyDiscovery = z.strictObject({
   seedUrls: z.array(z.url()).min(1),
   allowedDomains: z.array(z.string().regex(/^[a-z0-9.-]+$/)).min(1),
   autoFetch: z.boolean(),
+  /** Case-insensitive regexes for links that belong to another entity (e.g. a listed subsidiary). */
+  excludePatterns: z
+    .array(
+      z.string().refine((p) => {
+        try {
+          new RegExp(p, "i");
+          return true;
+        } catch {
+          return false;
+        }
+      }, "invalid regular expression"),
+    )
+    .optional(),
   sec: z.strictObject({ cik: z.string().regex(/^\d{10}$/), nameIncludes: z.string().min(2) }).optional(),
 });
 export type CompanyDiscovery = z.infer<typeof CompanyDiscovery>;

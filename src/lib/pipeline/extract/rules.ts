@@ -43,7 +43,7 @@ const LABELS: Record<string, RegExp> = {
   ghg_scope1: /\b(?:gross |total |direct )?(?:emissions? )?\(?scope[ -]?1\)?(?! *(?:and|&|\+|,|-|–) *(?:scope *)?2)(?![\d.])/i,
   ghg_scope2_market: /scope[ -]?2\b[^|]*market|market[- ]based(?![^|]*scope 1)/i,
   ghg_scope2_location: /scope[ -]?2\b[^|]*(?:location|region)|location[- ]based(?![^|]*scope 1)/i,
-  ghg_scope3_total: /(?:total|gross|subtotal)[^|]*scope[ -]?3|scope[ -]?3 (?:ghg )?emissions(?:\s*\||\s*$| \(total\))|^scope[ -]?3\s*\|/i,
+  ghg_scope3_total: /(?:total|gross|subtotal)[^|]*scope[ -]?3|scope[ -]?3 (?:ghg )?emissions(?:\s*\||\s*$| \(total\))|^scope[ -]?3(?:\s*\([^)|]*\))?\s*\|/i,
   energy_total: /total (?:energy consum|energy use)|energy consumption (?:within the organi[sz]ation|at business sites)\b|^total energy\b/i,
   renewable_electricity_share: /renewable (?:energy \(electricity\) transition rate|electricity (?:percentage|share|rate))|percentage of (?:direct )?renewable electricity|total [\w ]*renewable electricity/i,
   water_withdrawal: /(?:total )?(?:volume of )?water withdra(?:wal|wn)/i,
@@ -80,6 +80,21 @@ function labelFor(def: MetricDef): RegExp | null {
   // Industry metrics: fall back to English synonyms from the dictionary.
   const en = def.synonyms.filter((s) => /^[\x00-\x7f]+$/.test(s) && s.length > 4);
   return en.length ? new RegExp(en.map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "i") : null;
+}
+
+/** Ratios ("per rupee of turnover", "GJ/million rupees", "intensity") are never absolute totals. */
+const INTENSITY = /intensity|\bper (?:rupee|unit|employee|million|thousand|tonne|ton|\$|usd|eur|revenue|sales|square|m2|product)|\/\s*(?:revenue|turnover|sales|million|employee|unit)|\bratio\b/i;
+/** Rows that add Scope 1 and Scope 2 together. */
+const COMBINED_SCOPES = /scope[ -]?1\s*(?:and|&|\+|,|\/)\s*(?:scope[ -]?)?2\b/i;
+/** Energy rows limited to renewable or non-renewable sources are subtotals, not total energy. */
+const ENERGY_SUBTOTAL = /\b(?:non-?)?renewable\b|\bfossil\b|\bfrom (?:non-?)?renewable/i;
+
+/** True when the row must not be read as this metric even though its label matched. */
+export function rowExcluded(metricId: string, canonicalUnit: string, row: string): boolean {
+  if (canonicalUnit !== "%" && INTENSITY.test(row)) return true;
+  if (/^ghg_scope[12]/.test(metricId) && COMBINED_SCOPES.test(row)) return true;
+  if (metricId === "energy_total" && ENERGY_SUBTOTAL.test(row)) return true;
+  return false;
 }
 
 export function detectBoundary(text: string): Boundary {
@@ -155,6 +170,7 @@ export function extractCandidates(pages: PageInput[], ctx: ExtractContext): Cand
         const m = label.exec(line.text);
         if (!m) return;
         if (/^ghg_scope3_c/.test(def.id) === false && /\bcategor(?:y|ies)\b/i.test(line.text) && def.id === "ghg_scope3_total") return;
+        if (rowExcluded(def.id, def.canonicalUnit, line.text)) return;
         // Values are the numbers AFTER the label.
         const after = m.index + m[0].length;
         const tokens = findNumbers(line.text).filter((t) => t.index >= after);

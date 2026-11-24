@@ -89,6 +89,48 @@ describe("rule-based extractor", () => {
   });
 });
 
+// Real layouts from the first live refresh (Siemens Limited BRSR, TSMC climate report, Reliance prose).
+const BRSR_ENERGY = `Parameter | FY 2026 | FY 2024
+From Renewable Sources (in gigajoules)
+Total energy consumption (A+B+C) from renewable sources | 64,550 | 56,229
+From non-renewable Sources (in gigajoules)
+Total energy consumed from non-renewable sources (D+E+F) | 178,268 | 153,863
+Total Energy consumed (A+B+C+D+E+F) | 242,818 | 210,092
+Energy intensity per rupee of turnover
+(Total energy consumed / Revenue from operations) GJ/million rupees of | 0.93 | 1.03
+Total volume of water consumption (in kiloliters) | 313,579 | 282,315
+Water intensity per rupee of turnover (Total water consumption Revenue from | 1.2 | 1.38
+Waste intensity per rupee of turnover (Total waste generated / Revenue from operations) (in metric tonnes) | 0.11 | 0.08
+Details related to the standalone entity`;
+const TSMC = `Key Indicators | 2021 | 2022 | 2023 | 2024 | 2025
+GHG Emissions (MTCO2e) ( Scope 1 and Scope 2 market-based ) | 10,304,344 | 11,558,554 | 11,783,418 | 12,783,269 | 13,327,087
+Scope 1 (MTCO2e) | 2,151,937 | 2,018,789 | 1,596,031 | 1,825,872 | 2,196,516
+Scope 2 (MTCO2e) (market-based) | 8,152,497 | 9,539,765 | 10,187,387 | 10,957,397 | 11,130,571
+Scope 3 (MTCO2e) | 6,049,256 | 7,429,158 | 7,616,655 | 8,223,173 | 36,299,005`;
+const RELIANCE_PROSE = `Key Indicators | 2024 | 2025
+academic and research institutions | energy hubs on wastelands, combining | For this year, Scope 1 and Scope 2 with location-based method is 46.13 MMT CO2e.`;
+
+describe("rule-based extractor: rows that are not the metric", () => {
+  it("skips intensity ratios and renewable / non-renewable energy subtotals", () => {
+    const c = extractCandidates([page(BRSR_ENERGY)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null });
+    const energy = c.filter((x) => x.metricId === "energy_total");
+    expect(energy.map((x) => [x.year, x.value])).toEqual([[2026, 242818], [2024, 210092]]); // the year header really says FY 2024
+    expect(c.filter((x) => x.metricId === "water_consumption").map((x) => x.value)).toEqual([313579, 282315]);
+    expect(c.some((x) => x.metricId === "waste_total")).toBe(false);
+    expect(c.every((x) => x.boundary === "parent_only")).toBe(true);
+  });
+  it("does not read a combined Scope 1 + 2 row as Scope 2, and reads 'Scope 3 (unit) |' rows", () => {
+    const c = extractCandidates([page(TSMC)], { peerGroup: "tech_hardware_semis", convention: "end_year", reportingYear: null });
+    expect(c.filter((x) => x.metricId === "ghg_scope2_market" && x.year === 2025).map((x) => x.value)).toEqual([11130571]);
+    expect(c.find((x) => x.metricId === "ghg_scope1" && x.year === 2025)?.value).toBe(2196516);
+    expect(c.find((x) => x.metricId === "ghg_scope3_total" && x.year === 2025)?.value).toBe(36299005);
+  });
+  it("ignores combined-scope figures in running prose", () => {
+    const c = extractCandidates([page(RELIANCE_PROSE)], { peerGroup: "energy_conglomerates", convention: "end_year", reportingYear: null });
+    expect(c).toEqual([]);
+  });
+});
+
 describe("evidence gate (rule 6)", () => {
   const text = "Scope 1 | 118,100 | 123,704 | 170,887\nOther line";
   it("passes when wording and value are on the stored page", () => {
