@@ -159,7 +159,16 @@ export const Profile = z.strictObject({
     lon: z.number().min(-180).max(180),
   }),
   region: z.enum(["Americas", "Europe", "Asia-Pacific", "South Asia", "Middle East & Africa"]),
-  industry: z.strictObject({ gics: z.string(), sasb: z.string() }),
+  industry: z.strictObject({
+    gics: z.string(),
+    sasb: z.string(),
+    /** SASB (SICS) industry codes, e.g. ["TC-HW"]. The analytical industry key (see src/lib/industry.ts). */
+    sasbCodes: z.array(z.string().regex(/^[A-Z]{2}-[A-Z]{2}$/)).optional(),
+    /** Confirmed primary SASB industry when sasbCodes has more than one; peer medians use it. */
+    primarySasb: z.string().regex(/^[A-Z]{2}-[A-Z]{2}$/).optional(),
+    /** Why the classification is ambiguous or what a reviewer should check. */
+    classificationNote: z.string().optional(),
+  }),
   peerGroup: Id,
   fiscalYear: z.strictObject({
     /** Last day of the fiscal year, MM-DD (approximate for 52/53-week years). */

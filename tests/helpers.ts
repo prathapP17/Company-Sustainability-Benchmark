@@ -29,7 +29,7 @@ export function baseCompany(overrides: Partial<CompanyFileInput> = {}): CompanyF
       listings: [{ exchange: "TEST", ticker: "TST" }],
       hq: { city: "Testville", country: "Nowhere", lat: 0, lon: 0 },
       region: "Europe",
-      industry: { gics: "Test", sasb: "Test" },
+      industry: { gics: "Test", sasb: "Processed Foods (FB-PF)", sasbCodes: ["FB-PF"] },
       peerGroup: "consumer_staples",
       fiscalYear: { end: "12-31", labelConvention: "end_year" },
       website: "https://example.com",

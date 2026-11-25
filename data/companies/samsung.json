@@ -16,7 +16,9 @@
     "region": "Asia-Pacific",
     "industry": {
       "gics": "Technology Hardware, Storage & Peripherals",
-      "sasb": "Hardware (TC-HW) and Semiconductors (TC-SC)"
+      "sasb": "Hardware (TC-HW) and Semiconductors (TC-SC)",
+      "sasbCodes": ["TC-HW", "TC-SC"],
+      "classificationNote": "The company file lists both Hardware (TC-HW) and Semiconductors (TC-SC); which is primary has not been confirmed, so Samsung is kept out of industry medians and peer ranks until a reviewer sets primarySasb."
     },
     "peerGroup": "tech_hardware_semis",
     "fiscalYear": {

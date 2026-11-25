@@ -6,11 +6,14 @@ import "server-only";
 import { allMetricValues, allSources, listCompanies } from "../db/queries";
 import { getMetric } from "../metrics/dictionary";
 import { fiscalLabel } from "../fiscal";
+import { valueIssues } from "../scoring/comparability";
 
 export const VALUE_COLUMNS = [
   "company_id",
   "company",
   "peer_group",
+  "sasb_codes",
+  "primary_sasb",
   "metric_id",
   "metric",
   "year_label",
@@ -38,6 +41,7 @@ export const VALUE_COLUMNS = [
   "page",
   "reported_wording",
   "note",
+  "cross_company_use",
 ] as const;
 
 export type ValueRow = Record<(typeof VALUE_COLUMNS)[number], string | number | null>;
@@ -52,6 +56,8 @@ export function valueRows(): ValueRow[] {
       company_id: v.company_id,
       company: c.name,
       peer_group: c.peer_group_name,
+      sasb_codes: c.sasb_codes ? (JSON.parse(c.sasb_codes) as string[]).join(" ") : null,
+      primary_sasb: c.primary_sasb,
       metric_id: v.metric_id,
       metric: getMetric(v.metric_id).label,
       year_label: v.year,
@@ -79,6 +85,23 @@ export function valueRows(): ValueRow[] {
       page: v.page,
       reported_wording: v.reported_wording,
       note: v.note,
+      // Same rule the dashboards use (comparability engine): may this value enter cross-company calculations?
+      cross_company_use:
+        v.state !== "disclosed"
+          ? null
+          : (() => {
+              const issues = valueIssues({
+                boundary: v.boundary,
+                consolidation: v.consolidation,
+                scope2Method: v.scope2_method,
+                coverage: v.coverage,
+                lowConfidence: v.low_confidence === 1,
+                canonical: v.canonical_value,
+                canonicalUnit: v.canonical_unit,
+                metricId: v.metric_id,
+              });
+              return issues.length ? `not eligible: ${issues.join("; ")}` : "eligible (still check industry, period and consolidation approach)";
+            })(),
     };
   });
 }

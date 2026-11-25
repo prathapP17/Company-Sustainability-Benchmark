@@ -8,8 +8,12 @@ import { SourceType, VerificationClass } from "@/lib/schema/enums";
 export async function POST(req: Request) {
   const g = guardRequest(req, { mutating: true, role: "reviewer" });
   if (g instanceof Response) return g;
-  const len = Number(req.headers.get("content-length") ?? 0);
-  if (len > MAX_UPLOAD_BYTES + 1024 * 1024) return Response.json({ error: "file too large" }, { status: 413 });
+  // Browsers always send Content-Length for form uploads; refusing bodies without it keeps the size check meaningful
+  // when no proxy limits the body (local mode). The hosted proxy also caps bodies at 60 MB.
+  const lenHeader = req.headers.get("content-length");
+  if (!lenHeader) return Response.json({ error: "Content-Length required" }, { status: 411 });
+  const len = Number(lenHeader);
+  if (!Number.isFinite(len) || len > MAX_UPLOAD_BYTES + 1024 * 1024) return Response.json({ error: "file too large" }, { status: 413 });
 
   const form = await req.formData();
   const file = form.get("file");

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui";
 import { ScoreBar } from "@/components/ScoreBar";
 import { allIndicators, allScores, listCompanies } from "@/lib/db/queries";
+import { industryName } from "@/lib/industry";
 import { INDICATOR_LABELS, MIN_INDICATORS } from "@/lib/scoring/performance";
 
 export const metadata: Metadata = { title: "Rankings" };
@@ -17,11 +18,13 @@ export default function RankingsPage() {
   const transparencyUnscored = scores.filter((s) => s.transparency_score === null);
   const performanceRanked = scores.filter((s) => s.performance_score !== null).sort((a, b) => b.performance_score! - a.performance_score!);
   const performanceUnscored = scores.filter((s) => s.performance_score === null);
+  // Peer rank only within one confirmed SASB industry (never the broad navigation group).
   const peerRank = (id: string, key: "transparency_score" | "performance_score") => {
     const c = name.get(id)!;
-    const peers = scores.filter((s) => name.get(s.company_id)?.peer_group === c.peer_group && s[key] !== null).sort((a, b) => b[key]! - a[key]!);
+    if (!c.primary_sasb) return "no industry rank: classification needs review";
+    const peers = scores.filter((s) => name.get(s.company_id)?.primary_sasb === c.primary_sasb && s[key] !== null).sort((a, b) => b[key]! - a[key]!);
     if (peers.length < 2) return null;
-    return `${peers.findIndex((p) => p.company_id === id) + 1} of ${peers.length} in ${c.peer_group_name}`;
+    return `${peers.findIndex((p) => p.company_id === id) + 1} of ${peers.length} in ${industryName(c.primary_sasb)}`;
   };
 
   return (

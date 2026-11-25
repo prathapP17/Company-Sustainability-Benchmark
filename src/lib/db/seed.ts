@@ -17,6 +17,7 @@ import { getMetric, toCanonical } from "../metrics/dictionary";
 import { periodEnd } from "../fiscal";
 import { dbPath, migrate, openWritable } from "./connection";
 import { transparency } from "../scoring/transparency";
+import { classify } from "../industry";
 import { performance } from "../scoring/performance";
 
 export interface SeedResult {
@@ -97,6 +98,7 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
       const insGap = db.prepare(`INSERT INTO data_gaps VALUES (@company_id, @metric_id, @year, @kind, @description, @source_id, @page)`);
       const insScore = db.prepare(`INSERT INTO company_scores VALUES (@company_id, @ts, @tm, @ta, @tr, @ps, @pa, @pr)`);
       const insItem = db.prepare(`INSERT INTO transparency_items VALUES (@company_id, @item_id, @label, @grp, @met, @evidence)`);
+      const setClass = db.prepare("UPDATE companies SET sasb_codes = @codes, primary_sasb = @primary, classification_review = @review WHERE id = @id");
       const insInd = db.prepare(`INSERT INTO performance_indicators VALUES (@company_id, @id, @label, @raw, @unit, @score, @detail)`);
       const insCoverage = db.prepare(`INSERT INTO company_coverage VALUES (@company_id, @year, @total, @disclosed, @not_disclosed, @not_found, @not_assessed)`);
 
@@ -116,6 +118,8 @@ export function seed(dataDir: string, now = new Date()): SeedResult {
           listings: JSON.stringify(p.listings), frameworks: JSON.stringify(c.frameworks),
           comparability_notes: JSON.stringify(c.comparabilityNotes), file_hash: fileHash,
         });
+        const cls = classify(p.industry);
+        setClass.run({ id: p.id, codes: JSON.stringify(cls.codes), primary: cls.primary, review: cls.reason });
         for (const s of c.sources) {
           insSource.run({
             company_id: p.id, id: s.id, organisation: s.organisation, title: s.title, type: s.type, url: s.url,

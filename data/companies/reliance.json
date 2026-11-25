@@ -17,7 +17,8 @@
     "region": "South Asia",
     "industry": {
       "gics": "Oil & Gas Refining & Marketing",
-      "sasb": "Oil & Gas – Refining & Marketing (EM-RM)"
+      "sasb": "Oil & Gas – Refining & Marketing (EM-RM)",
+      "sasbCodes": ["EM-RM"]
     },
     "peerGroup": "energy_conglomerates",
     "fiscalYear": {

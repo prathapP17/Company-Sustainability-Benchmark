@@ -23,6 +23,7 @@ import {
   type MetricValueRow,
   type SourceRow,
 } from "@/lib/db/queries";
+import { codesOf } from "@/lib/data/views";
 import { METRICS, metricAppliesTo, type MetricCategory, type MetricDef } from "@/lib/metrics/dictionary";
 import { LABELS, type AssuranceLevel, type Boundary, type Consolidation, type VerificationClass } from "@/lib/schema/enums";
 import { fiscalLabel } from "@/lib/fiscal";
@@ -182,7 +183,7 @@ async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "pa
     if (!byMetric.has(v.metric_id)) byMetric.set(v.metric_id, []);
     byMetric.get(v.metric_id)!.push(v);
   }
-  const applicable = METRICS.filter((m) => metricAppliesTo(m, c.peer_group) && !m.id.startsWith("ghg_scope3_c"));
+  const applicable = METRICS.filter((m) => metricAppliesTo(m, codesOf(c)) && !m.id.startsWith("ghg_scope3_c"));
   const categories = [...new Set(applicable.map((m) => m.category))];
 
   const scope3: Scope3Datum[] = METRICS.filter((m) => m.id.startsWith("ghg_scope3_c"))

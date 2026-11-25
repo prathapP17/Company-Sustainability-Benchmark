@@ -29,7 +29,7 @@ export default function AuditPage() {
 }
 
 async function AuditTable() {
-  const access = await currentAccess();
+  const access = await currentAccess("admin");
   if (!access.ok) return <Denied access={access} />;
   const rows = recentAudit();
   return (

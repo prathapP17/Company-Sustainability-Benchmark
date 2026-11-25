@@ -189,6 +189,33 @@ async function main() {
       check(viewerUpload === 403, `viewer upload refused by the server (${viewerUpload})`);
       await vp.goto(`${BASE}/review/users`);
       check((await vp.getByText(/needs the admin role/).count()) === 1, "viewer cannot open the users page");
+      await vp.goto(`${BASE}/review/audit`);
+      check((await vp.getByText(/needs the admin role/).count()) === 1, "viewer cannot open the audit log");
+      for (const p of ["/review/alerts", "/review/discovered", "/review/news", "/review/summaries", "/review/documents/1"]) {
+        await vp.goto(`${BASE}${p}`);
+        check((await vp.getByText(/needs the reviewer role/).count()) === 1, `viewer cannot open ${p}`);
+      }
+      await vp.goto(`${BASE}/review`);
+      await vp.getByText(/Signed in as/).first().waitFor({ timeout: 10_000 }).catch(() => {});
+      check((await vp.getByText(/Signed in as E2E Viewer \(viewer\)/).count()) === 1 && (await vp.getByRole("link", { name: "Downloads" }).count()) >= 1, "viewer lands on a downloads page, not the review queue");
+      for (const [url, type] of [
+        ["/api/export/values.csv", "text/csv"],
+        ["/api/export/benchmark.xlsx", "spreadsheetml"],
+        ["/api/export/report.pdf", "application/pdf"],
+        ["/api/export/report/nestle", "application/pdf"],
+      ] as const) {
+        const r = await vp.evaluate(async (u) => {
+          const res = await fetch(u);
+          return { status: res.status, type: res.headers.get("content-type") ?? "", size: (await res.arrayBuffer()).byteLength };
+        }, url);
+        check(r.status === 200 && r.type.includes(type) && r.size > 500, `viewer downloads ${url} (${r.status}, ${r.size} bytes)`);
+      }
+      const csv = await vp.evaluate(async () => (await fetch("/api/export/values.csv")).text());
+      check(/cross_company_use/.test(csv) && /primary_sasb/.test(csv), "CSV export carries the industry and the comparability decision");
+      const missing = await vp.evaluate(async () => (await fetch("/api/export/report/does-not-exist")).status);
+      check(missing === 404, `unknown company PDF returns 404 (got ${missing})`);
+      const overview = await vp.evaluate(async () => (await fetch("/api/pipeline/overview")).status);
+      check(overview === 204, `viewer does not get review counts (${overview})`);
       await other.close();
 
       await page.goto(`${BASE}/review`);
@@ -212,7 +239,8 @@ async function main() {
       await page.goto(`${BASE}/review/documents/1`);
       check((await page.getByText(/1 page\(s\) have no text layer and could not be read/).count()) === 1, "unreadable image page flagged (OCR found no text)");
       check((await page.getByText(/Pending review/).count()) === 1, "proposals awaiting review");
-      check((await page.getByText("Conflicts with curated value").count()) >= 1, "conflict with curated Apple value shown");
+      check((await page.getByText(/Possible restatement \(differs from curated value\)/).count()) >= 1, "conflict with curated Apple value shown as a possible restatement");
+      check((await page.getByText("Review states").count()) === 1, "review states summarised for the document");
 
       // Approve a non-conflicting value (2023 Scope 1).
       const item = page.locator("li", { hasText: "Scope 1 GHG emissions" }).filter({ hasText: "FY2023" }).first();
@@ -253,6 +281,9 @@ async function main() {
 
       await page.goto(`${BASE}/review/audit`);
       check((await page.getByText("E2E Admin").count()) >= 2, "audit log records the signed-in user's actions");
+      check((await page.getByText("export download").count()) >= 1, "audit log records downloads");
+      const ov = await page.evaluate(async () => (await fetch("/api/pipeline/overview")).json());
+      check(typeof ov.pending === "number" && typeof ov.possibleRestatements === "number", "admin gets review counts for the dashboard");
 
       // Approvals refresh the pre-built public pages (next visit regenerates; allow one stale response).
       let appleAfter = "";

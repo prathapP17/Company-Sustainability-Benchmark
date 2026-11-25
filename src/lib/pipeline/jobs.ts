@@ -2,9 +2,10 @@
 import type { DB } from "../db/connection";
 import { audit, type DocumentRow, type JobRow, type PageRow } from "./db";
 import { runExtractText } from "./ingest";
-import { extractCandidates, type PageInput } from "./extract/rules";
+import { extractWithDiagnostics, type PageInput } from "./extract/rules";
 import { aiEnabled, extractWithClaude } from "./extract/ai";
 import { readCompany, saveCandidates } from "./review";
+import { classify } from "../industry";
 
 export const JOB_TIMEOUT_MS: Record<JobRow["kind"], number> = {
   extract_text: 5 * 60_000,
@@ -35,20 +36,22 @@ export async function runJob(db: DB, dataDir: string, job: JobRow): Promise<stri
   const pages = pagesFor(db, doc.id);
 
   if (job.kind === "extract_rules") {
-    const cands = extractCandidates(pages, {
-      peerGroup: company.profile.peerGroup,
+    const { candidates: cands, skipped } = extractWithDiagnostics(pages, {
+      industryCodes: classify(company.profile.industry).codes,
       convention: company.profile.fiscalYear.labelConvention,
       reportingYear: doc.reporting_year,
     });
     const n = saveCandidates(db, dataDir, doc, cands, "rule");
+    // Ambiguous metric/years are not guessed: they are recorded for the reviewer as gaps to check by hand.
+    if (skipped.length) audit(db, "worker", "extraction_skipped_ambiguous", "document", doc.id, { skipped });
     db.prepare("UPDATE documents SET status = 'extracted' WHERE id = ?").run(doc.id);
-    return `${n} rule-based proposals`;
+    return `${n} rule-based proposals${skipped.length ? `, ${skipped.length} metric/years skipped as ambiguous` : ""}`;
   }
 
   if (job.kind === "extract_ai") {
     if (!aiEnabled()) return "skipped: ANTHROPIC_API_KEY not set";
     const r = await extractWithClaude(pages, {
-      peerGroup: company.profile.peerGroup,
+      industryCodes: classify(company.profile.industry).codes,
       convention: company.profile.fiscalYear.labelConvention,
       companyName: company.profile.name,
     });

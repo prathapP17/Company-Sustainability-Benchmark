@@ -7,9 +7,9 @@
  *  - Hosted (APP_ORIGIN=https://your.domain): only requests whose Host is that
  *    domain are served; the app runs behind the bundled Caddy proxy.
  * In both modes a signed-in account is required, with a role:
- *    viewer   read the review queue, alerts, discovered reports and audit log
- *    reviewer also upload, fetch, approve/reject, acknowledge alerts
- *    admin    also manage accounts
+ *    viewer   download exports and reports, manage own account
+ *    reviewer also read the review queue, documents, alerts, discovered reports; upload, fetch, approve/reject
+ *    admin    also manage accounts and read the audit log
  * State-changing requests must come from the app's own origin (CSRF).
  *
  * Lesson learned: access is checked in every page and route handler, never

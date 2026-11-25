@@ -18,7 +18,8 @@
     "region": "Europe",
     "industry": {
       "gics": "Personal Care Products",
-      "sasb": "Household & Personal Products (CG-HP)"
+      "sasb": "Household & Personal Products (CG-HP)",
+      "sasbCodes": ["CG-HP"]
     },
     "peerGroup": "consumer_staples",
     "fiscalYear": {

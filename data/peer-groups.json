@@ -15,7 +15,7 @@
     "id": "autos_industrials",
     "name": "Autos & industrials",
     "description": "Automobile manufacturers and industrial machinery / electrical equipment.",
-    "sasbIndustries": ["Automobiles (TR-AU)", "Industrial Machinery & Goods (RT-IG)", "Electrical & Electronic Equipment (RR-EE)"]
+    "sasbIndustries": ["Automobiles (TR-AU)", "Industrial Machinery & Goods (RT-IG)", "Electrical & Electronic Equipment (RT-EE)"]
   },
   {
     "id": "consumer_staples",

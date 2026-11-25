@@ -6,7 +6,7 @@ Benchmarks the sustainability disclosures of large operating companies. See
 ## Phase 1 (scaffold)
 
 - `data/companies/<id>.json`: curated company files (zod-validated, every value cites a source and page)
-- `data/peer-groups.json`: five industry peer groups
+- `data/peer-groups.json`: five broad peer groups (navigation; analysis uses each company's SASB industry codes)
 - `src/lib/metrics/dictionary.ts`: metric dictionary v1 (cross-industry, all 15 Scope 3 categories, SASB industry metrics)
 - `src/lib/schema/`: schema, rule-3 context fields, four disclosure states, cross-field validation
 - `src/lib/db/`: additive-only migrations, backup-before-migrate, seeding into `data/benchmark.db` (SQLite, WAL)
@@ -88,8 +88,9 @@ Benchmarks the sustainability disclosures of large operating companies. See
 
 ## Phase 7 (evaluation and hardening)
 
-- **Extraction evaluation:** 184 curated values from 8 source reports as gold answers; the rule-based extractor finds
-  36% with 44% judged precision (see [docs/EVALUATION.md](docs/EVALUATION.md)). Claude can be evaluated with the same
+- **Extraction evaluation:** 184 curated values from 8 source reports as gold answers; at the end of phase 7 the
+  rule-based extractor found 36% with 44% judged precision (improved since: see below and
+  [docs/EVALUATION.md](docs/EVALUATION.md)). Claude can be evaluated with the same
   set once an API key is set.
 - **OCR:** image-only PDF pages are read with Tesseract (offline, English), labelled "(OCR)", at lower confidence.
 - **Accessibility:** axe-core (WCAG 2.1 A/AA) checks every public page in light and dark mode and every review page
@@ -99,6 +100,31 @@ Benchmarks the sustainability disclosures of large operating companies. See
 - **Backups:** `npm run restore:drill` proves the newest snapshot restores cleanly.
 - **Docs:** [METHODOLOGY](docs/METHODOLOGY.md), [DATA_MODEL](docs/DATA_MODEL.md), [DEPLOYMENT](docs/DEPLOYMENT.md),
   [EVALUATION](docs/EVALUATION.md).
+
+## Improvement pass (2026-11-25)
+
+Audit: [docs/AUDIT-2026-11-25.md](docs/AUDIT-2026-11-25.md). Changes:
+
+- **Industry classification:** SASB industry codes per company are the analytical key; broad peer groups are for
+  navigation only. Industry metrics, peer medians and peer ranks use the SASB industry. Samsung and Siemens list two SASB
+  industries and are flagged "classification needs review" (kept out of medians and ranks until a primary one is
+  confirmed).
+- **One comparability engine** (`src/lib/scoring/comparability.ts`) for comparisons, charts, medians, scores, ranks, the
+  map and exports; medians also check reporting period and consolidation approach, and list every excluded value with
+  its reason.
+- **Dashboard:** overview figures, an interactive headquarters map (self-hosted, no tiles or keys; metric, region,
+  industry, peer group, disclosure and period filters; clustering, zoom and pan; selected-company panel; list
+  alternative), sustainability overview (disclosure states, never totals), industry/region insights, recent activity,
+  and pending-review counts for reviewers only. `/companies` lists all companies.
+- **Navigation** grouped into Explore, Performance, Transparency and Administration, with company search, a theme
+  switch (system/light/dark) and a phone menu.
+- **Roles** match brief section 7: exports need a viewer account; the review queue needs reviewer; the audit log needs
+  admin.
+- **AI summaries:** a much stricter per-sentence evidence gate and a manual-review fallback for wording-only failures.
+- **Extraction:** judged precision 44.4% → 90.8%, recall 36.4% → 58.7% (53.8% like for like); one proposal per metric
+  and year, ambiguous values skipped and listed; review states shown per document. See
+  [docs/EVALUATION.md](docs/EVALUATION.md).
+- **Tests:** workflow, permission, comparability, classification, map and adversarial AI-summary tests.
 
 ## Commands
 
@@ -119,7 +145,8 @@ npm run backup        # snapshot backup into data/backups/snapshot-<time>/ (keep
 npm run sbti:import   # re-extract data/sbti.json from downloaded SBTi files (ask before downloading new ones)
 npm run summaries -- --company apple   # AI summary (or --stale for all without a current one)
 npm run news          # search GDELT now; items wait on /review/news
-npm run eval          # extraction evaluation against the curated values (npm run eval:gold to rebuild the gold set)
+npm run eval          # extraction evaluation against the curated values (npm run eval:gold to rebuild the gold set;
+                      # -- --label=name to keep a run, -- --no-year to withhold the reporting year)
 npm run perf          # performance budgets (needs a build and Chrome)
 npm run restore:drill # verify the newest backup snapshot restores cleanly
 npm run extract-text -- <file.pdf>   # page-marked text for manual research

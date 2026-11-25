@@ -12,8 +12,12 @@ The app runs as four containers from one image, on one server with a persistent 
 All three app services share the `data` volume (`/data`): SQLite databases, curated company files, uploads, logs and
 backups. SQLite needs a local disk: do not put the volume on NFS or another network filesystem.
 
-Nothing here has been run against a real server yet. The image could not be built on the development Mac (no Docker),
-so treat the first deployment as a test.
+Nothing here has been run against a real server yet. The image has never been built: the development Mac has no
+Docker (checked again on 2026-11-25; `docker`, `podman` and `colima` are not installed). Treat the first deployment as a
+test. What was checked without Docker: the production build, both browser test suites against `next start`, a backup
+snapshot and a restore drill on the real data, and the image's exclusion list (`.dockerignore`, covered by a unit test).
+That review found and fixed one problem: downloaded third-party evaluation reports (`data/external/`, 88 MB) would have
+been copied into the image.
 
 ## Requirements
 
@@ -49,11 +53,13 @@ invite link on yourself.
 
 | Role | Can |
 | --- | --- |
-| viewer | Read the review queue, documents, discovered reports, alerts and the audit log |
-| reviewer | Also upload, fetch, approve, reject, re-run extraction and acknowledge alerts |
-| admin | Also create accounts, change roles, disable accounts, issue password-reset links, end sessions |
+| guest (no account) | Public dashboards, map and company profiles |
+| viewer | Also download the exports and PDF reports (each download is recorded in the audit log) |
+| reviewer | Also read the review queue, documents, discovered reports, alerts, news and AI-summary queues; upload, fetch, approve, reject, re-run extraction, acknowledge alerts, approve flagged AI summaries; sees pending-review counts on the dashboard |
+| admin | Also create accounts, change roles, disable accounts, issue password-reset links, end sessions, read the audit log |
 
-- The public dashboards and downloads need no account.
+- These follow brief section 7. Until 2026-11-25 viewers could read the review queue and audit log and downloads were
+  public; both were changed to match the brief.
 - Passwords are stored as scrypt hashes. Sessions end after 8 hours idle or 7 days, and on password change, reset or
   disable.
 - 8 wrong passwords lock an account for 15 minutes; one address gets at most 30 attempts per 15 minutes.
@@ -123,6 +129,8 @@ storage you then sync elsewhere, or your provider's volume snapshots.
   CDN in front of Caddy, configure Caddy's `trusted_proxies` for it, or throttling sees the CDN's address.
 - The review area only answers on `APP_ORIGIN` (set from `DOMAIN`); state-changing requests must come from that
   origin. Cookies are `HttpOnly`, `SameSite=Strict` and `Secure`.
+- The dashboard map needs no external service or key: the base map is generated from public-domain Natural Earth data
+  inside the app and served from `/map/world.svg`.
 - Every response carries a Content Security Policy (same-origin only), `X-Frame-Options: DENY`, `nosniff`, a strict
   referrer policy and a restrictive permissions policy; Caddy adds HSTS. The CSP allows inline scripts because the
   public pages are pre-built (Next.js nonces would force per-request rendering).

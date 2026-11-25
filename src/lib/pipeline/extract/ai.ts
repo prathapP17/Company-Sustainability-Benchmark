@@ -35,8 +35,8 @@ const Item = z.object({
 const Output = z.object({ values: z.array(Item) });
 
 /** Ranks pages by how many metric keywords they contain; scanned pages are skipped. */
-export function selectPages(pages: PageInput[], peerGroup: string): PageInput[] {
-  const words = METRICS.filter((m) => metricAppliesTo(m, peerGroup))
+export function selectPages(pages: PageInput[], industryCodes: string[]): PageInput[] {
+  const words = METRICS.filter((m) => metricAppliesTo(m, industryCodes))
     .flatMap((m) => m.synonyms)
     .filter((s) => /^[\x00-\x7f]+$/.test(s) && s.length > 3)
     .map((s) => s.toLowerCase());
@@ -53,8 +53,8 @@ export function selectPages(pages: PageInput[], peerGroup: string): PageInput[] 
     .map((x) => x.p);
 }
 
-function instructions(peerGroup: string, convention: FiscalLabelConvention, companyName: string) {
-  const metrics = METRICS.filter((m) => metricAppliesTo(m, peerGroup))
+function instructions(industryCodes: string[], convention: FiscalLabelConvention, companyName: string) {
+  const metrics = METRICS.filter((m) => metricAppliesTo(m, industryCodes))
     .map((m) => `- ${m.id}: ${m.label}. Accepted units: ${Object.keys(getMetric(m.id).units).join(", ")}`)
     .join("\n");
   return `You extract sustainability metrics for ${companyName} from report pages. Each page starts with a line "=== PAGE <n> ===".
@@ -85,10 +85,10 @@ export interface AiResult {
 
 export async function extractWithClaude(
   pages: PageInput[],
-  ctx: { peerGroup: string; convention: FiscalLabelConvention; companyName: string },
+  ctx: { industryCodes: string[]; convention: FiscalLabelConvention; companyName: string },
   client: Anthropic = new Anthropic(),
 ): Promise<AiResult> {
-  const selected = selectPages(pages, ctx.peerGroup);
+  const selected = selectPages(pages, ctx.industryCodes);
   const byNumber = new Map(pages.map((p) => [p.pageNumber, p]));
   const consolidation = detectConsolidation(pages.map((p) => p.text).join("\n"));
   const result: AiResult = { candidates: [], requests: 0, inputTokens: 0, outputTokens: 0, dropped: 0 };
@@ -103,7 +103,7 @@ export async function extractWithClaude(
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       output_config: { effort: "medium", format: betaZodOutputFormat(Output) },
-      system: instructions(ctx.peerGroup, ctx.convention, ctx.companyName),
+      system: instructions(ctx.industryCodes, ctx.convention, ctx.companyName),
       messages: [{ role: "user", content: body }],
     });
     result.requests++;
@@ -116,7 +116,7 @@ export async function extractWithClaude(
       const page = byNumber.get(it.page_number);
       const def = METRICS.find((m) => m.id === it.metric_id);
       // Structural checks; the evidence gate runs later on stored text.
-      if (!page || !def || !metricAppliesTo(def, ctx.peerGroup) || getMetric(def.id).units[it.unit] === undefined) {
+      if (!page || !def || !metricAppliesTo(def, ctx.industryCodes) || getMetric(def.id).units[it.unit] === undefined) {
         result.dropped++;
         continue;
       }

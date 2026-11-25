@@ -5,9 +5,12 @@ import { defaultDataDir } from "../data/load";
 import { factsHash } from "./facts";
 import { generateSummary, SUMMARY_MODEL } from "./generate";
 import { currentFacts, writeSummary } from "./store";
+import { storeCandidate } from "./candidates";
 
 export interface RunResult {
   ok: boolean;
+  /** Failed only on wording: waiting for a reviewer in the manual-review fallback. */
+  reviewable: boolean;
   problems: string[];
   sentences: number;
   inputTokens: number;
@@ -21,7 +24,7 @@ export async function summarizeCompany(db: DB, id: string, actor: string, opts: 
   if (!input) throw new Error(`unknown company ${id}`);
   if (input.facts.length < 2) throw new Error(`${id}: not enough curated facts to summarise`);
   const r = await generateSummary(input.name, input.facts, opts.client);
-  const result: RunResult = { ok: r.check.ok, problems: r.check.problems, sentences: r.sentences.length, inputTokens: r.inputTokens, outputTokens: r.outputTokens };
+  const result: RunResult = { ok: r.check.ok, reviewable: r.check.reviewable, problems: r.check.problems, sentences: r.sentences.length, inputTokens: r.inputTokens, outputTokens: r.outputTokens };
   if (r.check.ok) {
     writeSummary(
       {
@@ -37,7 +40,13 @@ export async function summarizeCompany(db: DB, id: string, actor: string, opts: 
       dataDir,
     );
   }
+  let candidate: number | null = null;
+  if (!r.check.ok) {
+    candidate = storeCandidate(db, { companyId: id, actor, model: SUMMARY_MODEL, facts: input.facts, sentences: r.sentences, problems: r.check.details, reviewable: r.check.reviewable, now: opts.now });
+  }
   audit(db, actor, r.check.ok ? "summary_published" : "summary_rejected_by_check", "company", id, {
+    candidate,
+    reviewable: r.check.reviewable,
     model: SUMMARY_MODEL,
     problems: r.check.problems,
     sentences: r.sentences,

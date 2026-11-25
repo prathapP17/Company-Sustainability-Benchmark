@@ -47,7 +47,7 @@ export default function DiscoveredPage() {
 }
 
 async function DiscoveredList() {
-  const access = await currentAccess();
+  const access = await currentAccess("reviewer");
   if (!access.ok) return <Denied access={access} />;
   const rows = listDiscovered();
   const runs = recentRuns();

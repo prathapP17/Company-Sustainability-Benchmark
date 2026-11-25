@@ -19,6 +19,10 @@ export const StoredSummary = z.strictObject({
   factsHash: z.string().length(64),
   facts: z.array(z.strictObject({ id: z.string(), kind: z.string(), text: z.string(), sourceId: z.string().nullable(), page: z.string().nullable(), url: z.string().nullable() })),
   sentences: z.array(z.strictObject({ text: z.string(), citations: z.array(z.string()) })),
+  /** Present only when the automatic gate flagged wording and a reviewer approved it (manual-review fallback). */
+  humanReview: z
+    .strictObject({ by: z.string(), at: z.string(), note: z.string(), problems: z.array(z.string()) })
+    .optional(),
 });
 export type StoredSummary = z.infer<typeof StoredSummary>;
 

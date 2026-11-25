@@ -1,12 +1,22 @@
 {
   "$comment": "Budgets per page on a production build (npm run build && npm run perf). Sizes are compressed bytes transferred by the page itself (not link prefetches); time is the median server response over 3 loads.",
-  "defaults": { "maxJsKb": 170, "maxHtmlKb": 80, "maxTtfbMs": 250 },
+  "defaults": {
+    "maxJsKb": 170,
+    "maxHtmlKb": 80,
+    "maxTtfbMs": 250
+  },
   "pages": {
     "/": {},
-    "/companies/apple": { "maxJsKb": 300 },
-    "/companies/toyota": { "maxJsKb": 300 },
+    "/companies": {},
+    "/companies/apple": {
+      "maxJsKb": 300
+    },
+    "/companies/toyota": {
+      "maxJsKb": 300
+    },
     "/compare": {},
     "/peers/consumer_staples": {},
+    "/peers/tech_hardware_semis": {},
     "/targets": {},
     "/scope3": {},
     "/industry": {},

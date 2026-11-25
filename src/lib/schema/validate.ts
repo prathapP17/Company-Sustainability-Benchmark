@@ -12,6 +12,7 @@ import { CompanyFile, type MetricEntry, type PeerGroup } from "./company";
 import { getMetric, METRIC_BY_ID, metricAppliesTo } from "../metrics/dictionary";
 import type { Boundary, Consolidation, Scope2Method, ValueStatus, VerificationClass } from "./enums";
 import type { Assurance } from "./company";
+import { classify, SASB_CODE_RE, SASB_INDUSTRIES } from "../industry";
 
 export interface Issue {
   file: string;
@@ -69,6 +70,24 @@ export function validateCompany(
   if (c.profile.id !== expectedId) err("profile.id", `id "${c.profile.id}" must match file name "${expectedId}"`);
   if (!peerGroups.some((p) => p.id === c.profile.peerGroup)) err("profile.peerGroup", `unknown peer group "${c.profile.peerGroup}"`);
 
+  // Industry classification: the analytical key (never invented; ambiguity is flagged, not resolved here).
+  const ind = c.profile.industry;
+  const inText = new Set(ind.sasb.match(SASB_CODE_RE) ?? []);
+  for (const code of ind.sasbCodes ?? []) {
+    if (!SASB_INDUSTRIES[code]) err("profile.industry.sasbCodes", `unknown SASB industry code "${code}" (add it to src/lib/industry.ts if it is real)`);
+    if (!inText.has(code)) err("profile.industry.sasbCodes", `code "${code}" does not appear in profile.industry.sasb ("${ind.sasb}")`);
+  }
+  if (ind.primarySasb && !(ind.sasbCodes ?? []).includes(ind.primarySasb)) err("profile.industry.primarySasb", `primary "${ind.primarySasb}" is not one of sasbCodes`);
+  const cls = classify(ind);
+  if (cls.needsReview) warn("profile.industry", `industry classification needs review: ${cls.reason}`);
+  const peer = peerGroups.find((p) => p.id === c.profile.peerGroup);
+  if (peer) {
+    const groupCodes = new Set(peer.sasbIndustries.flatMap((s) => s.match(SASB_CODE_RE) ?? []));
+    for (const code of cls.codes) {
+      if (!groupCodes.has(code)) warn("profile.peerGroup", `SASB industry ${code} is not listed for peer group "${peer.id}"`);
+    }
+  }
+
   const sourceIds = new Set<string>();
   c.sources.forEach((s, i) => {
     if (sourceIds.has(s.id)) err(`sources.${i}.id`, `duplicate source id "${s.id}"`);
@@ -88,8 +107,8 @@ export function validateCompany(
       err(`${p}.metric`, `unknown metric "${raw.metric}"`);
       return;
     }
-    if (!metricAppliesTo(def, c.profile.peerGroup)) {
-      err(`${p}.metric`, `metric "${raw.metric}" does not apply to peer group "${c.profile.peerGroup}"`);
+    if (!metricAppliesTo(def, cls.codes)) {
+      err(`${p}.metric`, `metric "${raw.metric}" does not apply to SASB industr${cls.codes.length === 1 ? "y" : "ies"} ${cls.codes.join(", ") || "(none)"}`);
     }
     const m = resolveMetric(c, raw);
     checkSource(`${p}.source`, m.source);
@@ -135,7 +154,7 @@ export function validateCompany(
 
   if (c.researchStatus === "detailed") {
     const latest = latestDisclosedYear(c);
-    const core = [...METRIC_BY_ID.values()].filter((d) => d.core && metricAppliesTo(d, c.profile.peerGroup));
+    const core = [...METRIC_BY_ID.values()].filter((d) => d.core && metricAppliesTo(d, cls.codes));
     for (const d of core) {
       const assessed = c.metrics.some((m) => m.metric === d.id && m.year === latest && m.state !== "not_assessed");
       if (!assessed) err("researchStatus", `"detailed" requires core metric ${d.id} to be assessed for ${latest}`);

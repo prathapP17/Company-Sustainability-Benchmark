@@ -43,6 +43,9 @@ export function xhtmlPages(xhtml: string): XhtmlPage[] {
     (m) => PAGE + m,
   );
 
+  // Table cells often wrap their text in <p>/<div>: keep each cell, and so each table row, on one line.
+  body = body.replace(/<t([dh])\b([^>]*)>([\s\S]*?)<\/t\1>/gi, (_m, k: string, attrs: string, inner: string) => `<t${k}${attrs}>${inner.replace(/<(br|\/p|\/div|\/li|\/h\d)[^>]*>/gi, " ")}</t${k}>`);
+
   const text = decode(
     body
       .replace(/<(br|\/p|\/div|\/tr|\/h\d|\/li)[^>]*>/gi, "\n")

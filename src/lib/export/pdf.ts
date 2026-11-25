@@ -224,7 +224,7 @@ export async function companyPdf(id: string): Promise<Buffer | null> {
   heading(doc, "Metrics (latest year; earlier years in the XLSX export)");
   const values = metricValuesFor(id);
   const rows: string[][] = [];
-  for (const m of METRICS.filter((x) => metricAppliesTo(x, c.peer_group))) {
+  for (const m of METRICS.filter((x) => metricAppliesTo(x, c.sasb_codes ? (JSON.parse(c.sasb_codes) as string[]) : []))) {
     const entries = values.filter((v) => v.metric_id === m.id);
     if (!entries.length) {
       if (m.core) rows.push([m.label, "-", "Not assessed", "", ""]);

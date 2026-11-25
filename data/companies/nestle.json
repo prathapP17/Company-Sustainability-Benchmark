@@ -16,7 +16,8 @@
     "region": "Europe",
     "industry": {
       "gics": "Packaged Foods & Meats",
-      "sasb": "Processed Foods (FB-PF)"
+      "sasb": "Processed Foods (FB-PF)",
+      "sasbCodes": ["FB-PF"]
     },
     "peerGroup": "consumer_staples",
     "fiscalYear": {

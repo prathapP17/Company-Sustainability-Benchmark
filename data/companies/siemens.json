@@ -16,7 +16,9 @@
     "region": "Europe",
     "industry": {
       "gics": "Industrial Conglomerates",
-      "sasb": "Industrial Machinery & Goods (RT-IG) / Electrical & Electronic Equipment (RR-EE)"
+      "sasb": "Industrial Machinery & Goods (RT-IG) / Electrical & Electronic Equipment (RT-EE)",
+      "sasbCodes": ["RT-IG", "RT-EE"],
+      "classificationNote": "The company file lists Industrial Machinery & Goods (RT-IG) and Electrical & Electronic Equipment (RT-EE); which is primary has not been confirmed, so Siemens is kept out of industry medians and peer ranks until a reviewer sets primarySasb."
     },
     "peerGroup": "autos_industrials",
     "fiscalYear": {

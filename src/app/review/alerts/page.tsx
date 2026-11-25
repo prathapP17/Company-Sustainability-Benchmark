@@ -44,7 +44,7 @@ export default function AlertsPage() {
 }
 
 async function AlertList() {
-  const access = await currentAccess();
+  const access = await currentAccess("reviewer");
   if (!access.ok) return <Denied access={access} />;
   const open = listAlerts("open");
   const done = listAlerts("acknowledged", 50);

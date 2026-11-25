@@ -219,3 +219,51 @@ describe("where the review area is served", () => {
     expect(clientIp(H({ "x-forwarded-for": "10.0.0.9, 203.0.113.7" }))).toBe("203.0.113.7");
   });
 });
+
+describe("role hierarchy (brief section 7: guest < viewer < reviewer < admin)", () => {
+  const local = H({ host: "localhost:3000" });
+  it("each role gets exactly the operations at or below it", () => {
+    account("admin@example.org", "Admin", "admin");
+    account("rev@example.org", "Rev", "reviewer");
+    account("view@example.org", "View", "viewer");
+    const tokens = { admin: signIn("admin@example.org"), reviewer: signIn("rev@example.org"), viewer: signIn("view@example.org") };
+    const allowed = (who: keyof typeof tokens | "guest", min: "viewer" | "reviewer" | "admin") =>
+      checkAccess(local, who === "guest" ? undefined : tokens[who], min).ok;
+    const matrix = {
+      guest: { viewer: false, reviewer: false, admin: false },
+      viewer: { viewer: true, reviewer: false, admin: false },
+      reviewer: { viewer: true, reviewer: true, admin: false },
+      admin: { viewer: true, reviewer: true, admin: true },
+    };
+    for (const [who, row] of Object.entries(matrix)) {
+      for (const [min, expected] of Object.entries(row)) {
+        expect(allowed(who as keyof typeof matrix, min as "viewer"), `${who} on ${min}`).toBe(expected);
+      }
+    }
+    expect(checkAccess(local, undefined, "viewer")).toMatchObject({ status: 401 });
+    expect(checkAccess(local, tokens.viewer, "reviewer")).toMatchObject({ status: 403, reason: expect.stringMatching(/needs the reviewer role/) });
+  });
+
+  it("every protected page and route asks for the role the brief gives that operation", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = (p: string) => readFileSync(p, "utf8");
+    const pageRole = (p: string) => /currentAccess\(("(\w+)")?\)/.exec(src(p))?.[2] ?? "viewer";
+    const routeRoles = (p: string) => [...src(p).matchAll(/guardRequest\(req, \{ mutating: (true|false)(?:, role: "(\w+)")? \}\)/g)].map((m) => m[2] ?? (m[1] === "true" ? "reviewer" : "viewer"));
+    // Pages
+    expect(pageRole("src/app/review/page.tsx")).toBe("viewer"); // viewer landing; the queue itself checks reviewer
+    expect(src("src/app/review/page.tsx")).toMatch(/if \(!hasRole\(access\.user\.role, "reviewer"\)\)/);
+    for (const p of ["alerts", "discovered", "news", "summaries", "documents/[id]"]) expect(pageRole(`src/app/review/${p}/page.tsx`), p).toBe("reviewer");
+    for (const p of ["audit", "users"]) expect(pageRole(`src/app/review/${p}/page.tsx`), p).toBe("admin");
+    expect(pageRole("src/app/review/account/page.tsx")).toBe("viewer");
+    // Routes that change data
+    const R = "src/app/api/pipeline";
+    for (const p of ["upload", "extractions/[id]", "documents/[id]/requeue", "discovered/[id]", "alerts/[id]", "news/[id]", "summaries/[id]"]) {
+      expect(routeRoles(`${R}/${p}/route.ts`), p).toEqual(["reviewer"]);
+    }
+    for (const p of ["users", "users/[id]"]) expect(routeRoles(`${R}/${p}/route.ts`), p).toEqual(["admin"]);
+    for (const p of ["account/password", "account/sessions"]) expect(routeRoles(`${R}/${p}/route.ts`), p).toEqual(["viewer"]);
+    // Exports are viewer-and-above and audited
+    expect(src("src/lib/export/guard.ts")).toMatch(/role: "viewer"/);
+    for (const p of ["values.csv", "benchmark.xlsx", "report.pdf", "report/[id]"]) expect(src(`src/app/api/export/${p}/route.ts`), p).toMatch(/exportAccess\(req/);
+  });
+});

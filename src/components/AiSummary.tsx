@@ -4,7 +4,8 @@ import { summaryState } from "@/lib/summaries/store";
 
 /**
  * AI-written summary (user decision 2026-11-25: published without human review,
- * only after the automatic citation check). Rendered per request so it is never
+ * only after the automatic evidence gate; a summary the gate flagged on wording
+ * only may instead be published after a reviewer approves it). Rendered per request so it is never
  * stale: a summary whose facts have changed is hidden.
  */
 export async function AiSummary({ companyId }: { companyId: string }) {
@@ -21,7 +22,7 @@ export async function AiSummary({ companyId }: { companyId: string }) {
   const s = st.summary;
   const facts = new Map(s.facts.map((f) => [f.id, f]));
   return (
-    <Card title="AI-generated summary" action={<Tag tone="warn">Written by AI</Tag>}>
+    <Card title="AI-generated summary" action={<Tag tone="warn">{s.humanReview ? "Written by AI · reviewed" : "Written by AI"}</Tag>}>
       <div className="flex flex-col gap-3">
         <p className="text-sm leading-relaxed text-ink">
           {s.sentences.map((sen, i) => (
@@ -64,9 +65,13 @@ export async function AiSummary({ companyId }: { companyId: string }) {
           </ol>
         </details>
         <p className="text-xs text-ink-muted">
-          Written by Claude ({s.model}) on {s.generatedAt.slice(0, 10)} from the curated data on this page only. Checked automatically: every
-          number appears in a cited fact and no comparisons or judgements are made. Not reviewed by a person; the values
-          and sources on this page take precedence.
+          Written by Claude ({s.model}) on {s.generatedAt.slice(0, 10)} from the curated data on this page only. Every sentence
+          was checked automatically against the facts it cites (numbers, years, units, metric names, trend direction; no
+          causes, comparisons or judgements).{" "}
+          {s.humanReview
+            ? `The check flagged wording (${s.humanReview.problems.join("; ")}); ${s.humanReview.by} reviewed it on ${s.humanReview.at.slice(0, 10)}: "${s.humanReview.note}".`
+            : "Not reviewed by a person."}{" "}
+          The values and sources on this page take precedence.
         </p>
       </div>
     </Card>

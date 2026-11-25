@@ -5,6 +5,8 @@ import { Card, Tag } from "@/components/ui";
 import { RequeueButton, ReviewActions } from "@/components/review/ReviewClient";
 import { hasRole } from "@/lib/auth/accounts";
 import { getCompany } from "@/lib/db/queries";
+import { pipelineDb } from "@/lib/pipeline/db";
+import type { Skipped } from "@/lib/pipeline/extract/rules";
 import { getMetric } from "@/lib/metrics/dictionary";
 import { fiscalLabel } from "@/lib/fiscal";
 import { formatReported, titleCase } from "@/lib/format";
@@ -21,11 +23,17 @@ import { Denied } from "../../Denied";
 export const metadata: Metadata = { title: "Review document", robots: { index: false, follow: false } };
 
 const GROUPS: { status: ExtractionRow["status"]; title: string }[] = [
-  { status: "pending", title: "Pending review" },
-  { status: "blocked", title: "Blocked: evidence not found" },
+  { status: "pending", title: "Pending review (evidence verified)" },
+  { status: "blocked", title: "Blocked: evidence check failed" },
   { status: "approved", title: "Approved" },
   { status: "rejected", title: "Rejected" },
+  { status: "superseded", title: "Superseded" },
 ];
+
+/** Below this, a proposal is labelled low confidence (it may still be right; the reviewer checks the page). */
+const LOW_CONFIDENCE = 0.6;
+
+const isLowSource = (cls: string) => cls === "secondary_source" || cls === "search_excerpt";
 
 export default function DocumentReviewPage({ params }: PageProps<"/review/documents/[id]">) {
   return (
@@ -65,7 +73,7 @@ function EvidenceExcerpt({ text, wording }: { text: string; wording: string }) {
 }
 
 async function DocumentReview({ id }: { id: number }) {
-  const access = await currentAccess();
+  const access = await currentAccess("reviewer");
   if (!access.ok) return <Denied access={access} />;
   const canReview = hasRole(access.user.role, "reviewer");
   const doc = getDocument(id);
@@ -74,6 +82,10 @@ async function DocumentReview({ id }: { id: number }) {
   const fy = company ? { end: company.fy_end, labelConvention: company.fy_label_convention } : { end: "12-31", labelConvention: "end_year" as const };
   const jobs = jobsFor(id);
   const extractions = extractionsFor(id);
+  const skippedRow = pipelineDb()
+    .prepare("SELECT details FROM audit_log WHERE action = 'extraction_skipped_ambiguous' AND entity = 'document' AND entity_id = ? ORDER BY id DESC LIMIT 1")
+    .get(String(id)) as { details: string | null } | undefined;
+  const skipped = skippedRow?.details ? ((JSON.parse(skippedRow.details) as { skipped?: Skipped[] }).skipped ?? []) : [];
   const pages = new Map(pagesFor(id, [...new Set(extractions.map((e) => e.page_number))]).map((p) => [p.page_number, p]));
   const scanned = JSON.parse(doc.scanned_pages ?? "[]") as number[];
   const ocrRead = ocrPageNumbers(id);
@@ -133,6 +145,39 @@ async function DocumentReview({ id }: { id: number }) {
         {doc.error && <p className="mt-2 text-sm text-warn-ink">{doc.error}</p>}
       </Card>
 
+      <Card title="Review states">
+        <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-2">
+          {[
+            ["Pending", extractions.filter((e) => e.status === "pending").length],
+            ["Evidence verified", extractions.filter((e) => e.evidence_status === "verified").length],
+            ["Evidence failed", extractions.filter((e) => e.evidence_status !== "verified").length],
+            ["Low confidence", extractions.filter((e) => e.confidence < LOW_CONFIDENCE || isLowSource(doc.verification_class)).length],
+            ["Possible duplicate", extractions.filter((e) => e.conflict && (JSON.parse(e.conflict) as Conflict).type === "duplicate").length],
+            ["Possible restatement", extractions.filter((e) => e.conflict && (JSON.parse(e.conflict) as Conflict).type === "conflict").length],
+            ["Approved", extractions.filter((e) => e.status === "approved").length],
+            ["Rejected", extractions.filter((e) => e.status === "rejected").length],
+          ].map(([label, n]) => (
+            <li key={label as string}>
+              <span className="tabular font-semibold text-ink">{n}</span> {String(label).toLowerCase()}
+            </li>
+          ))}
+        </ul>
+        {skipped.length > 0 && (
+          <details className="mt-3 text-sm text-ink-2">
+            <summary className="cursor-pointer">
+              {skipped.length} metric/year{skipped.length === 1 ? "" : "s"} not proposed because the document was ambiguous (check by hand)
+            </summary>
+            <ul className="mt-2 flex flex-col gap-1 text-xs">
+              {skipped.map((k) => (
+                <li key={`${k.metricId}-${k.year}`}>
+                  {getMetric(k.metricId).label}, {fiscalLabel(fy, k.year)}: {k.reason} ({k.values.join(" / ")})
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </Card>
+
       {GROUPS.map((g) => {
         const list = extractions.filter((e) => e.status === g.status);
         if (!list.length) return null;
@@ -154,12 +199,14 @@ async function DocumentReview({ id }: { id: number }) {
                     <div className="mt-1 flex flex-wrap gap-1">
                       <Tag>{e.method === "ai" ? "Claude" : "Rule-based"}</Tag>
                       <Tag>confidence {Math.round(e.confidence * 100)}%</Tag>
+                      {(e.confidence < LOW_CONFIDENCE || isLowSource(doc.verification_class)) && <Tag tone="warn">Low confidence</Tag>}
+                      {e.page_label.endsWith("(OCR)") && <Tag tone="warn">Read by OCR</Tag>}
                       <Tag tone={e.evidence_status === "verified" ? "neutral" : "warn"}>
-                        Evidence {e.evidence_status === "verified" ? "verified" : "not found"}
+                        Evidence {e.evidence_status === "verified" ? "verified" : "failed"}
                       </Tag>
-                      {e.boundary !== "consolidated_group" && <Tag tone="warn">{LABELS.boundary[e.boundary as Boundary]}</Tag>}
-                      {conflict?.type === "conflict" && <Tag tone="warn">Conflicts with curated value</Tag>}
-                      {conflict?.type === "duplicate" && <Tag>Matches curated value</Tag>}
+                      {e.boundary !== "consolidated_group" && <Tag tone="warn">Boundary: {LABELS.boundary[e.boundary as Boundary].toLowerCase()}</Tag>}
+                      {conflict?.type === "conflict" && <Tag tone="warn">Possible restatement (differs from curated value)</Tag>}
+                      {conflict?.type === "duplicate" && <Tag>Possible duplicate (matches curated value)</Tag>}
                     </div>
                     <div className="mt-1 text-xs text-ink-muted">
                       {e.cell ?? e.page_label} · {LABELS.boundary[e.boundary as Boundary]} · {LABELS.consolidation[e.consolidation as Consolidation]}

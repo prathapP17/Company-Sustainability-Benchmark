@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import Database from "better-sqlite3";
-import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { backupDataDir } from "@/lib/ops/backup";
 import { latestSnapshot, restoreDrill } from "@/lib/ops/restore";
@@ -90,5 +90,12 @@ describe("scheduler timing", () => {
     expect(localParts(new Date("2026-11-23T01:30:00Z"), "Asia/Kolkata")).toMatchObject({ date: "2026-11-23", weekday: 1, hour: 7, minute: 0 });
     expect(isDue(parseSlot("Mon 07:00"), new Date("2026-11-23T01:30:00Z"), "Asia/Kolkata", null)).toBe(true);
     expect(isDue(parseSlot("Mon 07:00"), new Date("2026-11-23T01:29:00Z"), "Asia/Kolkata", null)).toBe(false);
+  });
+});
+
+describe("container image contents", () => {
+  it("never copies secrets, databases, uploads, backups or downloaded third-party reports into the image", () => {
+    const ignore = readFileSync(".dockerignore", "utf8").split("\n").map((l) => l.trim());
+    for (const p of [".env", "deploy/.env", "data/*.db", "data/backups", "data/uploads", "data/external", "data/logs", ".git"]) expect(ignore, p).toContain(p);
   });
 });

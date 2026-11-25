@@ -100,6 +100,14 @@ export const UNIT_RULES: UnitRule[] = [
   { unit: "%", re: /%|\bpercent\b/i },
 ];
 
+/** True when a table cell is only a unit ("GWh", "Tonnes", "1,000 tonnes CO2e", "(in kilolitres)"). */
+export function isUnitCell(cell: string): boolean {
+  const t = cell.trim();
+  if (!t || t.length > 45) return false;
+  if (!UNIT_RULES.some((r) => r.re.test(t))) return false;
+  return (t.match(/[A-Za-z]{2,}/g) ?? []).length <= 6;
+}
+
 /** First unit found in `text` that the metric accepts. */
 export function detectUnit(text: string, accepted: string[]): string | null {
   for (const r of UNIT_RULES) {
@@ -147,7 +155,13 @@ export function parseYearHeader(line: string, convention: FiscalLabelConvention)
   // A header line is mostly years: little other numeric content.
   if (findNumbers(other).length > years.length) return null;
   if (years.some((y) => y < 1990 || y > 2100)) return null;
-  return years;
+  // Data columns run in one direction with distinct years; a repeated or reversed year starts another
+  // table section ("2023 | 2024 | 2025 | Key items | 2025"), so only the first run counts.
+  const dir = Math.sign(years[1] - years[0]);
+  if (dir === 0) return null;
+  let k = 1;
+  while (k < years.length && Math.sign(years[k] - years[k - 1]) === dir) k++;
+  return k >= 2 ? years.slice(0, k) : null;
 }
 
 /** Nearest year header above `lineIndex` (within `lookback` lines). */

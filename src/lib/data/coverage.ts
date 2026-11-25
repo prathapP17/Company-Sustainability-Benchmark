@@ -6,6 +6,7 @@ import type { CompanyFile } from "../schema/company";
 import type { DisclosureState } from "../schema/enums";
 import { METRICS, metricAppliesTo } from "../metrics/dictionary";
 import { latestDisclosedYear } from "../schema/validate";
+import { classify } from "../industry";
 
 export interface Coverage {
   year: number | undefined;
@@ -19,12 +20,12 @@ export interface Coverage {
 /** Minimum share of core metrics that must be assessed before any score is shown (phase 2). */
 export const COVERAGE_THRESHOLD = 0.8;
 
-export function coreMetricsFor(peerGroup: string) {
-  return METRICS.filter((m) => m.core && metricAppliesTo(m, peerGroup));
+export function coreMetricsFor(sasbCodes: readonly string[]) {
+  return METRICS.filter((m) => m.core && metricAppliesTo(m, sasbCodes));
 }
 
 export function coverageFor(c: CompanyFile, year = latestDisclosedYear(c)): Coverage {
-  const core = coreMetricsFor(c.profile.peerGroup);
+  const core = coreMetricsFor(classify(c.profile.industry).codes);
   const counts: Record<DisclosureState, number> = { disclosed: 0, not_disclosed: 0, not_found: 0, not_assessed: 0 };
   const byMetric = core.map((def) => {
     const entries = year === undefined ? [] : c.metrics.filter((m) => m.metric === def.id && m.year === year);

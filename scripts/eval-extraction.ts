@@ -6,6 +6,8 @@
  *   npm run eval                      # rule-based extractor (free)
  *   npm run eval -- --claude          # also Claude: prints the estimated tokens and stops
  *   npm run eval -- --claude --yes    # … and runs it (costs API credits)
+ *   npm run eval -- --label=after     # writes results/<date>-after.json instead of results/<date>.json
+ *   npm run eval -- --no-year         # do not pass the report's reporting year (stricter: header-less rows are skipped)
  *
  * The source files live in data/external/eval/ (git-ignored; data/eval/sources.json
  * lists their URLs and SHA-256). A file whose checksum changed is skipped and reported.
@@ -16,8 +18,9 @@ import path from "node:path";
 import { defaultDataDir, loadCompanies } from "../src/lib/data/load";
 import { resolveMetric } from "../src/lib/schema/validate";
 import { parseFile } from "../src/lib/pipeline/ingest";
-import { extractCandidates } from "../src/lib/pipeline/extract/rules";
+import { extractWithDiagnostics } from "../src/lib/pipeline/extract/rules";
 import { aiEnabled, extractWithClaude, selectPages } from "../src/lib/pipeline/extract/ai";
+import { classify } from "../src/lib/industry";
 import { scoreProposals, type GoldValue, type Score } from "../src/lib/eval/score";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
@@ -46,7 +49,18 @@ function buildGold() {
       const r = resolveMetric(c, m);
       // Reported numbers only: derived values are computed, not printed.
       if (r.source !== s.source || r.state !== "disclosed" || r.value === undefined || !r.unit || r.status === "derived") continue;
-      gold.push({ company: s.company, source: s.source, metric: r.metric, year: r.year, value: r.value, unit: r.unit, page: r.page ?? null });
+      gold.push({
+        company: s.company,
+        source: s.source,
+        metric: r.metric,
+        year: r.year,
+        value: r.value,
+        unit: r.unit,
+        page: r.page ?? null,
+        boundary: r.boundary,
+        consolidation: r.consolidation,
+        scope2Method: r.scope2Method ?? null,
+      });
     }
   }
   mkdirSync(evalDir, { recursive: true });
@@ -64,7 +78,7 @@ async function run() {
   const withClaude = args.includes("--claude");
   if (withClaude && !aiEnabled()) throw new Error("--claude needs ANTHROPIC_API_KEY in .env.local");
 
-  const results: Record<string, Score & { method: string; source: string }> = {};
+  const results: Record<string, Score & { method: string; source: string; skippedAmbiguous?: number }> = {};
   let estimate = 0;
   for (const s of sources) {
     const file = path.join(filesDir, s.file);
@@ -80,15 +94,29 @@ async function run() {
     const c = companies.find((x) => x.profile.id === s.company)!;
     const pages = await parseFile(file, mimeOf(s.file));
     const g = gold.filter((x) => x.company === s.company && x.source === s.source);
-    const ctx = { peerGroup: c.profile.peerGroup, convention: c.profile.fiscalYear.labelConvention, reportingYear: null };
-    const rules = extractCandidates(pages, ctx).map((x) => ({ metric: x.metricId, year: x.year, value: x.value, unit: x.unit, page: x.pageLabel }));
-    results[`${s.company}/rules`] = { ...scoreProposals(g, rules), method: "rules", source: s.source };
+    const codes = classify(c.profile.industry).codes;
+    // Like an upload: the reviewer states the report's reporting year (from the curated source record), unless --no-year.
+    const reportingYear = args.includes("--no-year") ? null : (c.sources.find((x) => x.id === s.source)?.reportingYear ?? null);
+    const ctx = { industryCodes: codes, convention: c.profile.fiscalYear.labelConvention, reportingYear, maxYear: 2026 };
+    const diag = extractWithDiagnostics(pages, ctx);
+    const rules = diag.candidates.map((x) => ({
+      metric: x.metricId,
+      year: x.year,
+      value: x.value,
+      unit: x.unit,
+      page: x.pageLabel,
+      boundary: x.boundary,
+      consolidation: x.consolidation,
+      scope2Method: x.scope2Method,
+      ocr: x.pageLabel.endsWith("(OCR)"),
+    }));
+    results[`${s.company}/rules`] = { ...scoreProposals(g, rules), method: "rules", source: s.source, skippedAmbiguous: diag.skipped.length };
 
     if (withClaude) {
-      const chars = selectPages(pages, c.profile.peerGroup).reduce((n, p) => n + Math.min(p.text.length, 6000), 0);
+      const chars = selectPages(pages, codes).reduce((n, p) => n + Math.min(p.text.length, 6000), 0);
       estimate += Math.ceil(chars / 4) + 1500;
       if (args.includes("--yes")) {
-        const r = await extractWithClaude(pages, { peerGroup: c.profile.peerGroup, convention: c.profile.fiscalYear.labelConvention, companyName: c.profile.name });
+        const r = await extractWithClaude(pages, { industryCodes: codes, convention: c.profile.fiscalYear.labelConvention, companyName: c.profile.name });
         const ai = r.candidates.map((x) => ({ metric: x.metricId, year: x.year, value: x.value, unit: x.unit, page: x.pageLabel }));
         results[`${s.company}/claude`] = { ...scoreProposals(g, ai), method: "claude", source: s.source };
         console.log(`  claude ${s.company}: ${r.inputTokens} in / ${r.outputTokens} out tokens`);
@@ -113,11 +141,24 @@ async function run() {
     const jd = sum((r) => r.judged);
     console.log(`TOTAL ${method.padEnd(14)} ${String(gl).padStart(4)} ${String(sum((r) => r.found)).padStart(5)} ${String(sum((r) => r.wrong)).padStart(5)} ${String(sum((r) => r.missed)).padStart(6)} ${pct(gl ? Math.round((sum((r) => r.found) / gl) * 1000) / 10 : null)} ${String(sum((r) => r.proposals)).padStart(10)} ${String(jd).padStart(6)} ${String(sum((r) => r.correct)).padStart(7)} ${pct(jd ? Math.round((sum((r) => r.correct) / jd) * 1000) / 10 : null)}`);
   }
+  for (const method of ["rules", "claude"]) {
+    const rs = rows.filter(([, r]) => r.method === method).map(([, r]) => r);
+    if (!rs.length) continue;
+    const sum = (f: (r: Score) => number) => rs.reduce((n, r) => n + f(r), 0);
+    const share = (k: "boundary" | "consolidation" | "scope2Method") => {
+      const c = sum((r) => r[k].correct);
+      const o = sum((r) => r[k].of);
+      return `${c}/${o}${o ? ` (${((c / o) * 100).toFixed(1)}%)` : ""}`;
+    };
+    console.log(`\n${method}: wrong year ${sum((r) => r.wrongYear)}, wrong unit ${sum((r) => r.wrongUnit)}; context of correct values: boundary ${share("boundary")}, consolidation ${share("consolidation")}, Scope 2 method ${share("scope2Method")}; OCR proposals ${sum((r) => r.ocr.proposals)} (judged ${sum((r) => r.ocr.judged)}, correct ${sum((r) => r.ocr.correct)}); skipped as ambiguous ${rs.reduce((n, r) => n + ((r as { skippedAmbiguous?: number }).skippedAmbiguous ?? 0), 0)}`);
+  }
+  const label = args.find((a) => a.startsWith("--label="))?.slice(8);
   const out = path.join(evalDir, "results");
   mkdirSync(out, { recursive: true });
   const stamp = new Date().toISOString().slice(0, 10);
-  writeFileSync(path.join(out, `${stamp}.json`), `${JSON.stringify({ date: stamp, results }, null, 2)}\n`);
-  console.log(`\nwritten to data/eval/results/${stamp}.json`);
+  const name = label ? `${stamp}-${label}` : stamp;
+  writeFileSync(path.join(out, `${name}.json`), `${JSON.stringify({ date: stamp, reportingYearGiven: !args.includes("--no-year"), results }, null, 2)}\n`);
+  console.log(`\nwritten to data/eval/results/${name}.json`);
 }
 
 (args.includes("--gold") ? Promise.resolve(buildGold()) : run()).catch((e) => {

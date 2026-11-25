@@ -27,7 +27,12 @@ export function GenerateSummaryButton({ id, label }: { id: string; label: string
           const r = await post(`/api/pipeline/summaries/${id}`, {});
           setBusy(false);
           if (!r.ok) setMsg({ ok: false, text: String(r.data.error ?? "failed") });
-          else setMsg(r.data.ok ? { ok: true, text: "Published" } : { ok: false, text: `Not published: ${(r.data.problems as string[]).slice(0, 2).join("; ")}` });
+          else
+            setMsg(
+              r.data.ok
+                ? { ok: true, text: "Published" }
+                : { ok: false, text: `Not published${r.data.reviewable ? " (waiting for manual review below)" : ""}: ${(r.data.problems as string[]).slice(0, 2).join("; ")}` },
+            );
           router.refresh();
         }}
       >
@@ -74,6 +79,43 @@ export function NewsActions({ id, approved }: { id: number; approved: boolean })
         </button>
       </div>
       {error && <p role="alert" className="text-xs text-warn-ink">{error}</p>}
+    </div>
+  );
+}
+
+/** Manual-review fallback for a summary the automatic gate flagged on wording only. */
+export function SummaryCandidateActions({ id }: { id: number }) {
+  const router = useRouter();
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const act = async (action: "approve" | "reject") => {
+    setBusy(true);
+    setErr(null);
+    const r = await post(`/api/pipeline/summary-candidates/${id}`, { action, note });
+    setBusy(false);
+    if (!r.ok) setErr(String(r.data.error ?? "failed"));
+    else router.refresh();
+  };
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="field">
+        <span>Why the flagged wording is acceptable (shown publicly with the summary)</span>
+        <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={300} />
+      </label>
+      <div className="flex gap-2">
+        <button className={BTN_PRIMARY} disabled={busy || note.trim().length < 15} onClick={() => act("approve")}>
+          Approve and publish
+        </button>
+        <button className={BTN} disabled={busy} onClick={() => act("reject")}>
+          Reject
+        </button>
+      </div>
+      {err && (
+        <p role="alert" className="text-xs text-warn-ink">
+          {err}
+        </p>
+      )}
     </div>
   );
 }

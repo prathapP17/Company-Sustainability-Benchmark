@@ -122,3 +122,18 @@ export interface CrawlRunRow {
 export function recentRuns(limit = 5): CrawlRunRow[] {
   return pipelineDb().prepare("SELECT * FROM crawl_runs ORDER BY id DESC LIMIT ?").all(limit) as CrawlRunRow[];
 }
+
+/** Counts for the dashboard's "pending review" strip (reviewers only). */
+export function reviewOverview() {
+  const db = pipelineDb();
+  const n = (sql: string) => (db.prepare(sql).get() as { n: number }).n;
+  return {
+    pending: n("SELECT count(*) n FROM extractions WHERE status = 'pending'"),
+    blocked: n("SELECT count(*) n FROM extractions WHERE status = 'blocked'"),
+    possibleRestatements: n("SELECT count(*) n FROM extractions WHERE status IN ('pending','blocked') AND conflict LIKE '%\"conflict\"%'"),
+    openAlerts: openAlertCount(),
+    awaitingFetch: awaitingFetchCount(),
+    newsPending: n("SELECT count(*) n FROM news_items WHERE status = 'pending'"),
+    discovered30d: n("SELECT count(*) n FROM discovered_documents WHERE first_seen >= strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-30 days')"),
+  };
+}

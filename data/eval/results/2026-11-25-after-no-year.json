@@ -1,0 +1,2008 @@
+{
+  "date": "2026-11-25",
+  "reportingYearGiven": false,
+  "results": {
+    "apple/rules": {
+      "wrongYear": 1,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 0,
+        "of": 8,
+        "pct": 0
+      },
+      "consolidation": {
+        "correct": 0,
+        "of": 8,
+        "pct": 0
+      },
+      "scope2Method": {
+        "correct": 2,
+        "of": 2,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 18,
+      "found": 8,
+      "wrong": 2,
+      "missed": 8,
+      "proposals": 24,
+      "judged": 10,
+      "correct": 8,
+      "unjudged": 14,
+      "recall": 44.4,
+      "precision": 80,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 55200,
+          "unit": "tCO2e",
+          "got": [
+            55200
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2024,
+          "gold": 55200,
+          "unit": "tCO2e",
+          "got": [
+            55200
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 1100,
+          "unit": "tCO2e",
+          "got": [
+            1100
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2024,
+          "gold": 3300,
+          "unit": "tCO2e",
+          "got": [
+            3300
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 1210200,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 8150000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 163000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 201700,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 143600,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 4120000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 70000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 100,
+          "unit": "%",
+          "got": [
+            100
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2024,
+          "gold": 100,
+          "unit": "%",
+          "got": [
+            100
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 1796,
+          "unit": "million gallons",
+          "got": [
+            95
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2024,
+          "gold": 1756,
+          "unit": "million gallons",
+          "got": [
+            1800
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "waste_diversion_rate",
+          "year": 2025,
+          "gold": 75,
+          "unit": "%",
+          "got": [
+            75
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_diversion_rate",
+          "year": 2024,
+          "gold": 70,
+          "unit": "%",
+          "got": [
+            70
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "hw_recycled_material_share",
+          "year": 2025,
+          "gold": 30,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "apple-epr-2026",
+      "skippedAmbiguous": 0
+    },
+    "microsoft/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 0,
+        "of": 24,
+        "pct": 0
+      },
+      "consolidation": {
+        "correct": 24,
+        "of": 24,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 4,
+        "of": 4,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 28,
+      "found": 24,
+      "wrong": 0,
+      "missed": 4,
+      "proposals": 105,
+      "judged": 24,
+      "correct": 24,
+      "unjudged": 81,
+      "recall": 85.7,
+      "precision": 100,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 170887,
+          "unit": "tCO2e",
+          "got": [
+            170887
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2024,
+          "gold": 143510,
+          "unit": "tCO2e",
+          "got": [
+            143510
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 12030556,
+          "unit": "tCO2e",
+          "got": [
+            12030556
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2024,
+          "gold": 9955368,
+          "unit": "tCO2e",
+          "got": [
+            9955368
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 2707428,
+          "unit": "tCO2e",
+          "got": [
+            2707428
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2024,
+          "gold": 259090,
+          "unit": "tCO2e",
+          "got": [
+            259090
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2025,
+          "gold": 18243000,
+          "unit": "tCO2e",
+          "got": [
+            18243000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2024,
+          "gold": 16290000,
+          "unit": "tCO2e",
+          "got": [
+            16290000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 5129000,
+          "unit": "tCO2e",
+          "got": [
+            5129000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c2",
+          "year": 2025,
+          "gold": 9044000,
+          "unit": "tCO2e",
+          "got": [
+            9044000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 1075000,
+          "unit": "tCO2e",
+          "got": [
+            1075000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 823000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c5",
+          "year": 2025,
+          "gold": 14000,
+          "unit": "tCO2e",
+          "got": [
+            14000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 239000,
+          "unit": "tCO2e",
+          "got": [
+            239000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 284000,
+          "unit": "tCO2e",
+          "got": [
+            284000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c9",
+          "year": 2025,
+          "gold": 86000,
+          "unit": "tCO2e",
+          "got": [
+            86000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 1540000,
+          "unit": "tCO2e",
+          "got": [
+            1540000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 3000,
+          "unit": "tCO2e",
+          "got": [
+            3000
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c13",
+          "year": 2025,
+          "gold": 6000,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 37461476,
+          "unit": "MWh",
+          "got": [
+            37461476
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2024,
+          "gold": 30207220,
+          "unit": "MWh",
+          "got": [
+            30207220
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 100,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2024,
+          "gold": 78,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 13266,
+          "unit": "ML",
+          "got": [
+            13266
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2024,
+          "gold": 11590,
+          "unit": "ML",
+          "got": [
+            11590
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2025,
+          "gold": 8170,
+          "unit": "ML",
+          "got": [
+            8170
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 58868,
+          "unit": "t",
+          "got": [
+            58868
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2024,
+          "gold": 41290,
+          "unit": "t",
+          "got": [
+            41290
+          ],
+          "outcome": "found"
+        }
+      ],
+      "method": "rules",
+      "source": "msft-factsheet-2026",
+      "skippedAmbiguous": 3
+    },
+    "nestle/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 8,
+        "of": 8,
+        "pct": 100
+      },
+      "consolidation": {
+        "correct": 0,
+        "of": 8,
+        "pct": 0
+      },
+      "scope2Method": {
+        "correct": 2,
+        "of": 2,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 29,
+      "found": 8,
+      "wrong": 3,
+      "missed": 18,
+      "proposals": 26,
+      "judged": 11,
+      "correct": 8,
+      "unjudged": 15,
+      "recall": 27.6,
+      "precision": 72.7,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 2.82,
+          "unit": "MtCO2e",
+          "got": [
+            2.82
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2024,
+          "gold": 3.02,
+          "unit": "MtCO2e",
+          "got": [
+            3.02
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 0.22,
+          "unit": "MtCO2e",
+          "got": [
+            0.22
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2024,
+          "gold": 0.24,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 2.48,
+          "unit": "MtCO2e",
+          "got": [
+            2.48
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2024,
+          "gold": 2.42,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c2",
+          "year": 2025,
+          "gold": 2.72,
+          "unit": "MtCO2e",
+          "got": [
+            2.72
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 0.94,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 1.7,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c5",
+          "year": 2025,
+          "gold": 0.05,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 0.11,
+          "unit": "MtCO2e",
+          "got": [
+            0.11
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 0.36,
+          "unit": "MtCO2e",
+          "got": [
+            0.36
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c8",
+          "year": 2025,
+          "gold": 0.11,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c9",
+          "year": 2025,
+          "gold": 7.51,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 0.4,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 1.46,
+          "unit": "MtCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c15",
+          "year": 2025,
+          "gold": 0.22,
+          "unit": "MtCO2e",
+          "got": [
+            0.22
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 77120623,
+          "unit": "GJ",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2024,
+          "gold": 78784554,
+          "unit": "GJ",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 98.6,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2024,
+          "gold": 95.3,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 96.1,
+          "unit": "million m3",
+          "got": [
+            44.4
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2024,
+          "gold": 97.9,
+          "unit": "million m3",
+          "got": [
+            44.8
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2025,
+          "gold": 44.7,
+          "unit": "million m3",
+          "got": [
+            53.5
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 1839067,
+          "unit": "t",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2024,
+          "gold": 1771759,
+          "unit": "t",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "fb_deforestation_free_share",
+          "year": 2025,
+          "gold": 96.7,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "fb_recyclable_packaging_share",
+          "year": 2025,
+          "gold": 87.5,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "fb_recyclable_packaging_share",
+          "year": 2024,
+          "gold": 86.4,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "nestle-nfs-2025",
+      "skippedAmbiguous": 1
+    },
+    "reliance/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 5,
+        "of": 5,
+        "pct": 100
+      },
+      "consolidation": {
+        "correct": 5,
+        "of": 5,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 0,
+        "of": 0,
+        "pct": null
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 12,
+      "found": 5,
+      "wrong": 1,
+      "missed": 6,
+      "proposals": 8,
+      "judged": 6,
+      "correct": 5,
+      "unjudged": 2,
+      "recall": 41.7,
+      "precision": 83.3,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2026,
+          "gold": 36350070,
+          "unit": "tCO2e",
+          "got": [
+            36350070
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 36459294,
+          "unit": "tCO2e",
+          "got": [
+            36459294
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2026,
+          "gold": 1918352,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2026,
+          "gold": 2532081,
+          "unit": "tCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2026,
+          "gold": 478033842,
+          "unit": "GJ",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 481641954,
+          "unit": "GJ",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2026,
+          "gold": 204555068,
+          "unit": "kL",
+          "got": [
+            204555068
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 208465383,
+          "unit": "kL",
+          "got": [
+            208465383
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2026,
+          "gold": 204555068,
+          "unit": "kL",
+          "got": [
+            204555068
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2026,
+          "gold": 993787,
+          "unit": "t",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 760123,
+          "unit": "t",
+          "got": [
+            14001
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "og_ghg_intensity_revenue_ppp",
+          "year": 2026,
+          "gold": 0.000142,
+          "unit": "tCO2e / USD PPP",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "ril-brsr-fy2026",
+      "skippedAmbiguous": 0
+    },
+    "samsung/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 0,
+        "of": 19,
+        "pct": 0
+      },
+      "consolidation": {
+        "correct": 19,
+        "of": 19,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 3,
+        "of": 3,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 33,
+      "found": 19,
+      "wrong": 2,
+      "missed": 12,
+      "proposals": 43,
+      "judged": 21,
+      "correct": 19,
+      "unjudged": 22,
+      "recall": 57.6,
+      "precision": 90.5,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 4646,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2024,
+          "gold": 4725,
+          "unit": "ktCO2e",
+          "got": [
+            2
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 9511,
+          "unit": "ktCO2e",
+          "got": [
+            1
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2024,
+          "gold": 10164,
+          "unit": "ktCO2e",
+          "got": [
+            10164
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 15042,
+          "unit": "ktCO2e",
+          "got": [
+            15042
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2024,
+          "gold": 15011,
+          "unit": "ktCO2e",
+          "got": [
+            15011
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2025,
+          "gold": 103388,
+          "unit": "ktCO2e",
+          "got": [
+            103388
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2024,
+          "gold": 100703,
+          "unit": "ktCO2e",
+          "got": [
+            100703
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 10945,
+          "unit": "ktCO2e",
+          "got": [
+            10945
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c2",
+          "year": 2025,
+          "gold": 3165,
+          "unit": "ktCO2e",
+          "got": [
+            3165
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 2915,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 3667,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c5",
+          "year": 2025,
+          "gold": 156,
+          "unit": "ktCO2e",
+          "got": [
+            156
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 92,
+          "unit": "ktCO2e",
+          "got": [
+            92
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 372,
+          "unit": "ktCO2e",
+          "got": [
+            372
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c8",
+          "year": 2025,
+          "gold": 11,
+          "unit": "ktCO2e",
+          "got": [
+            11
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c9",
+          "year": 2025,
+          "gold": 261,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c10",
+          "year": 2025,
+          "gold": 336,
+          "unit": "ktCO2e",
+          "got": [
+            336
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 79582,
+          "unit": "ktCO2e",
+          "got": [
+            79582
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 1644,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c13",
+          "year": 2025,
+          "gold": 5,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c15",
+          "year": 2025,
+          "gold": 237,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 40249,
+          "unit": "GWh",
+          "got": [
+            40249
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2024,
+          "gold": 38772,
+          "unit": "GWh",
+          "got": [
+            38772
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 32.5,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2024,
+          "gold": 31.4,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 197720,
+          "unit": "thousand tonnes",
+          "got": [
+            197720
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2024,
+          "gold": 188540,
+          "unit": "thousand tonnes",
+          "got": [
+            188540
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 1420912,
+          "unit": "t",
+          "got": [
+            1420912
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2024,
+          "gold": 1348979,
+          "unit": "t",
+          "got": [
+            1348979
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_diversion_rate",
+          "year": 2025,
+          "gold": 98,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "sc_pfc_emissions",
+          "year": 2025,
+          "gold": 994,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "hw_ewaste_collected",
+          "year": 2025,
+          "gold": 636231,
+          "unit": "t",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "samsung-sr-2026",
+      "skippedAmbiguous": 3
+    },
+    "siemens/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 13,
+        "of": 13,
+        "pct": 100
+      },
+      "consolidation": {
+        "correct": 13,
+        "of": 13,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 2,
+        "of": 2,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 21,
+      "found": 13,
+      "wrong": 0,
+      "missed": 8,
+      "proposals": 14,
+      "judged": 13,
+      "correct": 13,
+      "unjudged": 1,
+      "recall": 61.9,
+      "precision": 100,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 288,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 633,
+          "unit": "ktCO2e",
+          "got": [
+            633
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 71,
+          "unit": "ktCO2e",
+          "got": [
+            71
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2025,
+          "gold": 159144,
+          "unit": "ktCO2e",
+          "got": [
+            159144
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 9425,
+          "unit": "ktCO2e",
+          "got": [
+            9425
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c2",
+          "year": 2025,
+          "gold": 397,
+          "unit": "ktCO2e",
+          "got": [
+            397
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 121,
+          "unit": "ktCO2e",
+          "got": [
+            121
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 1101,
+          "unit": "ktCO2e",
+          "got": [
+            1101
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c5",
+          "year": 2025,
+          "gold": 21,
+          "unit": "ktCO2e",
+          "got": [
+            21
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 214,
+          "unit": "ktCO2e",
+          "got": [
+            214
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 177,
+          "unit": "ktCO2e",
+          "got": [
+            177
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c9",
+          "year": 2025,
+          "gold": 24,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 134133,
+          "unit": "ktCO2e",
+          "got": [
+            134133
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 3659,
+          "unit": "ktCO2e",
+          "got": [
+            3659
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c13",
+          "year": 2025,
+          "gold": 2963,
+          "unit": "ktCO2e",
+          "got": [
+            2963
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c15",
+          "year": 2025,
+          "gold": 6911,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 2984738,
+          "unit": "MWh",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 86,
+          "unit": "%",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 12.963,
+          "unit": "million m3",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2025,
+          "gold": 0.599,
+          "unit": "million m3",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 188127,
+          "unit": "t",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "siemens-ss-fy2025",
+      "skippedAmbiguous": 2
+    },
+    "toyota/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 13,
+        "of": 13,
+        "pct": 100
+      },
+      "consolidation": {
+        "correct": 13,
+        "of": 13,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 4,
+        "of": 4,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 32,
+      "found": 13,
+      "wrong": 1,
+      "missed": 18,
+      "proposals": 31,
+      "judged": 14,
+      "correct": 13,
+      "unjudged": 17,
+      "recall": 40.6,
+      "precision": 92.9,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 2466,
+          "unit": "ktCO2e",
+          "got": [
+            2466
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope1",
+          "year": 2024,
+          "gold": 2518,
+          "unit": "ktCO2e",
+          "got": [
+            2518
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 4125,
+          "unit": "ktCO2e",
+          "got": [
+            4125
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2024,
+          "gold": 4127,
+          "unit": "ktCO2e",
+          "got": [
+            4127
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 2057,
+          "unit": "ktCO2e",
+          "got": [
+            2057
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2024,
+          "gold": 2533,
+          "unit": "ktCO2e",
+          "got": [
+            2533
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_total",
+          "year": 2025,
+          "gold": 509458,
+          "unit": "ktCO2e",
+          "got": [
+            8573
+          ],
+          "outcome": "wrong"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 115461,
+          "unit": "ktCO2e",
+          "got": [
+            115461
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c2",
+          "year": 2025,
+          "gold": 6250,
+          "unit": "ktCO2e",
+          "got": [
+            6250
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c3",
+          "year": 2025,
+          "gold": 936,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 4709,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c5",
+          "year": 2025,
+          "gold": 112,
+          "unit": "ktCO2e",
+          "got": [
+            112
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c6",
+          "year": 2025,
+          "gold": 324,
+          "unit": "ktCO2e",
+          "got": [
+            324
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c7",
+          "year": 2025,
+          "gold": 60,
+          "unit": "ktCO2e",
+          "got": [
+            60
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c9",
+          "year": 2025,
+          "gold": 186,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c10",
+          "year": 2025,
+          "gold": 11,
+          "unit": "ktCO2e",
+          "got": [
+            11
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c11",
+          "year": 2025,
+          "gold": 368263,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 9811,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c13",
+          "year": 2025,
+          "gold": 154,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c14",
+          "year": 2025,
+          "gold": 2235,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "ghg_scope3_c15",
+          "year": 2025,
+          "gold": 946,
+          "unit": "ktCO2e",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 20516,
+          "unit": "GWh",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2024,
+          "gold": 20284,
+          "unit": "GWh",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2025,
+          "gold": 36,
+          "unit": "million m3",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_withdrawal",
+          "year": 2024,
+          "gold": 36,
+          "unit": "million m3",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2025,
+          "gold": 3,
+          "unit": "million m3",
+          "got": [
+            3
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 260,
+          "unit": "kt",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2024,
+          "gold": 249,
+          "unit": "kt",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "au_electrified_sales",
+          "year": 2025,
+          "gold": 5040,
+          "unit": "thousand units",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "au_electrified_sales",
+          "year": 2024,
+          "gold": 4748,
+          "unit": "thousand units",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "au_bev_sales",
+          "year": 2025,
+          "gold": 243,
+          "unit": "thousand units",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "au_bev_sales",
+          "year": 2024,
+          "gold": 145,
+          "unit": "thousand units",
+          "got": [],
+          "outcome": "missed"
+        }
+      ],
+      "method": "rules",
+      "source": "toyota-sdb-2026",
+      "skippedAmbiguous": 0
+    },
+    "unilever/rules": {
+      "wrongYear": 0,
+      "wrongUnit": 0,
+      "boundary": {
+        "correct": 0,
+        "of": 9,
+        "pct": 0
+      },
+      "consolidation": {
+        "correct": 9,
+        "of": 9,
+        "pct": 100
+      },
+      "scope2Method": {
+        "correct": 2,
+        "of": 2,
+        "pct": 100
+      },
+      "ocr": {
+        "proposals": 0,
+        "judged": 0,
+        "correct": 0
+      },
+      "gold": 11,
+      "found": 9,
+      "wrong": 1,
+      "missed": 1,
+      "proposals": 33,
+      "judged": 10,
+      "correct": 9,
+      "unjudged": 23,
+      "recall": 81.8,
+      "precision": 90,
+      "details": [
+        {
+          "metric": "ghg_scope1",
+          "year": 2025,
+          "gold": 0.43,
+          "unit": "MtCO2e",
+          "got": [
+            0.43
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_market",
+          "year": 2025,
+          "gold": 0.06,
+          "unit": "MtCO2e",
+          "got": [
+            0.06
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope2_location",
+          "year": 2025,
+          "gold": 0.82,
+          "unit": "MtCO2e",
+          "got": [
+            0.82
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c1",
+          "year": 2025,
+          "gold": 37.91,
+          "unit": "MtCO2e",
+          "got": [
+            37.91
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c4",
+          "year": 2025,
+          "gold": 1.87,
+          "unit": "MtCO2e",
+          "got": [
+            1.87
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "ghg_scope3_c12",
+          "year": 2025,
+          "gold": 3.73,
+          "unit": "MtCO2e",
+          "got": [
+            3.73
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "energy_total",
+          "year": 2025,
+          "gold": 5224,
+          "unit": "GWh",
+          "got": [],
+          "outcome": "missed"
+        },
+        {
+          "metric": "renewable_electricity_share",
+          "year": 2025,
+          "gold": 88,
+          "unit": "%",
+          "got": [
+            88
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "water_consumption",
+          "year": 2025,
+          "gold": 14,
+          "unit": "million m3",
+          "got": [
+            14
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "waste_total",
+          "year": 2025,
+          "gold": 493,
+          "unit": "kt",
+          "got": [
+            493
+          ],
+          "outcome": "found"
+        },
+        {
+          "metric": "fb_recyclable_packaging_share",
+          "year": 2025,
+          "gold": 57,
+          "unit": "%",
+          "got": [
+            80
+          ],
+          "outcome": "wrong"
+        }
+      ],
+      "method": "rules",
+      "source": "unilever-ar-2025",
+      "skippedAmbiguous": 0
+    }
+  }
+}

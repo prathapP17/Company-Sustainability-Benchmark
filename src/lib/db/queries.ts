@@ -40,6 +40,12 @@ export interface CompanyRow {
   cov_not_disclosed: number;
   cov_not_found: number;
   cov_not_assessed: number;
+  lat: number;
+  lon: number;
+  /** JSON array of SASB industry codes (analytical industry). */
+  sasb_codes: string | null;
+  primary_sasb: string | null;
+  classification_review: string | null;
 }
 
 const COMPANY_SELECT = `

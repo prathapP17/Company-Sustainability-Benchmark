@@ -17,7 +17,8 @@
     "region": "Asia-Pacific",
     "industry": {
       "gics": "Semiconductors",
-      "sasb": "Semiconductors (TC-SC)"
+      "sasb": "Semiconductors (TC-SC)",
+      "sasbCodes": ["TC-SC"]
     },
     "peerGroup": "tech_hardware_semis",
     "fiscalYear": {

@@ -8,7 +8,10 @@
       "year": 2025,
       "value": 55200,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -17,7 +20,10 @@
       "year": 2024,
       "value": 55200,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -26,7 +32,10 @@
       "year": 2025,
       "value": 1100,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "apple",
@@ -35,7 +44,10 @@
       "year": 2024,
       "value": 3300,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "apple",
@@ -44,7 +56,10 @@
       "year": 2025,
       "value": 1210200,
       "unit": "tCO2e",
-      "page": "p.101 (assurance statement)"
+      "page": "p.101 (assurance statement)",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "apple",
@@ -53,7 +68,10 @@
       "year": 2025,
       "value": 8150000,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -62,7 +80,10 @@
       "year": 2025,
       "value": 163000,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -71,7 +92,10 @@
       "year": 2025,
       "value": 201700,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -80,7 +104,10 @@
       "year": 2025,
       "value": 143600,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -89,7 +116,10 @@
       "year": 2025,
       "value": 4120000,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -98,7 +128,10 @@
       "year": 2025,
       "value": 70000,
       "unit": "tCO2e",
-      "page": "p.76"
+      "page": "p.76",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -107,7 +140,10 @@
       "year": 2025,
       "value": 100,
       "unit": "%",
-      "page": "p.80"
+      "page": "p.80",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -116,7 +152,10 @@
       "year": 2024,
       "value": 100,
       "unit": "%",
-      "page": "p.80"
+      "page": "p.80",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -125,7 +164,10 @@
       "year": 2025,
       "value": 1796,
       "unit": "million gallons",
-      "page": "p.81"
+      "page": "p.81",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -134,7 +176,10 @@
       "year": 2024,
       "value": 1756,
       "unit": "million gallons",
-      "page": "p.81"
+      "page": "p.81",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -143,7 +188,10 @@
       "year": 2025,
       "value": 75,
       "unit": "%",
-      "page": "p.81"
+      "page": "p.81",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -152,7 +200,10 @@
       "year": 2024,
       "value": 70,
       "unit": "%",
-      "page": "p.81"
+      "page": "p.81",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "apple",
@@ -161,7 +212,10 @@
       "year": 2025,
       "value": 30,
       "unit": "%",
-      "page": "p.15"
+      "page": "p.15",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -170,7 +224,10 @@
       "year": 2025,
       "value": 170887,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -179,7 +236,10 @@
       "year": 2024,
       "value": 143510,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -188,7 +248,10 @@
       "year": 2025,
       "value": 12030556,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "location"
     },
     {
       "company": "microsoft",
@@ -197,7 +260,10 @@
       "year": 2024,
       "value": 9955368,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "location"
     },
     {
       "company": "microsoft",
@@ -206,7 +272,10 @@
       "year": 2025,
       "value": 2707428,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "market"
     },
     {
       "company": "microsoft",
@@ -215,7 +284,10 @@
       "year": 2024,
       "value": 259090,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "market"
     },
     {
       "company": "microsoft",
@@ -224,7 +296,10 @@
       "year": 2025,
       "value": 18243000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -233,7 +308,10 @@
       "year": 2024,
       "value": 16290000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -242,7 +320,10 @@
       "year": 2025,
       "value": 5129000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -251,7 +332,10 @@
       "year": 2025,
       "value": 9044000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -260,7 +344,10 @@
       "year": 2025,
       "value": 1075000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -269,7 +356,10 @@
       "year": 2025,
       "value": 823000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -278,7 +368,10 @@
       "year": 2025,
       "value": 14000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -287,7 +380,10 @@
       "year": 2025,
       "value": 239000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -296,7 +392,10 @@
       "year": 2025,
       "value": 284000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -305,7 +404,10 @@
       "year": 2025,
       "value": 86000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -314,7 +416,10 @@
       "year": 2025,
       "value": 1540000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -323,7 +428,10 @@
       "year": 2025,
       "value": 3000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -332,7 +440,10 @@
       "year": 2025,
       "value": 6000,
       "unit": "tCO2e",
-      "page": "p.3, Table 1A"
+      "page": "p.3, Table 1A",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -341,7 +452,10 @@
       "year": 2025,
       "value": 37461476,
       "unit": "MWh",
-      "page": "p.6, Table 5"
+      "page": "p.6, Table 5",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -350,7 +464,10 @@
       "year": 2024,
       "value": 30207220,
       "unit": "MWh",
-      "page": "p.6, Table 5"
+      "page": "p.6, Table 5",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -359,7 +476,10 @@
       "year": 2025,
       "value": 100,
       "unit": "%",
-      "page": "p.6, Table 6"
+      "page": "p.6, Table 6",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -368,7 +488,10 @@
       "year": 2024,
       "value": 78,
       "unit": "%",
-      "page": "p.6, Table 6"
+      "page": "p.6, Table 6",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -377,7 +500,10 @@
       "year": 2025,
       "value": 13266,
       "unit": "ML",
-      "page": "p.7, Table 8"
+      "page": "p.7, Table 8",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -386,7 +512,10 @@
       "year": 2024,
       "value": 11590,
       "unit": "ML",
-      "page": "p.7, Table 8"
+      "page": "p.7, Table 8",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -395,7 +524,10 @@
       "year": 2025,
       "value": 8170,
       "unit": "ML",
-      "page": "p.7, Table 8"
+      "page": "p.7, Table 8",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -404,7 +536,10 @@
       "year": 2025,
       "value": 58868,
       "unit": "t",
-      "page": "p.7, Table 9"
+      "page": "p.7, Table 9",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "microsoft",
@@ -413,7 +548,10 @@
       "year": 2024,
       "value": 41290,
       "unit": "t",
-      "page": "p.7, Table 9"
+      "page": "p.7, Table 9",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -422,7 +560,10 @@
       "year": 2025,
       "value": 2.82,
       "unit": "MtCO2e",
-      "page": "p.51; p.203"
+      "page": "p.51; p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -431,7 +572,10 @@
       "year": 2024,
       "value": 3.02,
       "unit": "MtCO2e",
-      "page": "p.203"
+      "page": "p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -440,7 +584,10 @@
       "year": 2025,
       "value": 0.22,
       "unit": "MtCO2e",
-      "page": "p.51; p.203"
+      "page": "p.51; p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "nestle",
@@ -449,7 +596,10 @@
       "year": 2024,
       "value": 0.24,
       "unit": "MtCO2e",
-      "page": "p.203"
+      "page": "p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "nestle",
@@ -458,7 +608,10 @@
       "year": 2025,
       "value": 2.48,
       "unit": "MtCO2e",
-      "page": "p.54; p.203"
+      "page": "p.54; p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "nestle",
@@ -467,7 +620,10 @@
       "year": 2024,
       "value": 2.42,
       "unit": "MtCO2e",
-      "page": "p.203"
+      "page": "p.203",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "nestle",
@@ -476,7 +632,10 @@
       "year": 2025,
       "value": 2.72,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -485,7 +644,10 @@
       "year": 2025,
       "value": 0.94,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -494,7 +656,10 @@
       "year": 2025,
       "value": 1.7,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -503,7 +668,10 @@
       "year": 2025,
       "value": 0.05,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -512,7 +680,10 @@
       "year": 2025,
       "value": 0.11,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -521,7 +692,10 @@
       "year": 2025,
       "value": 0.36,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -530,7 +704,10 @@
       "year": 2025,
       "value": 0.11,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -539,7 +716,10 @@
       "year": 2025,
       "value": 7.51,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -548,7 +728,10 @@
       "year": 2025,
       "value": 0.4,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -557,7 +740,10 @@
       "year": 2025,
       "value": 1.46,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -566,7 +752,10 @@
       "year": 2025,
       "value": 0.22,
       "unit": "MtCO2e",
-      "page": "p.53"
+      "page": "p.53",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -575,7 +764,10 @@
       "year": 2025,
       "value": 77120623,
       "unit": "GJ",
-      "page": "p.49; p.202"
+      "page": "p.49; p.202",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -584,7 +776,10 @@
       "year": 2024,
       "value": 78784554,
       "unit": "GJ",
-      "page": "p.202"
+      "page": "p.202",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -593,7 +788,10 @@
       "year": 2025,
       "value": 98.6,
       "unit": "%",
-      "page": "p.42; p.202"
+      "page": "p.42; p.202",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -602,7 +800,10 @@
       "year": 2024,
       "value": 95.3,
       "unit": "%",
-      "page": "p.202"
+      "page": "p.202",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -611,7 +812,10 @@
       "year": 2025,
       "value": 96.1,
       "unit": "million m3",
-      "page": "p.209"
+      "page": "p.209",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -620,7 +824,10 @@
       "year": 2024,
       "value": 97.9,
       "unit": "million m3",
-      "page": "p.209"
+      "page": "p.209",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -629,7 +836,10 @@
       "year": 2025,
       "value": 44.7,
       "unit": "million m3",
-      "page": "p.209"
+      "page": "p.209",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -638,7 +848,10 @@
       "year": 2025,
       "value": 1839067,
       "unit": "t",
-      "page": "p.211"
+      "page": "p.211",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -647,7 +860,10 @@
       "year": 2024,
       "value": 1771759,
       "unit": "t",
-      "page": "p.211"
+      "page": "p.211",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -656,7 +872,10 @@
       "year": 2025,
       "value": 96.7,
       "unit": "%",
-      "page": "p.42; p.73"
+      "page": "p.42; p.73",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -665,7 +884,10 @@
       "year": 2025,
       "value": 87.5,
       "unit": "%",
-      "page": "p.83; p.211"
+      "page": "p.83; p.211",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "nestle",
@@ -674,7 +896,10 @@
       "year": 2024,
       "value": 86.4,
       "unit": "%",
-      "page": "p.211"
+      "page": "p.211",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -683,7 +908,10 @@
       "year": 2026,
       "value": 36350070,
       "unit": "tCO2e",
-      "page": "PDF p.36, P6 Q7"
+      "page": "PDF p.36, P6 Q7",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -692,7 +920,10 @@
       "year": 2025,
       "value": 36459294,
       "unit": "tCO2e",
-      "page": "PDF p.36, P6 Q7"
+      "page": "PDF p.36, P6 Q7",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -701,7 +932,10 @@
       "year": 2026,
       "value": 1918352,
       "unit": "tCO2e",
-      "page": "PDF p.36, P6 Q7 and note"
+      "page": "PDF p.36, P6 Q7 and note",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "reliance",
@@ -710,7 +944,10 @@
       "year": 2026,
       "value": 2532081,
       "unit": "tCO2e",
-      "page": "PDF p.36, note to P6 Q7"
+      "page": "PDF p.36, note to P6 Q7",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "reliance",
@@ -719,7 +956,10 @@
       "year": 2026,
       "value": 478033842,
       "unit": "GJ",
-      "page": "PDF p.35, P6 Q1"
+      "page": "PDF p.35, P6 Q1",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -728,7 +968,10 @@
       "year": 2025,
       "value": 481641954,
       "unit": "GJ",
-      "page": "PDF p.35, P6 Q1"
+      "page": "PDF p.35, P6 Q1",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -737,7 +980,10 @@
       "year": 2026,
       "value": 204555068,
       "unit": "kL",
-      "page": "PDF p.35, P6 Q3"
+      "page": "PDF p.35, P6 Q3",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -746,7 +992,10 @@
       "year": 2025,
       "value": 208465383,
       "unit": "kL",
-      "page": "PDF p.35, P6 Q3"
+      "page": "PDF p.35, P6 Q3",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -755,7 +1004,10 @@
       "year": 2026,
       "value": 204555068,
       "unit": "kL",
-      "page": "PDF p.35, P6 Q3"
+      "page": "PDF p.35, P6 Q3",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -764,7 +1016,10 @@
       "year": 2026,
       "value": 993787,
       "unit": "t",
-      "page": "PDF p.37, P6 Q9"
+      "page": "PDF p.37, P6 Q9",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -773,7 +1028,10 @@
       "year": 2025,
       "value": 760123,
       "unit": "t",
-      "page": "PDF p.37, P6 Q9"
+      "page": "PDF p.37, P6 Q9",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "reliance",
@@ -782,7 +1040,10 @@
       "year": 2026,
       "value": 0.000142,
       "unit": "tCO2e / USD PPP",
-      "page": "PDF p.36, P6 Q7"
+      "page": "PDF p.36, P6 Q7",
+      "boundary": "parent_only",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -791,7 +1052,10 @@
       "year": 2025,
       "value": 4646,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -800,7 +1064,10 @@
       "year": 2024,
       "value": 4725,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -809,7 +1076,10 @@
       "year": 2025,
       "value": 9511,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "samsung",
@@ -818,7 +1088,10 @@
       "year": 2024,
       "value": 10164,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "samsung",
@@ -827,7 +1100,10 @@
       "year": 2025,
       "value": 15042,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "samsung",
@@ -836,7 +1112,10 @@
       "year": 2024,
       "value": 15011,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "samsung",
@@ -845,7 +1124,10 @@
       "year": 2025,
       "value": 103388,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -854,7 +1136,10 @@
       "year": 2024,
       "value": 100703,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -863,7 +1148,10 @@
       "year": 2025,
       "value": 10945,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -872,7 +1160,10 @@
       "year": 2025,
       "value": 3165,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -881,7 +1172,10 @@
       "year": 2025,
       "value": 2915,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -890,7 +1184,10 @@
       "year": 2025,
       "value": 3667,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -899,7 +1196,10 @@
       "year": 2025,
       "value": 156,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -908,7 +1208,10 @@
       "year": 2025,
       "value": 92,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -917,7 +1220,10 @@
       "year": 2025,
       "value": 372,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -926,7 +1232,10 @@
       "year": 2025,
       "value": 11,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -935,7 +1244,10 @@
       "year": 2025,
       "value": 261,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -944,7 +1256,10 @@
       "year": 2025,
       "value": 336,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -953,7 +1268,10 @@
       "year": 2025,
       "value": 79582,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -962,7 +1280,10 @@
       "year": 2025,
       "value": 1644,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -971,7 +1292,10 @@
       "year": 2025,
       "value": 5,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -980,7 +1304,10 @@
       "year": 2025,
       "value": 237,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -989,7 +1316,10 @@
       "year": 2025,
       "value": 40249,
       "unit": "GWh",
-      "page": "p.70"
+      "page": "p.70",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -998,7 +1328,10 @@
       "year": 2024,
       "value": 38772,
       "unit": "GWh",
-      "page": "p.70"
+      "page": "p.70",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1007,7 +1340,10 @@
       "year": 2025,
       "value": 32.5,
       "unit": "%",
-      "page": "p.70"
+      "page": "p.70",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1016,7 +1352,10 @@
       "year": 2024,
       "value": 31.4,
       "unit": "%",
-      "page": "p.70"
+      "page": "p.70",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1025,7 +1364,10 @@
       "year": 2025,
       "value": 197720,
       "unit": "thousand tonnes",
-      "page": "p.71"
+      "page": "p.71",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1034,7 +1376,10 @@
       "year": 2024,
       "value": 188540,
       "unit": "thousand tonnes",
-      "page": "p.71"
+      "page": "p.71",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1043,7 +1388,10 @@
       "year": 2025,
       "value": 1420912,
       "unit": "t",
-      "page": "p.71"
+      "page": "p.71",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1052,7 +1400,10 @@
       "year": 2024,
       "value": 1348979,
       "unit": "t",
-      "page": "p.71"
+      "page": "p.71",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1061,7 +1412,10 @@
       "year": 2025,
       "value": 98,
       "unit": "%",
-      "page": "p.71"
+      "page": "p.71",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1070,7 +1424,10 @@
       "year": 2025,
       "value": 994,
       "unit": "ktCO2e",
-      "page": "p.69"
+      "page": "p.69",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "samsung",
@@ -1079,7 +1436,10 @@
       "year": 2025,
       "value": 636231,
       "unit": "t",
-      "page": "p.70"
+      "page": "p.70",
+      "boundary": "not_stated",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1088,7 +1448,10 @@
       "year": 2025,
       "value": 288,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1097,7 +1460,10 @@
       "year": 2025,
       "value": 633,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "location"
     },
     {
       "company": "siemens",
@@ -1106,7 +1472,10 @@
       "year": 2025,
       "value": 71,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": "market"
     },
     {
       "company": "siemens",
@@ -1115,7 +1484,10 @@
       "year": 2025,
       "value": 159144,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1124,7 +1496,10 @@
       "year": 2025,
       "value": 9425,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1133,7 +1508,10 @@
       "year": 2025,
       "value": 397,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1142,7 +1520,10 @@
       "year": 2025,
       "value": 121,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1151,7 +1532,10 @@
       "year": 2025,
       "value": 1101,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1160,7 +1544,10 @@
       "year": 2025,
       "value": 21,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1169,7 +1556,10 @@
       "year": 2025,
       "value": 214,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1178,7 +1568,10 @@
       "year": 2025,
       "value": 177,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1187,7 +1580,10 @@
       "year": 2025,
       "value": 24,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1196,7 +1592,10 @@
       "year": 2025,
       "value": 134133,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1205,7 +1604,10 @@
       "year": 2025,
       "value": 3659,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1214,7 +1616,10 @@
       "year": 2025,
       "value": 2963,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1223,7 +1628,10 @@
       "year": 2025,
       "value": 6911,
       "unit": "ktCO2e",
-      "page": "p.33"
+      "page": "p.33",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1232,7 +1640,10 @@
       "year": 2025,
       "value": 2984738,
       "unit": "MWh",
-      "page": "p.36"
+      "page": "p.36",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1241,7 +1652,10 @@
       "year": 2025,
       "value": 86,
       "unit": "%",
-      "page": "p.30; p.7"
+      "page": "p.30; p.7",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1250,7 +1664,10 @@
       "year": 2025,
       "value": 12.963,
       "unit": "million m3",
-      "page": "p.45"
+      "page": "p.45",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1259,7 +1676,10 @@
       "year": 2025,
       "value": 0.599,
       "unit": "million m3",
-      "page": "p.45"
+      "page": "p.45",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "siemens",
@@ -1268,7 +1688,10 @@
       "year": 2025,
       "value": 188127,
       "unit": "t",
-      "page": "p.56"
+      "page": "p.56",
+      "boundary": "consolidated_group",
+      "consolidation": "not_stated",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1277,7 +1700,10 @@
       "year": 2025,
       "value": 2466,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1286,7 +1712,10 @@
       "year": 2024,
       "value": 2518,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1295,7 +1724,10 @@
       "year": 2025,
       "value": 4125,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "location"
     },
     {
       "company": "toyota",
@@ -1304,7 +1736,10 @@
       "year": 2024,
       "value": 4127,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "location"
     },
     {
       "company": "toyota",
@@ -1313,7 +1748,10 @@
       "year": 2025,
       "value": 2057,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "market"
     },
     {
       "company": "toyota",
@@ -1322,7 +1760,10 @@
       "year": 2024,
       "value": 2533,
       "unit": "ktCO2e",
-      "page": "PDF p.63, table B"
+      "page": "PDF p.63, table B",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "market"
     },
     {
       "company": "toyota",
@@ -1331,7 +1772,10 @@
       "year": 2025,
       "value": 509458,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1340,7 +1784,10 @@
       "year": 2025,
       "value": 115461,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1349,7 +1796,10 @@
       "year": 2025,
       "value": 6250,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1358,7 +1808,10 @@
       "year": 2025,
       "value": 936,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1367,7 +1820,10 @@
       "year": 2025,
       "value": 4709,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1376,7 +1832,10 @@
       "year": 2025,
       "value": 112,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1385,7 +1844,10 @@
       "year": 2025,
       "value": 324,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1394,7 +1856,10 @@
       "year": 2025,
       "value": 60,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1403,7 +1868,10 @@
       "year": 2025,
       "value": 186,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1412,7 +1880,10 @@
       "year": 2025,
       "value": 11,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1421,7 +1892,10 @@
       "year": 2025,
       "value": 368263,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1430,7 +1904,10 @@
       "year": 2025,
       "value": 9811,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1439,7 +1916,10 @@
       "year": 2025,
       "value": 154,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1448,7 +1928,10 @@
       "year": 2025,
       "value": 2235,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1457,7 +1940,10 @@
       "year": 2025,
       "value": 946,
       "unit": "ktCO2e",
-      "page": "PDF p.64, table C"
+      "page": "PDF p.64, table C",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1466,7 +1952,10 @@
       "year": 2025,
       "value": 20516,
       "unit": "GWh",
-      "page": "PDF p.65, table G"
+      "page": "PDF p.65, table G",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1475,7 +1964,10 @@
       "year": 2024,
       "value": 20284,
       "unit": "GWh",
-      "page": "PDF p.65, table G"
+      "page": "PDF p.65, table G",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1484,7 +1976,10 @@
       "year": 2025,
       "value": 36,
       "unit": "million m3",
-      "page": "PDF p.66, table H"
+      "page": "PDF p.66, table H",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1493,7 +1988,10 @@
       "year": 2024,
       "value": 36,
       "unit": "million m3",
-      "page": "PDF p.66, table H"
+      "page": "PDF p.66, table H",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1502,7 +2000,10 @@
       "year": 2025,
       "value": 3,
       "unit": "million m3",
-      "page": "PDF p.66, table J"
+      "page": "PDF p.66, table J",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1511,7 +2012,10 @@
       "year": 2025,
       "value": 260,
       "unit": "kt",
-      "page": "PDF p.67, table M"
+      "page": "PDF p.67, table M",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1520,7 +2024,10 @@
       "year": 2024,
       "value": 249,
       "unit": "kt",
-      "page": "PDF p.67, table M"
+      "page": "PDF p.67, table M",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1529,7 +2036,10 @@
       "year": 2025,
       "value": 5040,
       "unit": "thousand units",
-      "page": "PDF p.65, table F"
+      "page": "PDF p.65, table F",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1538,7 +2048,10 @@
       "year": 2024,
       "value": 4748,
       "unit": "thousand units",
-      "page": "PDF p.65, table F"
+      "page": "PDF p.65, table F",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1547,7 +2060,10 @@
       "year": 2025,
       "value": 243,
       "unit": "thousand units",
-      "page": "PDF p.65, table F"
+      "page": "PDF p.65, table F",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "toyota",
@@ -1556,7 +2072,10 @@
       "year": 2024,
       "value": 145,
       "unit": "thousand units",
-      "page": "PDF p.65, table F"
+      "page": "PDF p.65, table F",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1565,7 +2084,10 @@
       "year": 2025,
       "value": 0.43,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1574,7 +2096,10 @@
       "year": 2025,
       "value": 0.06,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "market"
     },
     {
       "company": "unilever",
@@ -1583,7 +2108,10 @@
       "year": 2025,
       "value": 0.82,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": "location"
     },
     {
       "company": "unilever",
@@ -1592,7 +2120,10 @@
       "year": 2025,
       "value": 37.91,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1601,7 +2132,10 @@
       "year": 2025,
       "value": 1.87,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1610,7 +2144,10 @@
       "year": 2025,
       "value": 3.73,
       "unit": "MtCO2e",
-      "page": "p.232"
+      "page": "p.232",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1619,7 +2156,10 @@
       "year": 2025,
       "value": 5224,
       "unit": "GWh",
-      "page": "p.233"
+      "page": "p.233",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1628,7 +2168,10 @@
       "year": 2025,
       "value": 88,
       "unit": "%",
-      "page": "p.234"
+      "page": "p.234",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1637,7 +2180,10 @@
       "year": 2025,
       "value": 14,
       "unit": "million m3",
-      "page": "p.238"
+      "page": "p.238",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1646,7 +2192,10 @@
       "year": 2025,
       "value": 493,
       "unit": "kt",
-      "page": "p.246"
+      "page": "p.246",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     },
     {
       "company": "unilever",
@@ -1655,7 +2204,10 @@
       "year": 2025,
       "value": 57,
       "unit": "%",
-      "page": "p.244"
+      "page": "p.244",
+      "boundary": "consolidated_group",
+      "consolidation": "operational_control",
+      "scope2Method": null
     }
   ]
 }

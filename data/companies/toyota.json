@@ -17,7 +17,8 @@
     "region": "Asia-Pacific",
     "industry": {
       "gics": "Automobile Manufacturers",
-      "sasb": "Automobiles (TR-AU)"
+      "sasb": "Automobiles (TR-AU)",
+      "sasbCodes": ["TR-AU"]
     },
     "peerGroup": "autos_industrials",
     "fiscalYear": {

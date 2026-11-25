@@ -249,4 +249,30 @@ CREATE TABLE news_items (
 CREATE INDEX news_items_company ON news_items(company_id, status);
 `,
   },
+  {
+    version: 5,
+    name: "AI summary candidates for the manual-review fallback",
+    sql: `
+-- A generated summary that fails the automatic evidence gate is never
+-- published automatically. If every problem is a wording problem it waits
+-- here ('pending') for a reviewer; one with an unsupported claim is stored
+-- as 'rejected_auto' for the record and can never be approved.
+CREATE TABLE summary_candidates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  created_by TEXT NOT NULL,
+  model TEXT NOT NULL,
+  facts_hash TEXT NOT NULL,
+  facts TEXT NOT NULL,           -- JSON, exactly the facts the model saw
+  sentences TEXT NOT NULL,       -- JSON
+  problems TEXT NOT NULL,        -- JSON array of {sentence, kind, message}
+  status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'rejected', 'rejected_auto', 'superseded')),
+  reviewer TEXT,
+  reviewed_at TEXT,
+  note TEXT
+);
+CREATE INDEX summary_candidates_company ON summary_candidates(company_id, status);
+`,
+  },
 ];

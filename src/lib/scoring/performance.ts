@@ -9,8 +9,8 @@
  */
 import type { CompanyFile } from "../schema/company";
 import { resolveMetric, latestDisclosedYear, type ResolvedMetric } from "../schema/validate";
-import { toCanonical } from "../metrics/dictionary";
-import { rankable } from "./comparability";
+import { getMetric, toCanonical } from "../metrics/dictionary";
+import { rankable, sameBasis, type ComparableValue } from "./comparability";
 import { targetProgress } from "./targets";
 
 export const MIN_INDICATORS = 3;
@@ -54,6 +54,12 @@ const round1 = (x: number) => Math.round(x * 10) / 10;
 
 function canonical(m: ResolvedMetric): number | null {
   return m.value !== undefined && m.unit ? toCanonical(m.metric, m.value, m.unit) : null;
+}
+
+/** The engine's view of a curated value. */
+function asComparable(m: ResolvedMetric): ComparableValue {
+  const c = canonical(m);
+  return { ...m, metricId: m.metric, canonical: c, canonicalUnit: c === null ? null : getMetric(m.metric).canonicalUnit, coverage: m.coverage ?? null };
 }
 
 export function performance(c: CompanyFile): PerformanceResult {
@@ -102,9 +108,9 @@ export function performance(c: CompanyFile): PerformanceResult {
     const prev = ids.map((m) => get(m, year - 1));
     const missing = [...cur, ...prev].some((v) => !v);
     if (missing) return push(id, null, "", null, `needs ${ids.join(" + ")} for ${year} and ${year - 1}`);
-    const blocked = [...cur, ...prev].map((v) => rankable(v!)).find((r) => !r.ok);
+    // Same rule as every other year-on-year comparison (comparability engine).
+    const blocked = cur.map((v, k) => sameBasis(asComparable(v!), asComparable(prev[k]!))).find((r) => !r.ok);
     if (blocked) return push(id, null, "", null, `excluded: ${blocked.reason}`);
-    if (cur.some((v) => v!.trendBreak)) return push(id, null, "", null, "excluded: method or scope changed between years (trend break)");
     const sum = (vs: (ResolvedMetric | undefined)[]) => vs.reduce((s, v) => s + (canonical(v!) ?? NaN), 0);
     const a = sum(prev);
     const b = sum(cur);
@@ -118,7 +124,7 @@ export function performance(c: CompanyFile): PerformanceResult {
   const share = (metric: string, id: Indicator["id"]) => {
     const v = get(metric, year);
     if (!v || v.value === undefined) return push(id, null, "", null, "not disclosed for latest year");
-    const r = rankable(v);
+    const r = rankable(asComparable(v));
     if (!r.ok) return push(id, null, "", null, `excluded: ${r.reason}`);
     push(id, v.value, "%", Math.max(0, Math.min(100, v.value)), v.status === "derived" ? "derived from reported values" : "as reported");
   };

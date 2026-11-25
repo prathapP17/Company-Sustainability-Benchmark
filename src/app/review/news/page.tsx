@@ -37,7 +37,7 @@ export default function NewsReviewPage() {
 }
 
 async function Queues() {
-  const access = await currentAccess();
+  const access = await currentAccess("reviewer");
   if (!access.ok) return <Denied access={access} />;
   const canReview = hasRole(access.user.role, "reviewer");
   const db = pipelineDb();

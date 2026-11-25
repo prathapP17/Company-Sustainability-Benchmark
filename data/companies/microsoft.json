@@ -16,7 +16,8 @@
     "region": "Americas",
     "industry": {
       "gics": "Systems Software",
-      "sasb": "Software & IT Services (TC-SI)"
+      "sasb": "Software & IT Services (TC-SI)",
+      "sasbCodes": ["TC-SI"]
     },
     "peerGroup": "software_it",
     "fiscalYear": {

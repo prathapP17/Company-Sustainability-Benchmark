@@ -3,7 +3,8 @@
  *
  * - Cross-industry metrics apply to every company.
  * - Industry metrics follow SASB/ISSB industry standards and apply to the
- *   peer groups listed in `appliesTo`.
+ *   SASB industry codes listed in `appliesTo` (the company's own SASB
+ *   classification, never its broad navigation peer group).
  * - `units` lists every accepted reported unit with an exact factor to the
  *   canonical unit. Conversion is pure unit scaling (e.g. MWh → GWh); it is
  *   never used to combine values on different boundaries or methods (rule 4).
@@ -18,7 +19,7 @@ export interface MetricDef {
   canonicalUnit: string;
   /** Accepted reported units → multiply by factor to get canonical unit. */
   units: Record<string, number>;
-  /** "all" or a list of peer-group ids. */
+  /** "all" or a list of SASB industry codes (e.g. "TC-HW"). */
   appliesTo: "all" | string[];
   /** Scope 2 values must state market or location method. */
   requiresScope2Method?: boolean;
@@ -199,7 +200,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "%",
     units: PCT,
-    appliesTo: ["tech_hardware_semis"],
+    appliesTo: ["TC-HW"],
     core: false,
     sasb: "TC-HW-410a (product lifecycle management)",
     synonyms: ["recycled content", "recycled or renewable", "再生材"],
@@ -211,7 +212,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "t",
     units: MASS,
-    appliesTo: ["tech_hardware_semis"],
+    appliesTo: ["TC-HW"],
     core: false,
     sasb: "TC-HW-410a.4",
     synonyms: ["e-waste collected", "take-back", "collected for recycling", "폐전자제품 회수"],
@@ -223,7 +224,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "tCO2e",
     units: T,
-    appliesTo: ["tech_hardware_semis"],
+    appliesTo: ["TC-SC"],
     core: false,
     sasb: "TC-SC-110a.1",
     synonyms: ["perfluorinated compounds", "PFC", "F-gas", "process gas"],
@@ -235,7 +236,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "ratio",
     units: { ratio: 1 },
-    appliesTo: ["software_it"],
+    appliesTo: ["TC-SI"],
     core: false,
     sasb: "TC-SI-130a.3",
     synonyms: ["PUE", "power usage effectiveness"],
@@ -247,7 +248,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "units",
     units: { units: 1, "thousand units": 1_000 },
-    appliesTo: ["autos_industrials"],
+    appliesTo: ["TR-AU"],
     core: false,
     sasb: "TR-AU-410a.2",
     synonyms: ["BEV", "battery electric vehicles", "電気自動車"],
@@ -259,7 +260,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "units",
     units: { units: 1, "thousand units": 1_000 },
-    appliesTo: ["autos_industrials"],
+    appliesTo: ["TR-AU"],
     core: false,
     sasb: "TR-AU-410a.2",
     synonyms: ["electrified vehicles", "HEV PHEV BEV FCEV", "電動車"],
@@ -271,7 +272,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "%",
     units: PCT,
-    appliesTo: ["consumer_staples"],
+    appliesTo: ["FB-PF", "CG-HP"],
     core: false,
     sasb: "FB-PF-430a / CG-HP-430a.1",
     synonyms: ["deforestation-free", "DCF", "deforestation and conversion-free"],
@@ -283,7 +284,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "t",
     units: MASS,
-    appliesTo: ["consumer_staples"],
+    appliesTo: ["FB-PF", "CG-HP"],
     core: false,
     sasb: "FB-PF-410a.1 / CG-HP-410a.1",
     synonyms: ["virgin plastic", "virgin plastics packaging"],
@@ -295,7 +296,7 @@ export const METRICS: MetricDef[] = [
     category: "industry",
     canonicalUnit: "%",
     units: PCT,
-    appliesTo: ["consumer_staples"],
+    appliesTo: ["FB-PF", "CG-HP"],
     core: false,
     sasb: "FB-PF-410a.1 / CG-HP-410a.1",
     synonyms: ["recyclable", "designed for recycling", "reusable, recyclable or compostable"],
@@ -308,7 +309,7 @@ export const METRICS: MetricDef[] = [
     canonicalUnit: "tCO2e / USD mn PPP",
     // BRSR reports tCO2e per rupee of turnover divided by the IMF PPP rate, i.e. per PPP dollar.
     units: { "tCO2e / USD mn PPP": 1, "tCO2e / USD PPP": 1_000_000 },
-    appliesTo: ["energy_conglomerates"],
+    appliesTo: ["EM-RM"],
     core: false,
     sasb: "EM-RM-110a (BRSR Core 1)",
     synonyms: ["intensity per rupee of turnover adjusted for PPP", "emission intensity"],
@@ -325,8 +326,9 @@ export function getMetric(id: string): MetricDef {
   return m;
 }
 
-export function metricAppliesTo(m: MetricDef, peerGroup: string): boolean {
-  return m.appliesTo === "all" || m.appliesTo.includes(peerGroup);
+/** Whether a metric applies to a company with these SASB industry codes. */
+export function metricAppliesTo(m: MetricDef, sasbCodes: readonly string[]): boolean {
+  return m.appliesTo === "all" || sasbCodes.some((c) => (m.appliesTo as string[]).includes(c));
 }
 
 /** Exact unit scaling to the canonical unit. Returns null if the unit is not accepted. */

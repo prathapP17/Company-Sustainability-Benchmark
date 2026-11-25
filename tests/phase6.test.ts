@@ -72,7 +72,7 @@ describe("AI summary check", () => {
       ],
       facts,
     );
-    expect(r).toEqual({ ok: true, problems: [] });
+    expect(r).toMatchObject({ ok: true, problems: [] });
   });
   it("rejects invented or uncited numbers, unknown citations, comparisons and spelled-out quantities", () => {
     const r = checkSummary(

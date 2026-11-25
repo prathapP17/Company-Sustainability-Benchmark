@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { alignToYears, detectUnit, findNumbers, numberForms, parseYearHeader } from "@/lib/pipeline/extract/parse";
-import { extractCandidates } from "@/lib/pipeline/extract/rules";
+import { extractCandidates, extractWithDiagnostics } from "@/lib/pipeline/extract/rules";
 import { verifyEvidence } from "@/lib/pipeline/evidence";
 import { selectPages, extractWithClaude } from "@/lib/pipeline/extract/ai";
 import { parseMemInfo, parseVmStat } from "@/lib/pipeline/memory";
@@ -63,7 +63,7 @@ describe("units and years", () => {
 
 describe("rule-based extractor", () => {
   it("extracts a Microsoft-style table with the right years and units", () => {
-    const c = extractCandidates([page(MSFT)], { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(MSFT)], { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null });
     const get = (m: string, y: number) => c.find((x) => x.metricId === m && x.year === y);
     expect(get("ghg_scope1", 2025)).toMatchObject({ value: 170887, unit: "tCO2e", consolidation: "operational_control" });
     expect(get("ghg_scope2_market", 2025)).toMatchObject({ value: 2707428, scope2Method: "market" });
@@ -71,21 +71,21 @@ describe("rule-based extractor", () => {
     expect(get("ghg_scope3_total", 2025)?.value).toBe(18243000);
   });
   it("reads an Indian BRSR row as standalone (parent only) with FY 2025-26 = 2026", () => {
-    const c = extractCandidates([page(BRSR)], { peerGroup: "energy_conglomerates", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(BRSR)], { industryCodes: ["EM-RM"], convention: "end_year", reportingYear: null });
     expect(c.find((x) => x.year === 2026)).toMatchObject({ metricId: "ghg_scope1", value: 36350070, boundary: "parent_only" });
   });
   it("reads a wrapped unit and skips the ambiguous space-grouped waste row", () => {
-    const c = extractCandidates([page(NESTLE)], { peerGroup: "consumer_staples", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(NESTLE)], { industryCodes: ["FB-PF"], convention: "end_year", reportingYear: null });
     expect(c.find((x) => x.metricId === "ghg_scope1" && x.year === 2025)).toMatchObject({ value: 2.82, unit: "MtCO2e" });
     expect(c.some((x) => x.metricId === "waste_total")).toBe(false);
   });
   it("skips scanned pages and pages without a determinable unit", () => {
-    expect(extractCandidates([{ ...page(MSFT), isScanned: true }], { peerGroup: "software_it", convention: "end_year", reportingYear: null })).toEqual([]);
-    expect(extractCandidates([page("2024 | 2025\nScope 1 | 10 | 12")], { peerGroup: "software_it", convention: "end_year", reportingYear: null })).toEqual([]);
+    expect(extractCandidates([{ ...page(MSFT), isScanned: true }], { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null })).toEqual([]);
+    expect(extractCandidates([page("2024 | 2025\nScope 1 | 10 | 12")], { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null })).toEqual([]);
   });
   it("cites spreadsheet cells as Sheet!A1", () => {
     const cells = { A1: "tCO2e", B1: "2024", C1: "2025", A2: "Scope 1", B2: "100", C2: "120" };
-    const c = extractCandidates([{ pageNumber: 1, label: "Sheet: GHG", text: "", cells }], { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([{ pageNumber: 1, label: "Sheet: GHG", text: "", cells }], { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null });
     expect(c.find((x) => x.year === 2025)).toMatchObject({ value: 120, cell: "GHG!C2" });
   });
 });
@@ -115,22 +115,22 @@ describe("rule-based extractor: empty cells printed as dashes", () => {
   it("keeps each value in its own column, and skips rows whose cells do not line up with the years", () => {
     const aligned = `(in ktCO2e) | 2019 | 2025 | 2030 | 2050
 Gross Scope 1 GHG emissions - 288 - -`;
-    const c = extractCandidates([page(aligned)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(aligned)], { industryCodes: ["TR-AU"], convention: "end_year", reportingYear: null });
     expect(c.map((x) => [x.metricId, x.year, x.value])).toEqual([["ghg_scope1", 2025, 288]]); // not 2050
     const misaligned = `(in ktCO2e) | 2019 | 2025 | 2030 | 2050
 Gross Scope 1 GHG emissions - 288 - - -`;
-    expect(extractCandidates([page(misaligned)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null })).toEqual([]);
+    expect(extractCandidates([page(misaligned)], { industryCodes: ["TR-AU"], convention: "end_year", reportingYear: null })).toEqual([]);
     // A dash inside the label is not an empty cell.
     const label = `GHG emissions (mtCO2e) | FY24 | FY25
 Category 3 – Fuel- and energy-related activities | 708,000 | 1,075,000`;
-    const l = extractCandidates([page(label)], { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+    const l = extractCandidates([page(label)], { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null });
     expect(l.find((x) => x.metricId === "ghg_scope3_c3" && x.year === 2025)?.value).toBe(1075000);
   });
 });
 
 describe("rule-based extractor: rows that are not the metric", () => {
   it("skips intensity ratios and renewable / non-renewable energy subtotals", () => {
-    const c = extractCandidates([page(BRSR_ENERGY)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(BRSR_ENERGY)], { industryCodes: ["TR-AU"], convention: "end_year", reportingYear: null });
     const energy = c.filter((x) => x.metricId === "energy_total");
     expect(energy.map((x) => [x.year, x.value])).toEqual([[2026, 242818], [2024, 210092]]); // the year header really says FY 2024
     expect(c.filter((x) => x.metricId === "water_consumption").map((x) => x.value)).toEqual([313579, 282315]);
@@ -138,13 +138,13 @@ describe("rule-based extractor: rows that are not the metric", () => {
     expect(c.every((x) => x.boundary === "parent_only")).toBe(true);
   });
   it("does not read a combined Scope 1 + 2 row as Scope 2, and reads 'Scope 3 (unit) |' rows", () => {
-    const c = extractCandidates([page(TSMC)], { peerGroup: "tech_hardware_semis", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(TSMC)], { industryCodes: ["TC-HW", "TC-SC"], convention: "end_year", reportingYear: null });
     expect(c.filter((x) => x.metricId === "ghg_scope2_market" && x.year === 2025).map((x) => x.value)).toEqual([11130571]);
     expect(c.find((x) => x.metricId === "ghg_scope1" && x.year === 2025)?.value).toBe(2196516);
     expect(c.find((x) => x.metricId === "ghg_scope3_total" && x.year === 2025)?.value).toBe(36299005);
   });
   it("ignores combined-scope figures in running prose", () => {
-    const c = extractCandidates([page(RELIANCE_PROSE)], { peerGroup: "energy_conglomerates", convention: "end_year", reportingYear: null });
+    const c = extractCandidates([page(RELIANCE_PROSE)], { industryCodes: ["EM-RM"], convention: "end_year", reportingYear: null });
     expect(c).toEqual([]);
   });
 });
@@ -174,7 +174,7 @@ describe("evidence gate (rule 6)", () => {
 describe("Claude extractor (no network: fake client)", () => {
   it("selects keyword-rich pages and drops structurally invalid answers", async () => {
     const pages = [page("Cover page"), page(MSFT, 3), { ...page("", 4), isScanned: true }];
-    expect(selectPages(pages, "software_it").map((p) => p.pageNumber)).toEqual([3]);
+    expect(selectPages(pages, ["TC-SI"]).map((p) => p.pageNumber)).toEqual([3]);
     const fake = {
       beta: {
         messages: {
@@ -193,14 +193,14 @@ describe("Claude extractor (no network: fake client)", () => {
         },
       },
     };
-    const r = await extractWithClaude(pages, { peerGroup: "software_it", convention: "end_year", companyName: "Test" }, fake as never);
+    const r = await extractWithClaude(pages, { industryCodes: ["TC-SI"], convention: "end_year", companyName: "Test" }, fake as never);
     expect(r.candidates).toHaveLength(1);
     expect(r.dropped).toBe(3);
     expect(r.candidates[0]).toMatchObject({ metricId: "ghg_scope1", pageLabel: "PDF p.3", consolidation: "operational_control" });
   });
   it("fails loudly on a refusal instead of returning partial data", async () => {
     const fake = { beta: { messages: { parse: async () => ({ stop_reason: "refusal", usage: { input_tokens: 1, output_tokens: 1 }, parsed_output: null }) } } };
-    await expect(extractWithClaude([page(MSFT, 3)], { peerGroup: "software_it", convention: "end_year", companyName: "T" }, fake as never)).rejects.toThrow(/refusal/);
+    await expect(extractWithClaude([page(MSFT, 3)], { industryCodes: ["TC-SI"], convention: "end_year", companyName: "T" }, fake as never)).rejects.toThrow(/refusal/);
   });
 });
 
@@ -252,7 +252,7 @@ describe("OCR for image-only pages", () => {
       const pages = await parseFile(file, "application/pdf");
       expect(pages[0]).toMatchObject({ label: "PDF p.1 (OCR)", isScanned: true });
       expect(pages[0].text).toMatch(/55,900/);
-      const c = extractCandidates(pages, { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+      const c = extractCandidates(pages, { industryCodes: ["TC-SI"], convention: "end_year", reportingYear: null });
       const v = c.find((x) => x.metricId === "ghg_scope1" && x.year === 2025)!;
       expect(v).toMatchObject({ value: 55900, pageLabel: "PDF p.1 (OCR)" });
       expect(v.confidence).toBeLessThan(0.75);
@@ -260,4 +260,54 @@ describe("OCR for image-only pages", () => {
       rmSync(dir, { recursive: true, force: true });
     }
   }, 60_000);
+});
+
+describe("rule-based extractor: precision rules (measured on the evaluation set)", () => {
+  const ctx = { industryCodes: ["TC-HW", "TC-SC"], convention: "end_year" as const, reportingYear: null, maxYear: 2026 };
+  const run = (text: string, extra = {}) => extractWithDiagnostics([page(text)], { ...ctx, ...extra });
+  it("does not read digits inside a unit ('1,000 tonnes CO2e') as a value", () => {
+    const c = run(`Category | Unit | 2023 | 2024 | 2025\nPurchased products and services | 1,000 tonnes CO₂e | 11,514 | 10,827 | 10,945`).candidates;
+    expect(c.filter((x) => x.metricId === "ghg_scope3_c1").map((x) => [x.year, x.value, x.unit])).toEqual([
+      [2025, 10945, "ktCO2e"],
+      [2024, 10827, "ktCO2e"],
+      [2023, 11514, "ktCO2e"],
+    ]);
+  });
+  it("skips per-gas rows, share rows, water-stress subsets and all-scope totals", () => {
+    const t = `(mtCO2e) | 2024 | 2025\nScope 1 – CH4 | 57 | 75\nPercentage of Scope 1 GHG emissions from regulated schemes | 6.6 | 7.1\nTotal GHG emissions location-based | 70.1 | 71.31`;
+    expect(run(t).candidates).toEqual([]);
+    expect(run(`(ML) | 2024 | 2025\nWater withdrawn in regions with high water stress | 44.8 | 44.4`).candidates).toEqual([]);
+  });
+  it("stops at the next label cell and refuses a label followed by another label", () => {
+    const energy = run(`Item | Unit | 2023 | 2024 | 2025\nEnergy consumption at business sites | GWh | 36,399 | 38,772 | 40,249 | Cumulative amount of e-waste collected | Tonnes | 6,297,161 | 6,908,516 | 7,544,747`).candidates;
+    expect(energy.filter((x) => x.metricId === "energy_total").map((x) => x.value)).toEqual([40249, 38772, 36399]);
+    expect(run(`(tCO2e) | 2024 | 2025\nScope 1 | Revenue ($M) | 245,122 | 281,724`).candidates).toEqual([]);
+  });
+  it("uses only the first run of distinct years in a header and never reports target-year columns", () => {
+    expect(parseYearHeader("2023 | 2024 | 2025 | Key calculation items | Main activity data | 2025", "end_year")).toEqual([2023, 2024, 2025]);
+    const siemens = `Fiscal year Fiscal year Annual %\n2019 | 2025 2030 2050 target/\n(in ktCO₂e)\nGross Scope 1 GHG emissions - 288 - - -\nTotal Gross indirect (Scope 3) GHG emissions 179,222 159,144 (30)% - (2.7)%`;
+    const c = run(siemens).candidates;
+    expect(c.map((x) => [x.metricId, x.year, x.value])).toEqual([
+      ["ghg_scope1", 2025, 288],
+      ["ghg_scope3_total", 2025, 159144],
+      ["ghg_scope3_total", 2019, 179222],
+    ]);
+  });
+  it("never reads a printed year as a value, and skips footnote lines", () => {
+    expect(run(`(tCO2e) | 2024 | 2025\nScope 2 market-based emissions | 2017 | 2025`).candidates).toEqual([]);
+    expect(run(`(tCO2e) | 2024 | 2025\n4) Based on Scope 1 emissions + Scope 2 emissions (market-based) | 3 | 2`).candidates).toEqual([]);
+  });
+  it("proposes one value per metric and year, and logs equally likely values as skipped", () => {
+    const two = [page(`(tCO2e) | 2024 | 2025\nScope 1 | 100,000 | 110,000`, 1), page(`(tCO2e) | 2024 | 2025\nScope 1 | 100,000 | 120,000`, 2)];
+    const r = extractWithDiagnostics(two, ctx);
+    expect(r.candidates.filter((x) => x.year === 2024).map((x) => x.value)).toEqual([100000]); // printed twice: supports itself
+    expect(r.candidates.some((x) => x.year === 2025)).toBe(false);
+    expect(r.skipped).toEqual([{ metricId: "ghg_scope1", year: 2025, values: expect.arrayContaining([110000, 120000]), reason: "different values equally likely" }]);
+  });
+  it("prefers the group row over a division table", () => {
+    const group = page(`(in kilolitres) | FY 2025-26 | FY 2024-25\nTotal volume of water withdrawal (in kilolitres) | 20,45,55,068 | 20,84,65,383`, 1);
+    const division = page(`(in kilolitres) | FY 2025-26 | FY 2024-25\nManufacturing Division (JMD) | Total volume of water withdrawal (in kilolitres) | 2,262 | 3,116`, 2);
+    const c = extractWithDiagnostics([group, division], { ...ctx, industryCodes: ["EM-RM"] }).candidates;
+    expect(c.filter((x) => x.metricId === "water_withdrawal").map((x) => x.value)).toEqual([204555068, 208465383]);
+  });
 });

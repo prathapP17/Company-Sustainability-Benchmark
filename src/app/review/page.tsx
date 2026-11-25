@@ -32,6 +32,22 @@ export default function ReviewPage() {
 async function ReviewHome() {
   const access = await currentAccess();
   if (!access.ok) return <Denied access={access} />;
+  // Brief section 7: viewers get reports and downloads, not the review queue (reviewer) or the audit log (admin).
+  if (!hasRole(access.user.role, "reviewer")) {
+    return (
+      <Card title={`Signed in as ${access.reviewer} (viewer)`}>
+        <p className="text-sm text-ink-2">
+          Your account can download the benchmark exports and company reports. The review queue needs the reviewer role;
+          ask an admin if you need it.
+        </p>
+        <p className="mt-3 flex flex-wrap gap-4 text-sm">
+          <Link href="/downloads" className="text-accent hover:underline">Downloads</Link>
+          <Link href="/review/account" className="text-accent hover:underline">Account</Link>
+          <LogoutButton />
+        </p>
+      </Card>
+    );
+  }
   const docs = listDocuments();
   const stats = new Map(queueStats().map((s) => [s.status, s.n]));
   const companies = listCompanies().map((c) => ({ id: c.id, name: c.name }));
@@ -61,13 +77,15 @@ async function ReviewHome() {
           <Link href="/review/summaries" className="text-accent hover:underline">
             AI summaries
           </Link>
-          <Link href="/review/audit" className="text-accent hover:underline">
-            Audit log
-          </Link>
           {access.user.role === "admin" && (
-            <Link href="/review/users" className="text-accent hover:underline">
-              Users
-            </Link>
+            <>
+              <Link href="/review/audit" className="text-accent hover:underline">
+                Audit log
+              </Link>
+              <Link href="/review/users" className="text-accent hover:underline">
+                Users
+              </Link>
+            </>
           )}
           <Link href="/review/account" className="text-accent hover:underline">
             Account

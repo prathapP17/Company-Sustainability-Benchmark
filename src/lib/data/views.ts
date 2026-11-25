@@ -17,6 +17,10 @@ export interface CellValue {
   display: string;
   canonical: number | null;
   canonicalUnit: string | null;
+  /** ISO end date of the reporting period. */
+  periodEnd: string;
+  /** Company's confirmed primary SASB industry (null = needs review). */
+  industry: string | null;
   boundary: string;
   consolidation: string;
   scope2Method: string | null;
@@ -35,6 +39,9 @@ export interface CompanyMeta {
   peerGroup: string;
   peerGroupName: string;
   researchStatus: string;
+  sasbCodes: string[];
+  primarySasb: string | null;
+  classificationReview: string | null;
 }
 
 export interface MetricMeta {
@@ -47,7 +54,20 @@ export interface MetricMeta {
 }
 
 export function companyMeta(c: CompanyRow): CompanyMeta {
-  return { id: c.id, name: c.name, peerGroup: c.peer_group, peerGroupName: c.peer_group_name, researchStatus: c.research_status };
+  return {
+    id: c.id,
+    name: c.name,
+    peerGroup: c.peer_group,
+    peerGroupName: c.peer_group_name,
+    researchStatus: c.research_status,
+    sasbCodes: codesOf(c),
+    primarySasb: c.primary_sasb,
+    classificationReview: c.classification_review,
+  };
+}
+
+export function codesOf(c: Pick<CompanyRow, "sasb_codes">): string[] {
+  return c.sasb_codes ? (JSON.parse(c.sasb_codes) as string[]) : [];
 }
 
 export function metricMeta(): MetricMeta[] {
@@ -77,6 +97,8 @@ export function latestCells(): { companies: CompanyMeta[]; metrics: MetricMeta[]
       metricId: v.metric_id,
       year: v.year,
       fyLabel: fiscalLabel({ end: c.fy_end, labelConvention: c.fy_label_convention }, v.year),
+      periodEnd: v.period_end,
+      industry: c.primary_sasb,
       state: v.state,
       display: v.state === "disclosed" ? formatReported(v.value, v.unit, v.text) : "",
       canonical: v.canonical_value,
@@ -96,6 +118,6 @@ export function latestCells(): { companies: CompanyMeta[]; metrics: MetricMeta[]
   return { companies: companies.map(companyMeta), metrics: metricMeta(), cells };
 }
 
-export function applicableMetrics(peerGroup: string) {
-  return METRICS.filter((m) => metricAppliesTo(m, peerGroup));
+export function applicableMetrics(sasbCodes: readonly string[]) {
+  return METRICS.filter((m) => metricAppliesTo(m, sasbCodes));
 }

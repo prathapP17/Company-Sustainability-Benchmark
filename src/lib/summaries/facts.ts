@@ -10,6 +10,7 @@ import type { CompanyFile } from "../schema/company";
 import { resolveMetric, type ResolvedMetric } from "../schema/validate";
 import { METRICS, metricAppliesTo } from "../metrics/dictionary";
 import { fiscalLabel } from "../fiscal";
+import { classify } from "../industry";
 import { formatNumber } from "../format";
 import { LABELS } from "../labels";
 import type { SbtiEntry } from "../sbti/load";
@@ -32,7 +33,7 @@ export function buildFacts(company: CompanyFile, sbti: SbtiEntry): Fact[] {
   const add = (f: Omit<Fact, "id">) => facts.push({ ...f, id: `F${facts.length + 1}` });
   const fy = company.profile.fiscalYear;
   const src = (id?: string) => company.sources.find((s) => s.id === id);
-  const metrics = METRICS.filter((m) => metricAppliesTo(m, company.profile.peerGroup) && !/^ghg_scope3_c/.test(m.id));
+  const metrics = METRICS.filter((m) => metricAppliesTo(m, classify(company.profile.industry).codes) && !/^ghg_scope3_c/.test(m.id));
 
   for (const def of metrics) {
     const entries = company.metrics.filter((m) => m.metric === def.id).map((m) => resolveMetric(company, m));

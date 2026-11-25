@@ -22,9 +22,11 @@ Use ONLY the numbered facts provided. Rules:
 - Every sentence lists in "citations" the ids of the facts it uses (for example ["F2", "F5"]).
 - Copy every number exactly as it appears in a cited fact (same digits, separators and decimals), including years. Do not round, convert, add or compute anything, and do not spell numbers out in words.
 - Do not compare with other companies, rank, or judge (no "strong", "leading", "impressive", "poor"). Do not forecast.
-- Mention important gaps (values not disclosed or not found) where relevant.
-- Keep the company's own wording for targets; say "the company states" for claims such as SBTi validation.
-- If a fact is marked "derived", say it is a change calculated from reported figures.`;
+- Mention important gaps where relevant, using the fact's own words ("not disclosed", "not found" or "not assessed").
+- Keep the company's own wording for targets; say "the company states" for claims such as SBTi validation. Never say a target is on track, achieved, missed or aligned with a temperature goal unless a cited fact says so.
+- Describe a rise or fall only from a fact marked "derived" that states the change, in the same direction, and say it is calculated from reported figures. One year's value is not a trend.
+- Keep the fact's year and unit with every number, and keep its qualifiers: if a fact says "parent only", "subsidiary only", "not stated" or gives a coverage, say so in the sentence.
+- Do not explain causes (no "due to", "driven by", "because") and do not describe changes as improvements or deteriorations.`;
 
 export interface GenerateResult {
   sentences: Sentence[];

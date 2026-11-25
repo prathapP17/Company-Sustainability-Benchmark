@@ -190,4 +190,13 @@ CREATE TABLE performance_indicators (
 );
 `,
   },
+  {
+    version: 3,
+    name: "industry classification (SASB codes) separate from peer groups",
+    sql: `
+ALTER TABLE companies ADD COLUMN sasb_codes TEXT;          -- JSON array of SASB industry codes
+ALTER TABLE companies ADD COLUMN primary_sasb TEXT;        -- confirmed primary code; NULL when it needs review
+ALTER TABLE companies ADD COLUMN classification_review TEXT; -- why the classification needs review; NULL when confirmed
+`,
+  },
 ];

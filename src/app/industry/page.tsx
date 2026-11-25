@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, StateBadge, Tag } from "@/components/ui";
 import { latestCells } from "@/lib/data/views";
-import { listPeerGroups } from "@/lib/db/queries";
 import { METRICS, metricAppliesTo } from "@/lib/metrics/dictionary";
+import { industryName, SASB_INDUSTRIES } from "@/lib/industry";
 import { LABELS } from "@/lib/labels";
 import type { Boundary } from "@/lib/schema/enums";
 
@@ -19,18 +19,29 @@ export default function IndustryPage() {
       <div>
         <h1 className="text-2xl font-semibold text-ink">Industry KPIs</h1>
         <p className="mt-1 max-w-3xl text-sm text-ink-2">
-          Industry-specific indicators from the SASB/ISSB standards, compared only within the peer group they apply to.
-          Each value is the company&apos;s latest disclosed year with its source. Values on a boundary other than the
-          consolidated group are flagged and should not be compared directly.
+          Industry-specific indicators from the SASB/ISSB standards, grouped by the SASB industry that defines them (not
+          by the broad navigation groups). A company that lists two SASB industries appears under both. Each value is
+          the company&apos;s latest disclosed year with its source. Values on a boundary other than the consolidated
+          group are flagged and should not be compared directly. No medians are calculated here.
         </p>
       </div>
 
-      {listPeerGroups().map((g) => {
-        const metrics = industry.filter((m) => metricAppliesTo(m, g.id));
-        const members = companies.filter((c) => c.peerGroup === g.id);
-        if (!metrics.length || !members.length) return null;
+      {Object.keys(SASB_INDUSTRIES).map((code) => {
+        const metrics = industry.filter((m) => metricAppliesTo(m, [code]));
+        const members = companies.filter((c) => c.sasbCodes.includes(code));
+        if (!members.length) return null;
+        if (!metrics.length) {
+          return (
+            <Card key={code} title={industryName(code)}>
+              <p className="text-sm text-ink-2">
+                No industry-specific indicator for this SASB industry is in the metric dictionary yet, so none is shown for{" "}
+                {members.map((c) => c.name).join(", ")}. Cross-industry metrics are on each company page.
+              </p>
+            </Card>
+          );
+        }
         return (
-          <Card key={g.id} title={g.name}>
+          <Card key={code} title={industryName(code)}>
             <div className="relative overflow-x-auto">
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
@@ -43,6 +54,13 @@ export default function IndustryPage() {
                         <Link href={`/companies/${c.id}`} className="text-accent hover:underline">
                           {c.name}
                         </Link>
+                        {c.primarySasb !== code && (
+                          <div className="mt-1">
+                            <Tag tone="warn" title={c.classificationReview ?? undefined}>
+                              {c.primarySasb ? `Primary: ${c.primarySasb}` : "Classification needs review"}
+                            </Tag>
+                          </div>
+                        )}
                       </th>
                     ))}
                   </tr>

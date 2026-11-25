@@ -8,7 +8,8 @@
  */
 import type { CompanyFile } from "../schema/company";
 import { coreMetricsFor, coverageFor, COVERAGE_THRESHOLD } from "../data/coverage";
-import { getMetric, METRICS } from "../metrics/dictionary";
+import { getMetric, METRICS, metricAppliesTo } from "../metrics/dictionary";
+import { classify } from "../industry";
 import { resolveMetric, latestDisclosedYear } from "../schema/validate";
 
 export type ItemGroup = "Core metrics" | "Depth" | "Assurance & boundary" | "Targets" | "Industry";
@@ -49,7 +50,7 @@ export const CHECKLIST_LABELS: { id: string; label: string; group: ItemGroup }[]
   { id: "quantified_target", label: "Quantified GHG target with a baseline year", group: "Targets" },
   { id: "sbti", label: "GHG target validated by SBTi", group: "Targets" },
   { id: "net_zero", label: "Net-zero or carbon-neutral long-term goal", group: "Targets" },
-  { id: "industry_metric", label: "At least one SASB industry metric disclosed", group: "Industry" },
+  { id: "industry_metric", label: "At least one SASB metric for its own industry disclosed", group: "Industry" },
 ];
 
 const LABEL = new Map(CHECKLIST_LABELS.map((x) => [x.id, x]));
@@ -82,7 +83,8 @@ export function transparency(c: CompanyFile): TransparencyResult {
     `${cats.length} of 15 categories quantified`,
   );
 
-  const core = new Set(coreMetricsFor(c.profile.peerGroup).map((m) => m.id));
+  const codes = classify(c.profile.industry).codes;
+  const core = new Set(coreMetricsFor(codes).map((m) => m.id));
   const withPrior = new Set(
     resolved.filter((m) => core.has(m.metric) && m.state === "disclosed" && year !== undefined && m.year < year).map((m) => m.metric),
   );
@@ -123,9 +125,11 @@ export function transparency(c: CompanyFile): TransparencyResult {
   const nz = ghgTargets.filter((t) => t.type === "net_zero" || /net[- ]zero|carbon[- ]neutral|carbon negative/i.test(t.description));
   add("net_zero", nz.length > 0, nz.map((t) => t.id).join(", ") || "none recorded");
 
-  const industry = METRICS.filter((m) => m.category === "industry").map((m) => m.id);
+  // Only metrics defined for the company's own SASB industries count; an industry with none in the dictionary is not assessable.
+  const industry = METRICS.filter((m) => m.category === "industry" && metricAppliesTo(m, codes)).map((m) => m.id);
   const ind = resolved.filter((m) => industry.includes(m.metric) && m.state === "disclosed");
-  add("industry_metric", ind.length > 0, ind.map((m) => m.metric).join(", ") || "none");
+  if (industry.length === 0) add("industry_metric", null, `no industry metric defined yet for ${codes.join(", ") || "an unclassified company"}`);
+  else add("industry_metric", ind.length > 0, ind.map((m) => m.metric).join(", ") || `none of ${industry.length} applicable`);
 
   const applicable = items.filter((i) => i.met !== null).length;
   const met = items.filter((i) => i.met === true).length;

@@ -94,11 +94,11 @@ describe("rule 7: low-confidence sources are flagged", () => {
 });
 
 describe("industry metrics", () => {
-  it("rejects an industry metric outside its peer group", () => {
+  it("rejects an industry metric outside its SASB industry", () => {
     const c = baseCompany({
       metrics: [{ metric: "au_bev_sales", year: 2025, state: "disclosed", value: 1, unit: "units", page: "p.1" }],
     });
-    expect(errors(c).join()).toMatch(/does not apply to peer group/);
+    expect(errors(c).join()).toMatch(/does not apply to SASB industry FB-PF/);
   });
 });
 

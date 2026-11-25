@@ -54,6 +54,13 @@ export default function MethodologyPage() {
             computed. Indicators use only values on a consolidated-group boundary with full coverage and no low-confidence
             source. Revenue-based intensity is not yet included (needs revenue data).
           </p>
+          <p className="mt-2">
+            Transparency and performance are separate: disclosing more raises transparency, never performance. A missing
+            indicator is left out rather than scored as zero, so a company is not penalised for metrics it was not
+            researched on; the flip side is that the average covers different indicators for different companies, which
+            is why the indicators are listed next to every score. Scores are absolute (not industry-adjusted) and are
+            ranked across industries only as a list, not as an industry benchmark.
+          </p>
           <ul className="mt-2 list-disc pl-5">
             <li>
               <b>{INDICATOR_LABELS.ghg_target_progress}</b>: for absolute GHG targets where the company reports progress as a
@@ -63,7 +70,8 @@ export default function MethodologyPage() {
               <b>{INDICATOR_LABELS.ghg_s12_yoy}</b> and <b>{INDICATOR_LABELS.water_yoy}</b>: change between the latest two
               years. A reduction of {PATHWAY_ANNUAL_REDUCTION}% or more (the annual pace of a 1.5°C absolute-contraction
               pathway) scores 100; no change scores 50; an increase of 10% or more scores 0; linear in between. Skipped
-              when either year has a trend break.
+              when the later year has a trend break, or the two years differ in boundary, consolidation approach, Scope 2
+              method or unit.
             </li>
             <li>
               <b>{INDICATOR_LABELS.renewable_share}</b> and <b>{INDICATOR_LABELS.waste_diversion}</b>: the reported
@@ -74,11 +82,25 @@ export default function MethodologyPage() {
         </div>
       </Card>
 
-      <Card title="Peer benchmarks">
-        <p className="text-sm text-ink-2">
-          Peer groups follow industry (SASB). A peer median is shown only when at least {MIN_PEERS_FOR_MEDIAN} peers report
-          a comparable value in the same unit. Peer ranks are shown only within groups with two or more scored companies.
-        </p>
+      <Card title="Industries and peer benchmarks">
+        <div className="flex flex-col gap-2 text-sm text-ink-2">
+          <p>
+            Each company has one or more SASB industries, recorded in its file (for example Toyota: Automobiles, TR-AU).
+            These, not the broad peer groups used for navigation, decide which industry metrics apply and who is a peer.
+            A company that lists two SASB industries without a confirmed primary one (Samsung, Siemens) is flagged
+            &ldquo;classification needs review&rdquo;: it is shown beside both industries but kept out of medians and peer
+            ranks. Classifications are never guessed.
+          </p>
+          <p>
+            One comparability check is used everywhere (comparisons, charts, medians, scores, ranks, the map and exports).
+            A value enters a peer median only if it is on the consolidated group, covers all operations, comes from a
+            primary or official source, carries the right Scope 2 method, has a stated consolidation approach, and shares
+            the reporting-period end year, consolidation approach and unit of the other values, among companies whose
+            confirmed primary industry is the same. A median needs {MIN_PEERS_FOR_MEDIAN} such values; otherwise the values
+            are shown individually with the reason. Every value left out of a median is listed with why. Peer ranks are
+            shown only among two or more scored companies of one confirmed industry.
+          </p>
+        </div>
       </Card>
 
       <Card title="Targets: pace check and SBTi status">
@@ -96,8 +118,8 @@ export default function MethodologyPage() {
         <p className="text-sm text-ink-2">
           The heatmap shows each company&apos;s disclosure state per Scope 3 category in its latest year. A category&apos;s share
           of the company&apos;s own Scope 3 total is a derived figure, shown only when both have the same year and boundary,
-          and is not compared across companies. Industry KPIs (SASB/ISSB) are shown only within the peer group they apply
-          to, with boundary warnings.
+          and is not compared across companies. Industry KPIs (SASB/ISSB) are shown only for companies in the SASB industry
+          that defines them, with boundary warnings.
         </p>
       </Card>
 
@@ -105,9 +127,14 @@ export default function MethodologyPage() {
         <p className="text-sm text-ink-2">
           Claude (claude-opus-5-5) writes a short summary from the company&apos;s curated facts only, citing a fact for every
           sentence. Decided with the project owner on 2026-11-25: summaries are published without human review, as an
-          exception to the rule that automated output is a proposal, but only after an automatic check: every number must
-          appear in a cited fact, and comparisons, rankings, judgements and forecasts are refused. A summary is hidden as
-          soon as the company&apos;s data changes, and the values and sources on the page always take precedence.
+          exception to the rule that automated output is a proposal, but only after an automatic evidence check of every
+          sentence: each number must appear in a cited fact with the same year and unit; each metric, method or target
+          phrase must appear in a cited fact; rises and falls need a cited year-on-year change in the same direction and
+          must be called calculated; boundary and coverage qualifiers must be kept; and causes, comparisons, target-status
+          judgements (&ldquo;on track&rdquo;, &ldquo;aligned with 1.5 °C&rdquo;), interpretations and forecasts are refused. If
+          the check fails only on wording, a reviewer may approve the summary with a public note; a summary with an
+          unsupported claim is never published. A summary is hidden as soon as the company&apos;s data changes, and the
+          values and sources on the page always take precedence.
         </p>
       </Card>
 

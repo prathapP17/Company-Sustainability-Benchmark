@@ -17,7 +17,8 @@
     "region": "Asia-Pacific",
     "industry": {
       "gics": "Consumer Electronics",
-      "sasb": "Hardware (TC-HW)"
+      "sasb": "Hardware (TC-HW)",
+      "sasbCodes": ["TC-HW"]
     },
     "peerGroup": "tech_hardware_semis",
     "fiscalYear": {

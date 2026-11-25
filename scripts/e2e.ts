@@ -18,7 +18,7 @@ const PORT = Number(process.env.E2E_PORT ?? 3107);
 const BASE = `http://127.0.0.1:${PORT}`;
 const CHROME = process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const OUT = path.join(process.cwd(), "scratch", "screenshots");
-const WIDTHS = { phone: 375, tablet: 768, desktop: 1280 } as const;
+const WIDTHS = { phone: 390, tablet: 768, desktop: 1440 } as const;
 
 const failures: string[] = [];
 function check(cond: boolean, msg: string) {
@@ -50,13 +50,32 @@ async function main() {
     try {
       const page = await browser.newPage();
 
-      // Dashboard
-      await page.goto(BASE);
+      // Dashboard: overview, map, sustainability overview, insights, activity
+      await page.goto(BASE, { waitUntil: "networkidle" });
       check((await page.locator("h1").textContent())?.includes("Sustainability disclosure benchmark") ?? false, "dashboard heading");
+      check((await page.getByText("in 9 SASB industries").count()) === 1, "dashboard counts SASB industries from the read model");
+      check((await page.getByRole("application", { name: /Map of company headquarters/ }).count()) === 1, "dashboard: interactive map present");
+      const mapSvg = await fetch(`${BASE}/map/world.svg`);
+      check(mapSvg.ok && (await mapSvg.text()).includes('id="land"'), "base map served from this app (no third-party tiles)");
+      const markers = await page.locator('[role=application] button[aria-label*="Scope 1 GHG emissions"], [role=application] button[aria-label*="companies here"]').count();
+      check(markers >= 4, `map shows markers or clusters (got ${markers})`);
+      await page.getByRole("button", { name: /^Reliance Industries, Mumbai/ }).click();
+      check((await page.getByRole("complementary", { name: "Selected company" }).getByText("Boundary: parent only").count()) >= 1, "map panel shows Reliance's parent-only boundary");
+      check((await page.getByRole("link", { name: "Open company profile" }).getAttribute("href")) === "/companies/reliance", "map panel links to the company profile");
+      await page.getByLabel("Region").selectOption("Europe");
+      check((await page.getByText("3 of 10 companies shown").count()) === 1, "map region filter (Europe: 3)");
+      await page.getByLabel("Region").selectOption("");
+      await page.getByLabel("Metric shown on the map").selectOption("au_bev_sales");
+      check((await page.locator("#loc-list ~ * li, section[aria-labelledby=loc-list] li").filter({ hasText: "Does not apply" }).count()) >= 8, "industry metric marked 'does not apply' outside its industry");
+      await page.getByLabel("Metric shown on the map").selectOption("ghg_scope1");
+      await page.getByLabel("Search the map").fill("toyota");
+      check((await page.getByText("1 of 10 companies shown").count()) === 1, "map search");
+      check((await page.getByText("Not on the map").count()) === 0, "every company has valid coordinates (no unlocated list)");
+      await page.goto(`${BASE}/companies`);
       const rows = await page.locator("#companies tbody tr").count();
-      check(rows === 10, `dashboard lists 10 companies (got ${rows})`);
+      check(rows === 10, `companies page lists 10 companies (got ${rows})`);
       check((await page.getByText("Profile only").count()) === 2, "TSMC and Sony marked profile only");
-      check((await page.getByText("Parent only").count()) >= 1, "Reliance standalone boundary warning visible");
+      check((await page.getByText("Needs review").count()) === 2, "Samsung and Siemens classification flagged for review");
 
       // Company page with provenance
       await page.goto(`${BASE}/companies/reliance`);
@@ -84,7 +103,11 @@ async function main() {
       check((await page.getByText("Not directly comparable").count()) >= 1, "compare: Reliance vs Apple flagged not comparable");
 
       await page.goto(`${BASE}/peers/tech_hardware_semis`);
-      check((await page.getByText("needs 3").count()) >= 1, "peer median withheld below 3 comparable values");
+      check((await page.getByText(/needs 3/).count()) >= 1, "peer median withheld below 3 comparable values");
+      check((await page.getByText(/Benchmark: Hardware \(TC-HW\)/).count()) === 1 && (await page.getByText(/Benchmark: Semiconductors \(TC-SC\)/).count()) === 1, "peer group split into SASB industries");
+      check((await page.getByText(/Not in median: industry classification needs review/).count()) >= 1, "Samsung shown but kept out of the median (classification needs review)");
+      await page.goto(`${BASE}/peers/autos_industrials`);
+      check((await page.getByText(/Benchmark: Automobiles \(TR-AU\)/).count()) === 1, "Toyota benchmarked as Automobiles, not with Siemens");
 
       await page.goto(`${BASE}/targets`);
       check((await page.getByText(/Ahead of straight-line path/).count()) >= 1, "targets: progress vs straight-line path");
@@ -111,25 +134,32 @@ async function main() {
       await page.goto(`${BASE}/methodology`);
       check((await page.getByText("Transparency score").count()) >= 1, "methodology page");
 
-      // Downloads
-      for (const [url, type] of [
-        ["/api/export/values.csv", "text/csv"],
-        ["/api/export/benchmark.xlsx", "spreadsheetml"],
-        ["/api/export/report.pdf", "application/pdf"],
-        ["/api/export/report/nestle", "application/pdf"],
-      ] as const) {
+      // Downloads need an account (brief section 7). Signed-in downloads are checked in test:e2e:pipeline.
+      for (const url of ["/api/export/values.csv", "/api/export/benchmark.xlsx", "/api/export/report.pdf", "/api/export/report/nestle"]) {
         const r = await fetch(`${BASE}${url}`);
-        const body = Buffer.from(await r.arrayBuffer());
-        check(r.ok && (r.headers.get("content-type") ?? "").includes(type) && body.length > 500, `download ${url} (${r.status}, ${body.length} bytes)`);
+        check(r.status === 401, `guest download refused: ${url} (${r.status})`);
       }
-      const missing = await fetch(`${BASE}/api/export/report/does-not-exist`);
-      check(missing.status === 404, `unknown company PDF returns 404 (got ${missing.status})`);
+      const reviewOverview = await fetch(`${BASE}/api/pipeline/overview`);
+      check(reviewOverview.status === 204 && (await reviewOverview.text()) === "", `review counts not shown to guests (${reviewOverview.status})`);
+
+      // Keyboard: the grouped navigation opens from the keyboard and closes with Escape.
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(BASE);
+      await page.getByRole("button", { name: /^Explore/ }).focus();
+      await page.keyboard.press("Enter");
+      check(await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: /Peer benchmarks/ }).isVisible(), "Explore menu opens with Enter");
+      await page.keyboard.press("Escape");
+      check(!(await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: /Peer benchmarks/ }).isVisible()), "menu closes with Escape");
+      await page.getByRole("combobox", { name: "Search companies" }).fill("nest");
+      await page.keyboard.press("Enter");
+      await page.waitForURL(/\/companies\/nestle$/);
+      check(page.url().endsWith("/companies/nestle"), "header search opens a company with the keyboard");
 
       // Accessibility (axe-core, WCAG 2.1 A/AA), light and dark mode.
       for (const scheme of ["light", "dark"] as const) {
         const ctx = await browser.newContext({ colorScheme: scheme });
         const ap = await ctx.newPage();
-        for (const route of ["/", "/companies/apple", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads", "/review"]) {
+        for (const route of ["/", "/companies", "/companies/apple", "/companies/toyota", "/compare", "/peers/consumer_staples", "/peers/tech_hardware_semis", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads", "/review"]) {
           await ap.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
           const v = await auditPage(ap);
           check(v.length === 0, `accessibility ${scheme} ${route}${v.length ? `: ${v.map((x) => `${x.id} @ ${x.nodes[0]}`).join("; ")}` : ""}`);
@@ -140,9 +170,14 @@ async function main() {
       // Responsive checks + screenshots
       for (const [name, width] of Object.entries(WIDTHS)) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads"]) {
-          await page.goto(`${BASE}${route}`);
+        for (const route of ["/", "/companies", "/companies/toyota", "/compare", "/peers/consumer_staples", "/peers/tech_hardware_semis", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads"]) {
+          await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
           check(await noHorizontalScroll(page), `no horizontal page scroll at ${name} (${width}px) on ${route}`);
+          if (route === "/" && width < 1024) {
+            await page.getByRole("button", { name: "Menu" }).click();
+            check(await page.locator("#mobile-nav").isVisible(), `navigation menu opens at ${name}`);
+            await page.getByRole("button", { name: "Close" }).click();
+          }
           const file = `${route === "/" ? "dashboard" : route.slice(1).replace(/\//g, "_")}-${name}.png`;
           await page.screenshot({ path: path.join(OUT, file), fullPage: true });
         }

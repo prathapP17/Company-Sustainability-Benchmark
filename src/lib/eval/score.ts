@@ -14,6 +14,10 @@ export interface GoldValue {
   value: number;
   unit: string;
   page: string | null;
+  /** Context of the curated value (older gold files may lack these; those checks are then skipped). */
+  boundary?: string;
+  consolidation?: string;
+  scope2Method?: string | null;
 }
 
 export interface Proposal {
@@ -22,6 +26,18 @@ export interface Proposal {
   value: number;
   unit: string;
   page: string;
+  boundary?: string;
+  consolidation?: string;
+  scope2Method?: string | null;
+  /** Read from an OCR page. */
+  ocr?: boolean;
+}
+
+/** n correct of d checked, and the share. */
+export interface Rate {
+  correct: number;
+  of: number;
+  pct: number | null;
 }
 
 export interface Score {
@@ -35,6 +51,16 @@ export interface Score {
   unjudged: number;
   recall: number | null; // found / gold
   precision: number | null; // correct / judged
+  /** Wrong proposals whose value is the gold value of the same metric in ANOTHER year (wrong column). */
+  wrongYear: number;
+  /** Wrong proposals with the gold number but a different unit (unit misread). */
+  wrongUnit: number;
+  /** Among correct values: does the proposed context match the curated one? */
+  boundary: Rate;
+  consolidation: Rate;
+  scope2Method: Rate;
+  /** Proposals read from OCR pages, and how many of the judged ones were correct. */
+  ocr: { proposals: number; judged: number; correct: number };
   details: { metric: string; year: number; gold: number; unit: string; got: number[]; outcome: "found" | "wrong" | "missed" }[];
 }
 
@@ -69,7 +95,24 @@ export function scoreProposals(gold: GoldValue[], proposals: Proposal[]): Score 
   const judged = proposals.filter((p) => goldKeys.has(key(p.metric, p.year)));
   const correct = judged.filter((p) => gold.some((g) => g.metric === p.metric && g.year === p.year && sameValue(g.metric, p, g)));
   const found = details.filter((d) => d.outcome === "found").length;
+  const wrong = judged.filter((p) => !correct.includes(p));
+  const wrongYear = wrong.filter((p) => gold.some((g) => g.metric === p.metric && g.year !== p.year && sameValue(g.metric, p, g))).length;
+  const wrongUnit = wrong.filter((p) => gold.some((g) => g.metric === p.metric && g.year === p.year && g.value === p.value && g.unit !== p.unit)).length;
+  const rate = (pairs: [unknown, unknown][]): Rate => {
+    const ok = pairs.filter(([a, b]) => a === b).length;
+    return { correct: ok, of: pairs.length, pct: ratio(ok, pairs.length) };
+  };
+  const matchedPairs = correct.map((p) => [p, gold.find((g) => g.metric === p.metric && g.year === p.year && sameValue(g.metric, p, g))!] as const);
+  const ocr = proposals.filter((p) => p.ocr);
   return {
+    wrongYear,
+    wrongUnit,
+    boundary: rate(matchedPairs.filter(([p, g]) => p.boundary !== undefined && g.boundary !== undefined).map(([p, g]) => [p.boundary, g.boundary])),
+    consolidation: rate(matchedPairs.filter(([p, g]) => p.consolidation !== undefined && g.consolidation !== undefined).map(([p, g]) => [p.consolidation, g.consolidation])),
+    scope2Method: rate(
+      matchedPairs.filter(([p, g]) => /^ghg_scope2_/.test(p.metric) && g.scope2Method !== undefined).map(([p, g]) => [p.scope2Method ?? null, g.scope2Method ?? null]),
+    ),
+    ocr: { proposals: ocr.length, judged: ocr.filter((p) => goldKeys.has(key(p.metric, p.year))).length, correct: ocr.filter((p) => correct.includes(p)).length },
     gold: gold.length,
     found,
     wrong: details.filter((d) => d.outcome === "wrong").length,
