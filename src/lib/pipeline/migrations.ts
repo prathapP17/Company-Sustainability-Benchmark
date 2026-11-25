@@ -174,4 +174,51 @@ CREATE TABLE robots_cache (
 );
 `,
   },
+  {
+    version: 3,
+    name: "accounts: users, sessions, one-time links, login throttle",
+    sql: `
+-- Phase 5: email + password accounts with roles. Passwords are stored as
+-- scrypt hashes; session and link tokens only as SHA-256 hashes.
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+  name TEXT NOT NULL UNIQUE COLLATE NOCASE,   -- shown in the audit trail and approvals
+  role TEXT NOT NULL CHECK (role IN ('admin', 'reviewer', 'viewer')),
+  password_hash TEXT,                         -- NULL until the invite link is used
+  created_at TEXT NOT NULL,
+  created_by TEXT NOT NULL,
+  disabled_at TEXT,
+  failed_logins INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,
+  last_login_at TEXT,
+  password_changed_at TEXT
+);
+CREATE TABLE sessions (
+  token_hash TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL,
+  last_seen_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,                   -- absolute limit
+  ip TEXT,
+  user_agent TEXT
+);
+CREATE INDEX sessions_user ON sessions(user_id);
+CREATE TABLE account_links (
+  token_hash TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  purpose TEXT NOT NULL CHECK (purpose IN ('invite', 'reset')),
+  created_by TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  used_at TEXT
+);
+CREATE INDEX account_links_user ON account_links(user_id);
+CREATE TABLE login_throttle (
+  key TEXT PRIMARY KEY,                       -- "ip:<address>"
+  window_start TEXT NOT NULL,
+  attempts INTEGER NOT NULL
+);
+`,
+  },
 ];

@@ -6,7 +6,7 @@ import { listCompanyIds } from "@/lib/db/queries";
 import { SourceType, VerificationClass } from "@/lib/schema/enums";
 
 export async function POST(req: Request) {
-  const g = guardRequest(req, true);
+  const g = guardRequest(req, { mutating: true, role: "reviewer" });
   if (g instanceof Response) return g;
   const len = Number(req.headers.get("content-length") ?? 0);
   if (len > MAX_UPLOAD_BYTES + 1024 * 1024) return Response.json({ error: "file too large" }, { status: 413 });

@@ -1,0 +1,22 @@
+# Never send local data, secrets or build output into the image.
+.git
+.github
+.claude
+node_modules
+.next
+scratch
+coverage
+data/*.db
+data/*.db-*
+data/backups
+data/uploads
+data/logs
+data/public-url.txt
+.env
+.env.*
+!.env.example
+deploy/.env
+tests
+ops/launchd
+*.log
+.DS_Store

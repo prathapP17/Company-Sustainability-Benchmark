@@ -15,8 +15,11 @@ import { makeGhgPdf } from "../tests/pdf-fixture";
 const PORT = 3108;
 const BASE = `http://localhost:${PORT}`;
 const CHROME = process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const TOKEN = "e2e-reviewer-token-0123456789";
+const ADMIN_PW = "orchid lantern harbour 2026";
+const VIEWER_PW = "maple quartz river 2026";
 const OUT = path.join(process.cwd(), "scratch", "screenshots");
+/** Pages Next.js regenerates at runtime. Cleared before and after, so test data never reaches a later local server. */
+const ROUTE_CACHE = path.join(process.cwd(), ".next", "server", "route-cache");
 
 const failures: string[] = [];
 function check(cond: boolean, msg: string) {
@@ -72,7 +75,7 @@ async function main() {
   const dataDir = mkdtempSync(path.join(tmpdir(), "csi-e2e-"));
   cpSync("data/companies", path.join(dataDir, "companies"), { recursive: true });
   cpSync("data/peer-groups.json", path.join(dataDir, "peer-groups.json"));
-  const env = { ...process.env, CSI_DATA_DIR: dataDir, REVIEWER_TOKEN: TOKEN, ANTHROPIC_API_KEY: "" };
+  const env = { ...process.env, CSI_DATA_DIR: dataDir, ANTHROPIC_API_KEY: "", APP_ORIGIN: "" };
   spawnSync("npx", ["tsx", "scripts/seed.ts"], { env, stdio: "ignore" });
   const pdf = path.join(dataDir, "fixture.pdf");
   writeFileSync(pdf, await makeGhgPdf({ scannedPage: true }));
@@ -86,6 +89,7 @@ async function main() {
     }),
   );
 
+  rmSync(ROUTE_CACHE, { recursive: true, force: true });
   const server = spawn("npx", ["next", "start", "-p", String(PORT)], { env, stdio: "ignore" });
   try {
     for (let i = 0; i < 60; i++) {
@@ -98,9 +102,19 @@ async function main() {
     try {
       const page = await browser.newPage();
 
+      // Hardening: security headers on public pages.
+      const home = await fetch(BASE);
+      check(/frame-ancestors 'none'/.test(home.headers.get("content-security-policy") ?? ""), "Content-Security-Policy set");
+      check(home.headers.get("x-frame-options") === "DENY" && home.headers.get("x-content-type-options") === "nosniff", "frame and sniffing protection set");
+      check(home.headers.get("x-powered-by") === null, "no X-Powered-By header");
+      check(/Disallow: \/review/.test(await (await fetch(`${BASE}/robots.txt`)).text()), "robots.txt keeps crawlers out of /review");
+      const appleBefore = await (await fetch(`${BASE}/companies/apple`)).text();
+
       // Access control
-      const anon = await fetch(`${BASE}/api/pipeline/upload`, { method: "POST" });
+      const anon = await fetch(`${BASE}/api/pipeline/upload`, { method: "POST", headers: { Origin: BASE } });
       check(anon.status === 401, `upload without sign-in refused (${anon.status})`);
+      const crossSite = await fetch(`${BASE}/api/pipeline/upload`, { method: "POST", headers: { Origin: "https://evil.example" } });
+      check(crossSite.status === 403, `cross-site POST refused (${crossSite.status})`);
       const remote = await rawGet("/review", "attacker.example");
       check(
         remote.body.includes("only available on this computer") && !remote.body.includes("Upload a document"),
@@ -109,22 +123,74 @@ async function main() {
       const tunnel = await fetch(`${BASE}/api/pipeline/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Origin: BASE, "cf-connecting-ip": "1.2.3.4" },
-        body: JSON.stringify({ name: "x", token: TOKEN }),
+        body: JSON.stringify({ email: "x@example.org", password: "whatever-password" }),
       });
       check(tunnel.status === 403, `login through a tunnel header refused (${tunnel.status})`);
 
+      // First admin: no accounts yet, then the CLI prints a one-time link.
       await page.goto(`${BASE}/review`);
-      check((await page.getByText("Sign in with the reviewer token.").count()) === 1, "review page asks for sign-in");
-      await page.getByLabel(/Your name/).fill("E2E Reviewer");
-      await page.getByLabel(/Reviewer token/).fill("wrong-token-000000000");
+      check((await page.getByText("No accounts exist yet").count()) === 1, "review page explains how to create the first admin");
+      const cli = spawnSync("npx", ["tsx", "scripts/users.ts", "invite", "--email", "admin@e2e.test", "--name", "E2E Admin", "--role", "admin"], { env, encoding: "utf8" });
+      const adminLink = /(http:\/\/\S+\/review\/set-password#\S+)/.exec(cli.stdout)?.[1];
+      check(cli.status === 0 && !!adminLink, "CLI created the first admin and printed a one-time link");
+      await page.goto(adminLink!.replace("http://localhost:3000", BASE));
+      await page.getByText("Welcome").waitFor();
+      check(!page.url().includes("#"), "the link's token is removed from the address bar");
+      await page.getByLabel(/New password/).fill("short");
+      await page.getByLabel(/Repeat it/).fill("short");
+      await page.getByRole("button", { name: "Set password" }).click();
+      check(await page.locator("input[name=password]:invalid").count() === 1, "too-short password refused by the form");
+      await page.getByLabel(/New password/).fill(ADMIN_PW);
+      await page.getByLabel(/Repeat it/).fill(ADMIN_PW);
+      await page.getByRole("button", { name: "Set password" }).click();
+      await page.getByText("Password set.").waitFor();
+      check(true, "admin set a password with the invite link");
+      await page.goto(`${BASE}/`); // a fresh load: same-page "#" changes do not reload
+      await page.goto(adminLink!.replace("http://localhost:3000", BASE));
+      await page.getByText(/invalid, used or expired/).waitFor();
+      check(true, "the invite link works only once");
+
+      await page.goto(`${BASE}/review`);
+      await page.getByLabel("Email").fill("admin@e2e.test");
+      await page.getByLabel("Password").fill("not the password at all");
       await page.getByRole("button", { name: "Sign in" }).click();
-      await page.getByText("wrong token").waitFor();
-      check(true, "wrong token rejected");
-      await page.getByLabel(/Reviewer token/).fill(TOKEN);
+      await page.getByText("email or password is wrong").waitFor();
+      check(true, "wrong password rejected");
+      await page.getByLabel("Password").fill(ADMIN_PW);
       await page.getByRole("button", { name: "Sign in" }).click();
       await page.getByText("Signed in as").waitFor();
-      check(true, "signed in with the reviewer token");
+      check((await page.getByText("(admin)").count()) === 1, "signed in as admin");
+      const cookie = (await page.context().cookies()).find((c) => c.name === "csi_session");
+      check(!!cookie?.httpOnly && cookie?.sameSite === "Strict", "session cookie is HttpOnly and SameSite=Strict");
 
+      // Admin adds a viewer; the viewer signs in in a separate browser and cannot change anything.
+      await page.goto(`${BASE}/review/users`);
+      await page.getByLabel("Email").fill("viewer@e2e.test");
+      await page.getByLabel(/Name/).fill("E2E Viewer");
+      await page.locator('form select[name="role"]').selectOption("viewer");
+      await page.getByRole("button", { name: "Create account and link" }).click();
+      const viewerLink = await page.getByLabel("One-time link").inputValue();
+      check(/\/review\/set-password#/.test(viewerLink), "admin got a one-time link for the new account");
+      const other = await browser.newContext();
+      const vp = await other.newPage();
+      await vp.goto(viewerLink);
+      await vp.getByLabel(/New password/).fill(VIEWER_PW);
+      await vp.getByLabel(/Repeat it/).fill(VIEWER_PW);
+      await vp.getByRole("button", { name: "Set password" }).click();
+      await vp.getByText("Password set.").waitFor();
+      await vp.goto(`${BASE}/review`);
+      await vp.getByLabel("Email").fill("viewer@e2e.test");
+      await vp.getByLabel("Password").fill(VIEWER_PW);
+      await vp.getByRole("button", { name: "Sign in" }).click();
+      await vp.getByText("Signed in as").waitFor();
+      check((await vp.getByText("Upload a document").count()) === 0, "viewer sees no upload form");
+      const viewerUpload = await vp.evaluate(async () => (await fetch("/api/pipeline/upload", { method: "POST", body: new FormData() })).status);
+      check(viewerUpload === 403, `viewer upload refused by the server (${viewerUpload})`);
+      await vp.goto(`${BASE}/review/users`);
+      check((await vp.getByText(/needs the admin role/).count()) === 1, "viewer cannot open the users page");
+      await other.close();
+
+      await page.goto(`${BASE}/review`);
       // Upload
       await page.setInputFiles('input[name="file"]', pdf);
       await page.selectOption('select[name="companyId"]', "apple");
@@ -179,11 +245,27 @@ async function main() {
       check(true, "alert acknowledged");
 
       await page.goto(`${BASE}/review/audit`);
-      check((await page.getByText("E2E Reviewer").count()) >= 2, "audit log records the reviewer's actions");
+      check((await page.getByText("E2E Admin").count()) >= 2, "audit log records the signed-in user's actions");
+
+      // Approvals refresh the pre-built public pages (next visit regenerates; allow one stale response).
+      let appleAfter = "";
+      for (let i = 0; i < 10 && !appleAfter.includes("51,000"); i++) {
+        appleAfter = await (await fetch(`${BASE}/companies/apple`)).text();
+        if (!appleAfter.includes("51,000")) await new Promise((r) => setTimeout(r, 500));
+      }
+      check(!appleBefore.includes("51,000") && appleAfter.includes("51,000"), "approved value appears on the public company page without a rebuild");
+      if (!appleAfter.includes("51,000")) {
+        const strip = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+        console.log("  before:", /Earlier years.{0,200}/.exec(strip(appleBefore))?.[0]);
+        console.log("  after: ", /Earlier years.{0,200}/.exec(strip(appleAfter))?.[0]);
+        console.log("  scope1 in JSON:", JSON.stringify(JSON.parse(readFileSync(path.join(dataDir, "companies", "apple.json"), "utf8")).metrics.filter((m: { metric: string }) => m.metric === "ghg_scope1").map((m: { year: number; value: number; boundary?: string }) => [m.year, m.value, m.boundary])));
+        const db = spawnSync("sqlite3", [path.join(dataDir, "benchmark.db"), "select metric_id, year, value from metric_values where company_id='apple' and metric_id='ghg_scope1'"], { encoding: "utf8" });
+        console.log("  scope1 in benchmark.db:", db.stdout.trim().replace(/\n/g, "; "), db.stderr.trim());
+      }
 
       for (const [name, width] of [["phone", 375], ["tablet", 768], ["desktop", 1280]] as const) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/review", "/review/documents/1", "/review/discovered", "/review/alerts"]) {
+        for (const route of ["/review", "/review/documents/1", "/review/discovered", "/review/alerts", "/review/users", "/review/account"]) {
           await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
           await page.locator("h1").first().waitFor();
           const ok = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
@@ -196,6 +278,8 @@ async function main() {
     }
   } finally {
     server.kill();
+    await new Promise((r) => setTimeout(r, 500));
+    rmSync(ROUTE_CACHE, { recursive: true, force: true });
     siteServer.close();
     rmSync(dataDir, { recursive: true, force: true });
   }

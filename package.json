@@ -18,6 +18,9 @@
     "test:e2e:pipeline": "tsx scripts/e2e-pipeline.ts",
     "refresh": "tsx scripts/refresh.ts",
     "refilter": "tsx scripts/refilter.ts",
+    "users": "tsx scripts/users.ts",
+    "backup": "tsx scripts/backup.ts",
+    "scheduler": "tsx scripts/scheduler.ts",
     "launchd:print": "zsh ops/launchd/install.sh --print",
     "launchd:install": "zsh ops/launchd/install.sh",
     "launchd:uninstall": "zsh ops/launchd/uninstall.sh"

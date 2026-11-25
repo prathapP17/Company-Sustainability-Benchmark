@@ -1,39 +1,48 @@
 /**
- * Phase 3 access control for the pipeline (until accounts arrive in phase 5):
+ * Access control for the review pipeline (phase 5: accounts and roles).
  *
- * 1. Disabled unless REVIEWER_TOKEN (≥ 16 chars) is set in .env.local.
- * 2. Local requests only: Host must be localhost/127.0.0.1/::1 and no proxy
- *    or tunnel headers may be present.
- * 3. A signed, httpOnly, SameSite=Strict cookie after entering the token and
- *    a reviewer name; the name goes into the audit trail.
- * 4. State-changing requests must come from the same origin.
+ * Two modes:
+ *  - Local (APP_ORIGIN unset): only requests to localhost are served, and
+ *    tunnel/CDN headers are refused, as in phase 3.
+ *  - Hosted (APP_ORIGIN=https://your.domain): only requests whose Host is that
+ *    domain are served; the app runs behind the bundled Caddy proxy.
+ * In both modes a signed-in account is required, with a role:
+ *    viewer   read the review queue, alerts, discovered reports and audit log
+ *    reviewer also upload, fetch, approve/reject, acknowledge alerts
+ *    admin    also manage accounts
+ * State-changing requests must come from the app's own origin (CSRF).
  *
  * Lesson learned: access is checked in every page and route handler, never
  * only in a layout.
  */
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { countUsers, hasRole, sessionUser, type PublicUser, type Role } from "../auth/accounts";
+import { pipelineDb } from "./db";
 
-export const COOKIE = "csi_reviewer";
+export const COOKIE = "csi_session";
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]", "::1"]);
+const LOOPBACK_IPS = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
 
 export interface HeaderLike {
   get(name: string): string | null;
 }
 
+export type SignedIn = PublicUser & { tokenHash: string };
+
 export type AccessResult =
-  | { ok: true; reviewer: string }
-  | { ok: false; status: 401 | 403 | 404; reason: string };
+  | { ok: true; reviewer: string; user: SignedIn }
+  | { ok: false; status: 401 | 403 | 404; reason: string; noAccounts?: boolean };
 
-function token(): string | null {
-  const t = process.env.REVIEWER_TOKEN?.trim();
-  return t && t.length >= 16 ? t : null;
+/** The public origin in hosted mode, e.g. "https://benchmark.example.org"; null in local mode. */
+export function appOrigin(): URL | null {
+  const v = process.env.APP_ORIGIN?.trim();
+  if (!v) return null;
+  try {
+    const u = new URL(v);
+    return u.protocol === "https:" || u.protocol === "http:" ? u : null;
+  } catch {
+    return null;
+  }
 }
-
-export function pipelineEnabled(): boolean {
-  return token() !== null;
-}
-
-const LOOPBACK_IPS = new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
 
 function hostnameOf(host: string): string {
   const h = host.trim().toLowerCase();
@@ -41,9 +50,9 @@ function hostnameOf(host: string): string {
 }
 
 /**
- * Next.js itself adds x-forwarded-for/-host/-proto/-port, so those headers are
- * allowed only when every value points at this machine. Tunnel/CDN headers
- * (Cloudflare, Forwarded, X-Real-IP) are always refused.
+ * Local mode. Next.js itself adds x-forwarded-for/-host/-proto/-port, so those
+ * headers are allowed only when every value points at this machine. Tunnel/CDN
+ * headers (Cloudflare, Forwarded, X-Real-IP) are always refused.
  */
 export function isLocal(headers: HeaderLike): boolean {
   if (!LOCAL_HOSTS.has(hostnameOf(headers.get("host") ?? ""))) return false;
@@ -55,56 +64,47 @@ export function isLocal(headers: HeaderLike): boolean {
   return true;
 }
 
-function sign(name: string, secret: string) {
-  return createHmac("sha256", secret).update(`reviewer:${name}`).digest("base64url");
+/** Whether this request is addressed to where the pipeline may be served. */
+export function allowedHost(headers: HeaderLike): boolean {
+  const origin = appOrigin();
+  if (!origin) return isLocal(headers);
+  return (headers.get("host") ?? "").trim().toLowerCase() === origin.host.toLowerCase();
 }
 
-export function makeCookieValue(name: string): string {
-  const secret = token();
-  if (!secret) throw new Error("pipeline disabled");
-  return `${Buffer.from(name, "utf8").toString("base64url")}.${sign(name, secret)}`;
+function placeReason(): string {
+  return appOrigin() ? `The review area is only served at ${appOrigin()!.origin}.` : "The review area is only available on this computer (localhost).";
 }
 
-export function readCookieValue(value: string | undefined): string | null {
-  const secret = token();
-  if (!secret || !value) return null;
-  const [encName, sig] = value.split(".");
-  if (!encName || !sig) return null;
-  const name = Buffer.from(encName, "base64url").toString("utf8");
-  const expected = Buffer.from(sign(name, secret));
-  const got = Buffer.from(sig);
-  if (expected.length !== got.length || !timingSafeEqual(expected, got)) return null;
-  return name;
+/** Client address for throttling: the rightmost X-Forwarded-For entry (set by Next.js, or by the bundled proxy). */
+export function clientIp(headers: HeaderLike): string {
+  const xff = headers.get("x-forwarded-for");
+  return xff?.split(",").pop()?.trim() || "unknown";
 }
 
-export function checkToken(candidate: string): boolean {
-  const secret = token();
-  if (!secret) return false;
-  const a = Buffer.from(secret);
-  const b = Buffer.from(candidate);
-  return a.length === b.length && timingSafeEqual(a, b);
+/** Gate for pages and handlers. `min` is the least role allowed. */
+export function checkAccess(headers: HeaderLike, cookieValue: string | undefined, min: Role = "viewer"): AccessResult {
+  if (!allowedHost(headers)) return { ok: false, status: 403, reason: placeReason() };
+  const db = pipelineDb();
+  const user = sessionUser(db, cookieValue);
+  if (!user) {
+    if (countUsers(db) === 0) {
+      return { ok: false, status: 401, noAccounts: true, reason: "No accounts exist yet. Create the first admin from the command line (see below)." };
+    }
+    return { ok: false, status: 401, reason: "Sign in to use the review area." };
+  }
+  if (!hasRole(user.role, min)) return { ok: false, status: 403, reason: `This needs the ${min} role; your account is ${user.role}.` };
+  return { ok: true, reviewer: user.name, user };
 }
 
-export function cleanReviewerName(name: string): string {
-  return name.replace(/[^\p{L}\p{N} .'-]/gu, "").trim().slice(0, 60);
-}
-
-/** Gate for pages and GET handlers. */
-export function checkAccess(headers: HeaderLike, cookieValue: string | undefined): AccessResult {
-  if (!pipelineEnabled()) return { ok: false, status: 404, reason: "The review pipeline is disabled (REVIEWER_TOKEN not set)." };
-  if (!isLocal(headers)) return { ok: false, status: 403, reason: "The review pipeline is only available on this computer (localhost)." };
-  const reviewer = readCookieValue(cookieValue);
-  if (!reviewer) return { ok: false, status: 401, reason: "Sign in with the reviewer token." };
-  return { ok: true, reviewer };
-}
-
-/** Additional gate for state-changing requests (CSRF): Origin must match Host. */
+/** Additional gate for state-changing requests (CSRF): Origin must be the app's own. */
 export function checkSameOrigin(headers: HeaderLike): boolean {
   const origin = headers.get("origin");
-  const host = headers.get("host");
-  if (!origin || !host) return false;
+  if (!origin) return false;
   try {
-    return new URL(origin).host === host;
+    const o = new URL(origin);
+    const app = appOrigin();
+    if (app) return o.origin === app.origin;
+    return o.host === headers.get("host");
   } catch {
     return false;
   }
@@ -120,10 +120,20 @@ export function cookieFrom(headers: HeaderLike, name = COOKIE): string | undefin
   return undefined;
 }
 
-/** For route handlers: returns the reviewer, or a Response to send back. */
-export function guardRequest(req: Request, mutating: boolean): { reviewer: string } | Response {
-  const access = checkAccess(req.headers, cookieFrom(req.headers));
-  if (!access.ok) return Response.json({ error: access.reason }, { status: access.status });
-  if (mutating && !checkSameOrigin(req.headers)) return Response.json({ error: "cross-origin request refused" }, { status: 403 });
-  return { reviewer: access.reviewer };
+/** For route handlers: returns the signed-in user, or a Response to send back. */
+export function guardRequest(req: Request, opts: { mutating: boolean; role?: Role }): { reviewer: string; user: SignedIn } | Response {
+  if (opts.mutating && !checkSameOrigin(req.headers)) {
+    return Response.json({ error: "cross-origin request refused" }, { status: 403, headers: NO_STORE });
+  }
+  const access = checkAccess(req.headers, cookieFrom(req.headers), opts.role ?? (opts.mutating ? "reviewer" : "viewer"));
+  if (!access.ok) return Response.json({ error: access.reason }, { status: access.status, headers: NO_STORE });
+  return { reviewer: access.reviewer, user: access.user };
+}
+
+export const NO_STORE = { "Cache-Control": "no-store" };
+
+/** The session cookie: HttpOnly, SameSite=Strict, Secure when served over HTTPS. */
+export function sessionCookie(token: string | null, maxAgeSeconds: number): string {
+  const secure = appOrigin()?.protocol === "https:" ? "; Secure" : "";
+  return `${COOKIE}=${token ? encodeURIComponent(token) : ""}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${token ? maxAgeSeconds : 0}${secure}`;
 }

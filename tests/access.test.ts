@@ -1,23 +1,195 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { checkAccess, checkSameOrigin, checkToken, cleanReviewerName, isLocal, makeCookieValue, pipelineEnabled, readCookieValue } from "@/lib/pipeline/access";
+import {
+  AccountError,
+  changePassword,
+  checkLink,
+  hashPassword,
+  inviteUser,
+  IP_MAX_ATTEMPTS,
+  login,
+  logout,
+  MAX_FAILED_LOGINS,
+  newPasswordLink,
+  passwordProblem,
+  revokeSessions,
+  sessionUser,
+  SESSION_IDLE_MS,
+  SESSION_MAX_MS,
+  setDisabled,
+  setPasswordWithLink,
+  setRole,
+  verifyPassword,
+} from "@/lib/auth/accounts";
+import { checkAccess, checkSameOrigin, clientIp, isLocal, sessionCookie } from "@/lib/pipeline/access";
+import { closePipelineDbs, pipelineDb } from "@/lib/pipeline/db";
+import { tempDataDir } from "./helpers";
 
 const H = (h: Record<string, string>) => new Headers(h);
+const PW = "correct horse battery staple";
+const META = { ip: "203.0.113.5", userAgent: "vitest" };
 
+let dir: string;
+let cleanup: () => void;
 beforeEach(() => {
-  process.env.REVIEWER_TOKEN = "test-token-0123456789";
+  const t = tempDataDir(false);
+  dir = t.dir;
+  cleanup = t.cleanup;
+  process.env.CSI_DATA_DIR = dir; // rule 9: never the real data folder
+  delete process.env.APP_ORIGIN;
 });
 afterEach(() => {
-  delete process.env.REVIEWER_TOKEN;
+  closePipelineDbs();
+  cleanup();
+  delete process.env.CSI_DATA_DIR;
+  delete process.env.APP_ORIGIN;
 });
 
-describe("pipeline access (local-only + reviewer token)", () => {
-  it("is disabled without a long enough token", () => {
-    process.env.REVIEWER_TOKEN = "short";
-    expect(pipelineEnabled()).toBe(false);
-    expect(checkAccess(H({ host: "localhost:3000" }), undefined)).toMatchObject({ ok: false, status: 404 });
+const db = () => pipelineDb(dir);
+/** Creates an account with a password set; returns its id. */
+function account(email: string, name: string, role: "admin" | "reviewer" | "viewer") {
+  const { user, token } = inviteUser(db(), { email, name, role }, "test");
+  setPasswordWithLink(db(), token, PW);
+  return user.id;
+}
+const signIn = (email: string, now?: Date) => {
+  const r = login(db(), email, PW, META, now);
+  if (!r.ok) throw new Error(r.error);
+  return r.token;
+};
+
+describe("passwords and one-time links", () => {
+  it("hashes with scrypt and a per-password salt", () => {
+    const a = hashPassword(PW);
+    expect(a).toMatch(/^scrypt\$32768\$8\$1\$/);
+    expect(a).not.toBe(hashPassword(PW));
+    expect(verifyPassword(PW, a)).toBe(true);
+    expect(verifyPassword(`${PW}!`, a)).toBe(false);
   });
 
-  it("accepts only localhost requests without proxy or tunnel headers", () => {
+  it("refuses short or self-referencing passwords", () => {
+    expect(passwordProblem("short")).toMatch(/at least 12/);
+    expect(passwordProblem("aaaaaaaaaaaaaa")).toMatch(/repeat/);
+    expect(passwordProblem("my-alex.smith-passphrase", { email: "alex.smith@example.org", name: "Alex Smith" })).toMatch(/email/);
+    expect(passwordProblem(PW)).toBeNull();
+  });
+
+  it("invite links work once, expire, and are stored only as hashes", () => {
+    const now = new Date("2026-11-25T10:00:00Z");
+    const { user, token } = inviteUser(db(), { email: "Ana@Example.org", name: "Ana", role: "reviewer" }, "admin", now);
+    expect(user.email).toBe("ana@example.org");
+    expect(JSON.stringify(db().prepare("SELECT * FROM account_links").all())).not.toContain(token);
+    expect(checkLink(db(), token, now)).toMatchObject({ purpose: "invite", user: { name: "Ana" } });
+    expect(() => setPasswordWithLink(db(), token, "too short", now)).toThrow(/at least 12/);
+    // Expired after 72 hours.
+    expect(checkLink(db(), token, new Date(now.getTime() + 73 * 3600_000))).toBeNull();
+    setPasswordWithLink(db(), token, PW, now);
+    expect(() => setPasswordWithLink(db(), token, PW, now)).toThrow(AccountError); // used
+    expect(() => inviteUser(db(), { email: "ana@example.org", name: "Other", role: "viewer" }, "admin")).toThrow(/already exists/);
+    expect(() => inviteUser(db(), { email: "b@example.org", name: "ana", role: "viewer" }, "admin")).toThrow(/name/);
+  });
+});
+
+describe("sign-in", () => {
+  it("signs in, stores only a hash of the session token, and signs out", () => {
+    account("rev@example.org", "Rev", "reviewer");
+    const token = signIn("rev@example.org");
+    expect(JSON.stringify(db().prepare("SELECT * FROM sessions").all())).not.toContain(token);
+    expect(sessionUser(db(), token)).toMatchObject({ name: "Rev", role: "reviewer" });
+    logout(db(), token);
+    expect(sessionUser(db(), token)).toBeNull();
+  });
+
+  it("gives the same answer for unknown emails and wrong passwords", () => {
+    account("rev@example.org", "Rev", "reviewer");
+    const a = login(db(), "nobody@example.org", PW, META);
+    const b = login(db(), "rev@example.org", "wrong password here", META);
+    expect(a).toEqual(b);
+    expect(a).toMatchObject({ ok: false, status: 401 });
+  });
+
+  it(`locks an account for 15 minutes after ${MAX_FAILED_LOGINS} wrong passwords`, () => {
+    account("rev@example.org", "Rev", "reviewer");
+    const now = new Date("2026-11-25T10:00:00Z");
+    for (let i = 0; i < MAX_FAILED_LOGINS; i++) login(db(), "rev@example.org", "wrong password here", { ...META, ip: `198.51.100.${i}` }, now);
+    expect(login(db(), "rev@example.org", PW, META, now)).toMatchObject({ ok: false, status: 429 }); // even the right password
+    expect(login(db(), "rev@example.org", PW, META, new Date(now.getTime() + 16 * 60_000)).ok).toBe(true);
+  });
+
+  it(`throttles one address after ${IP_MAX_ATTEMPTS} attempts in 15 minutes`, () => {
+    account("rev@example.org", "Rev", "reviewer");
+    const now = new Date("2026-11-25T10:00:00Z");
+    for (let i = 0; i < IP_MAX_ATTEMPTS; i++) login(db(), `x${i}@example.org`, "whatever-password", META, now);
+    expect(login(db(), "rev@example.org", PW, META, now)).toMatchObject({ ok: false, status: 429 });
+    expect(login(db(), "rev@example.org", PW, { ...META, ip: "192.0.2.1" }, now).ok).toBe(true);
+  });
+
+  it("ends sessions after 8 idle hours or 7 days, and when the account is disabled", () => {
+    account("admin@example.org", "Admin", "admin");
+    const id = account("rev@example.org", "Rev", "reviewer");
+    const t0 = new Date("2026-11-25T10:00:00Z");
+    const idle = signIn("rev@example.org", t0);
+    expect(sessionUser(db(), idle, new Date(t0.getTime() + SESSION_IDLE_MS + 1000))).toBeNull();
+
+    const busy = signIn("rev@example.org", t0);
+    let t = t0.getTime();
+    while (t + 6 * 3600_000 < t0.getTime() + SESSION_MAX_MS) {
+      t += 6 * 3600_000; // active every 6 hours
+      expect(sessionUser(db(), busy, new Date(t))).not.toBeNull();
+    }
+    expect(sessionUser(db(), busy, new Date(t0.getTime() + SESSION_MAX_MS + 1000))).toBeNull();
+
+    const s = signIn("rev@example.org");
+    setDisabled(db(), id, true, "Admin");
+    expect(sessionUser(db(), s)).toBeNull();
+    expect(login(db(), "rev@example.org", PW, META).ok).toBe(false);
+  });
+
+  it("password changes and resets sign out other sessions", () => {
+    const id = account("rev@example.org", "Rev", "reviewer");
+    const here = signIn("rev@example.org");
+    const other = signIn("rev@example.org");
+    const keep = sessionUser(db(), here)!.tokenHash;
+    expect(() => changePassword(db(), id, "wrong password here", "another long passphrase", keep)).toThrow(/current password/);
+    changePassword(db(), id, PW, "another long passphrase", keep);
+    expect(sessionUser(db(), here)).not.toBeNull();
+    expect(sessionUser(db(), other)).toBeNull();
+
+    const { purpose } = newPasswordLink(db(), id, "admin");
+    expect(purpose).toBe("reset");
+    expect(sessionUser(db(), here)).toBeNull(); // a reset ends every session
+    expect(revokeSessions(db(), id, "admin")).toBe(0);
+  });
+});
+
+describe("roles and admin safety", () => {
+  it("applies role changes on the next request and keeps one active admin", () => {
+    const admin = account("admin@example.org", "Admin", "admin");
+    const rev = account("rev@example.org", "Rev", "reviewer");
+    const local = H({ host: "localhost:3000" });
+    const token = signIn("rev@example.org");
+    expect(checkAccess(local, token, "reviewer")).toMatchObject({ ok: true, reviewer: "Rev" });
+    expect(checkAccess(local, token, "admin")).toMatchObject({ ok: false, status: 403 });
+    setRole(db(), rev, "viewer", "Admin");
+    expect(checkAccess(local, token, "reviewer")).toMatchObject({ ok: false, status: 403 });
+    expect(checkAccess(local, token, "viewer").ok).toBe(true);
+
+    expect(() => setRole(db(), admin, "reviewer", "Admin")).toThrow(/at least one active admin/);
+    expect(() => setDisabled(db(), admin, true, "Admin")).toThrow(/at least one active admin/);
+    setRole(db(), rev, "admin", "Admin");
+    setRole(db(), admin, "reviewer", "Rev"); // allowed now: another admin exists
+  });
+
+  it("explains how to create the first admin when no accounts exist", () => {
+    expect(checkAccess(H({ host: "localhost:3000" }), undefined)).toMatchObject({ ok: false, status: 401, noAccounts: true });
+    account("admin@example.org", "Admin", "admin");
+    const after = checkAccess(H({ host: "localhost:3000" }), undefined);
+    expect(after).toMatchObject({ ok: false, status: 401 });
+    expect(!after.ok && after.noAccounts).toBeFalsy();
+  });
+});
+
+describe("where the review area is served", () => {
+  it("local mode: localhost only, no proxy or tunnel headers", () => {
     expect(isLocal(H({ host: "localhost:3000" }))).toBe(true);
     expect(isLocal(H({ host: "127.0.0.1:3000" }))).toBe(true);
     expect(isLocal(H({ host: "[::1]:3000" }))).toBe(true);
@@ -28,32 +200,22 @@ describe("pipeline access (local-only + reviewer token)", () => {
     expect(isLocal(H({ host: "localhost:3000", "x-forwarded-for": "::1", "x-forwarded-host": "localhost:3000" }))).toBe(true);
     expect(isLocal(H({ host: "localhost:3000", "x-forwarded-for": "127.0.0.1, 8.8.8.8" }))).toBe(false);
     expect(isLocal(H({ host: "localhost:3000", "x-forwarded-host": "evil.example" }))).toBe(false);
-  });
-
-  it("signs the reviewer cookie and rejects tampering", () => {
-    const v = makeCookieValue("Alex");
-    expect(readCookieValue(v)).toBe("Alex");
-    const [, sig] = v.split(".");
-    expect(readCookieValue(`${Buffer.from("Mallory").toString("base64url")}.${sig}`)).toBeNull();
-    process.env.REVIEWER_TOKEN = "a-different-token-xyz";
-    expect(readCookieValue(v)).toBeNull(); // rotating the token signs everyone out
-  });
-
-  it("grants access only with a valid cookie on a local request", () => {
-    expect(checkAccess(H({ host: "localhost:3000" }), undefined)).toMatchObject({ ok: false, status: 401 });
-    expect(checkAccess(H({ host: "localhost:3000" }), makeCookieValue("Alex"))).toEqual({ ok: true, reviewer: "Alex" });
-    expect(checkAccess(H({ host: "evil.example" }), makeCookieValue("Alex"))).toMatchObject({ ok: false, status: 403 });
-  });
-
-  it("compares the token in constant time and checks same origin", () => {
-    expect(checkToken("test-token-0123456789")).toBe(true);
-    expect(checkToken("test-token-012345678")).toBe(false);
     expect(checkSameOrigin(H({ host: "localhost:3000", origin: "http://localhost:3000" }))).toBe(true);
     expect(checkSameOrigin(H({ host: "localhost:3000", origin: "http://evil.example" }))).toBe(false);
     expect(checkSameOrigin(H({ host: "localhost:3000" }))).toBe(false);
+    expect(sessionCookie("abc", 60)).not.toContain("Secure");
   });
 
-  it("sanitises reviewer names for the audit trail", () => {
-    expect(cleanReviewerName("  Ana <script>  ")).toBe("Ana script");
+  it("hosted mode: only the configured origin, Secure cookie, client address from the proxy", () => {
+    process.env.APP_ORIGIN = "https://bench.example.org";
+    account("rev@example.org", "Rev", "reviewer");
+    const token = signIn("rev@example.org");
+    expect(checkAccess(H({ host: "bench.example.org" }), token).ok).toBe(true);
+    expect(checkAccess(H({ host: "localhost:3000" }), token)).toMatchObject({ ok: false, status: 403 });
+    expect(checkAccess(H({ host: "other.example.org" }), token)).toMatchObject({ ok: false, status: 403 });
+    expect(checkSameOrigin(H({ host: "bench.example.org", origin: "https://bench.example.org" }))).toBe(true);
+    expect(checkSameOrigin(H({ host: "bench.example.org", origin: "http://bench.example.org" }))).toBe(false); // scheme matters
+    expect(sessionCookie("abc", 60)).toMatch(/HttpOnly; SameSite=Strict; Max-Age=60; Secure$/);
+    expect(clientIp(H({ "x-forwarded-for": "10.0.0.9, 203.0.113.7" }))).toBe("203.0.113.7");
   });
 });

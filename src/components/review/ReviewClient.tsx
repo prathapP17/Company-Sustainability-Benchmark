@@ -22,25 +22,27 @@ export function LoginForm() {
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
+        setError(null);
         const f = new FormData(e.currentTarget);
-        const r = await post("/api/pipeline/login", { name: f.get("name"), token: f.get("token") });
+        const r = await post("/api/pipeline/login", { email: f.get("email"), password: f.get("password") });
         setBusy(false);
         if (!r.ok) setError(String(r.data.error ?? "sign-in failed"));
         else router.refresh();
       }}
     >
       <label className="text-sm text-ink-2">
-        Your name (recorded in the audit trail)
-        <input name="name" required maxLength={60} className={INPUT} autoComplete="name" />
+        Email
+        <input name="email" type="email" required maxLength={254} className={INPUT} autoComplete="username" />
       </label>
       <label className="text-sm text-ink-2">
-        Reviewer token (from .env.local)
-        <input name="token" type="password" required className={INPUT} autoComplete="current-password" />
+        Password
+        <input name="password" type="password" required maxLength={200} className={INPUT} autoComplete="current-password" />
       </label>
       {error && <p role="alert" className="text-sm text-warn-ink">{error}</p>}
       <button className={BTN_PRIMARY} disabled={busy}>
-        Sign in
+        {busy ? "Signing in…" : "Sign in"}
       </button>
+      <p className="text-xs text-ink-muted">Forgot your password? Ask an admin for a reset link.</p>
     </form>
   );
 }
@@ -52,6 +54,7 @@ export function LogoutButton() {
       className="text-sm text-accent hover:underline"
       onClick={async () => {
         await post("/api/pipeline/logout", {});
+        router.push("/review");
         router.refresh();
       }}
     >

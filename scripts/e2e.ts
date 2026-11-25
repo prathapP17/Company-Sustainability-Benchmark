@@ -69,7 +69,8 @@ async function main() {
       // Unknown company → not-found UI + noindex. With Cache Components the shell streams before
       // params resolve, so Next 16 keeps HTTP 200 for runtime params (documented in not-found.md).
       await page.goto(`${BASE}/companies/does-not-exist`);
-      check((await page.getByText("Company not found").count()) === 1, "unknown company shows not-found UI");
+      await page.waitForLoadState("networkidle");
+      check((await page.getByRole("heading", { name: "Company not found" }).count()) === 1, "unknown company shows not-found UI");
       check((await page.locator('meta[name="robots"][content="noindex"]').count()) >= 1, "unknown company page is noindex");
 
       // Phase 2 pages

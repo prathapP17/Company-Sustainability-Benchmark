@@ -6,7 +6,7 @@ import { defaultDataDir } from "@/lib/data/load";
 
 /** Reviewer actions on a discovered report: fetch it into the pipeline, or skip it. */
 export async function POST(req: Request, ctx: RouteContext<"/api/pipeline/discovered/[id]">) {
-  const g = guardRequest(req, true);
+  const g = guardRequest(req, { mutating: true, role: "reviewer" });
   if (g instanceof Response) return g;
   const { id } = await ctx.params;
   const body = (await req.json().catch(() => ({}))) as { action?: string };

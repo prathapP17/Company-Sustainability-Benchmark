@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Card, StateBadge, Tag } from "@/components/ui";
 import { CoverageBar, CoverageLegend } from "@/components/CoverageBar";
@@ -139,7 +140,19 @@ function MetricRow({
   );
 }
 
-export default async function CompanyPage({ params }: PageProps<"/companies/[id]">) {
+/**
+ * `params` is awaited inside <Suspense> (Cache Components + Partial Prefetching):
+ * that lets Next.js regenerate this pre-built page when an approval changes the data.
+ */
+export default function CompanyPage(props: PageProps<"/companies/[id]">) {
+  return (
+    <Suspense fallback={<p className="text-sm text-ink-muted">Loading…</p>}>
+      <CompanyContent params={props.params} />
+    </Suspense>
+  );
+}
+
+async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "params">) {
   const { id } = await params;
   const c = getCompany(id);
   if (!c) notFound();

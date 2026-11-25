@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Card, Tag } from "@/components/ui";
 import { ScoreBar } from "@/components/ScoreBar";
@@ -20,7 +21,16 @@ export async function generateMetadata({ params }: PageProps<"/peers/[group]">):
   return { title: listPeerGroups().find((g) => g.id === group)?.name ?? "Peer group not found" };
 }
 
-export default async function PeerGroupPage({ params }: PageProps<"/peers/[group]">) {
+/** `params` is awaited inside <Suspense> so the pre-built page can be regenerated after approvals. */
+export default function PeerGroupPage(props: PageProps<"/peers/[group]">) {
+  return (
+    <Suspense fallback={<p className="text-sm text-ink-muted">Loading…</p>}>
+      <PeerGroupContent params={props.params} />
+    </Suspense>
+  );
+}
+
+async function PeerGroupContent({ params }: Pick<PageProps<"/peers/[group]">, "params">) {
   const { group } = await params;
   const g = listPeerGroups().find((x) => x.id === group);
   if (!g) notFound();

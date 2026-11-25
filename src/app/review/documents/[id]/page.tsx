@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Card, Tag } from "@/components/ui";
 import { RequeueButton, ReviewActions } from "@/components/review/ReviewClient";
+import { hasRole } from "@/lib/auth/accounts";
 import { getCompany } from "@/lib/db/queries";
 import { getMetric } from "@/lib/metrics/dictionary";
 import { fiscalLabel } from "@/lib/fiscal";
@@ -65,6 +66,7 @@ function EvidenceExcerpt({ text, wording }: { text: string; wording: string }) {
 async function DocumentReview({ id }: { id: number }) {
   const access = await currentAccess();
   if (!access.ok) return <Denied access={access} />;
+  const canReview = hasRole(access.user.role, "reviewer");
   const doc = getDocument(id);
   if (!doc) return <p className="text-sm text-ink-2">Document not found.</p>;
   const company = getCompany(doc.company_id);
@@ -104,7 +106,7 @@ async function DocumentReview({ id }: { id: number }) {
         </div>
       )}
 
-      <Card title="Processing" action={<RequeueButton documentId={id} />}>
+      <Card title="Processing" action={canReview ? <RequeueButton documentId={id} /> : undefined}>
         <ul className="flex flex-col gap-1 text-sm">
           {jobs.map((j) => (
             <li key={j.id} className="flex flex-wrap gap-2 text-ink-2">
@@ -165,7 +167,7 @@ async function DocumentReview({ id }: { id: number }) {
                         {e.review_reason ? `: ${e.review_reason}` : ""}
                       </div>
                     )}
-                    <ReviewActions id={e.id} status={e.status} conflict={conflict?.type ?? null} />
+                    {canReview && <ReviewActions id={e.id} status={e.status} conflict={conflict?.type ?? null} />}
                   </li>
                 );
               })}

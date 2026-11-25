@@ -1,0 +1,58 @@
+# Production deployment: docker compose up -d --build   (see docs/DEPLOYMENT.md)
+# Settings come from deploy/.env (copy deploy/.env.example).
+name: csi
+
+x-app: &app
+  build: .
+  image: corporate-sustainability-intelligence:latest
+  env_file: deploy/.env
+  environment:
+    CSI_DATA_DIR: /data
+    APP_ORIGIN: https://${DOMAIN:?set DOMAIN in deploy/.env}
+  volumes:
+    - data:/data
+  restart: unless-stopped
+  init: true
+
+services:
+  web:
+    <<: *app
+    command: ["web"]
+    expose: ["3000"]
+  worker:
+    <<: *app
+    command: ["worker"]
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+  scheduler:
+    <<: *app
+    command: ["scheduler"]
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+  caddy:
+    image: caddy:2.8.4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in deploy/.env}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+
+volumes:
+  data:
+  caddy_data:
+  caddy_config:

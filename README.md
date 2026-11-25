@@ -23,7 +23,7 @@ Benchmarks the sustainability disclosures of large operating companies. See
 
 ## Phase 3 (upload and extraction pipeline)
 
-- `/review` (this computer only): upload PDF, XLSX or ESEF/XHTML reports; review proposals; audit log
+- `/review` (signed-in accounts; see phase 5): upload PDF, XLSX or ESEF/XHTML reports; review proposals; audit log
 - `npm run worker`: background worker (job queue, time-outs, retries, stuck-job recovery, memory guard)
 - Rule-based extractor (`src/lib/pipeline/extract/`), plus optional Claude extraction when `ANTHROPIC_API_KEY` is set
 - Evidence gate: a value can be approved only if its wording and number are found again in the stored page text
@@ -31,8 +31,8 @@ Benchmarks the sustainability disclosures of large operating companies. See
 - Conflicts with curated values must be approved as a restatement (history kept) or rejected
 - Approval writes into `data/companies/<id>.json`, re-validates, re-seeds, and records the reviewer in the audit log
 - Scanned (image-only) pages are flagged "needs OCR"; OCR comes in a later phase
-- Setup: copy `.env.example` to `.env.local`, set `REVIEWER_TOKEN`, run `npm run dev` (or `build` + `start`) and `npm run worker`.
-  Public pages are prerendered: run `npm run build` again to publish approved values.
+- Setup: run `npm run dev` (or `build` + `start`) and `npm run worker`, then create an account (phase 5).
+  Approvals refresh the prerendered public pages and the CSV download on their next visit; no rebuild needed.
 
 ## Phase 4 (automated discovery and scheduled refresh)
 
@@ -57,6 +57,19 @@ Benchmarks the sustainability disclosures of large operating companies. See
   log in `data/logs/refresh.log`); `npm run launchd:uninstall` removes it
 - SEC EDGAR needs `SEC_USER_AGENT` (your organisation and a contact email) in `.env.local`
 
+## Phase 5 (accounts, roles, hardening, hosting)
+
+- Email + password accounts with three roles: **viewer** (read the review area), **reviewer** (upload, fetch,
+  approve, reject), **admin** (also manage accounts at `/review/users`). Public dashboards stay open to everyone.
+- First admin: `npm run users -- invite --email you@example.org --name "Your Name" --role admin` prints a one-time
+  link to set the password. The app sends no email; admins pass invite and reset links on themselves.
+- Security: scrypt password hashes; session and link tokens stored only as hashes; sessions end after 8 h idle or 7
+  days; lockout after 8 wrong passwords; per-address throttling; same-origin checks on every change; CSP, frame,
+  sniffing, referrer and permissions headers; `/review` and `/api/` kept out of search engines
+- Local mode (no `APP_ORIGIN`): the review area still answers on localhost only. Hosted mode: Docker image +
+  `compose.yaml` (Caddy HTTPS, web, worker, scheduler for weekly refresh and daily snapshot backups). See
+  [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md); nothing is deployed until you run it on your own server.
+
 ## Commands
 
 ```bash
@@ -71,6 +84,8 @@ npm run test:e2e:pipeline   # review pipeline end to end, in a temporary data fo
 npm run worker        # extraction worker (add -- --once to drain the queue and exit)
 npm run refresh       # discovery + extraction now (add -- --company apple to limit)
 npm run refilter      # re-apply changed filters to queued links (dry run; add -- --apply, which backs up first)
+npm run users -- list # accounts: list | invite | link | role | disable | enable (see docs/DEPLOYMENT.md)
+npm run backup        # snapshot backup into data/backups/snapshot-<time>/ (keeps 14)
 npm run extract-text -- <file.pdf>   # page-marked text for manual research
 ```
 

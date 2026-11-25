@@ -3,7 +3,7 @@ import { pipelineDb } from "@/lib/pipeline/db";
 import { requeueDocument } from "@/lib/pipeline/queue";
 
 export async function POST(req: Request, ctx: RouteContext<"/api/pipeline/documents/[id]/requeue">) {
-  const g = guardRequest(req, true);
+  const g = guardRequest(req, { mutating: true, role: "reviewer" });
   if (g instanceof Response) return g;
   const { id } = await ctx.params;
   const db = pipelineDb();

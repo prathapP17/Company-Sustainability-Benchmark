@@ -3,7 +3,7 @@ import { pipelineDb } from "@/lib/pipeline/db";
 import { acknowledgeAlert } from "@/lib/discovery/alerts";
 
 export async function POST(req: Request, ctx: RouteContext<"/api/pipeline/alerts/[id]">) {
-  const g = guardRequest(req, true);
+  const g = guardRequest(req, { mutating: true, role: "reviewer" });
   if (g instanceof Response) return g;
   const { id } = await ctx.params;
   const ok = acknowledgeAlert(pipelineDb(), Number(id), g.reviewer);

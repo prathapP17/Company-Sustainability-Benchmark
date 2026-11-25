@@ -6,6 +6,7 @@ import { LogoutButton, UploadForm } from "@/components/review/ReviewClient";
 import { listCompanies } from "@/lib/db/queries";
 import { awaitingFetchCount, listDocuments, openAlertCount, queueStats } from "@/lib/pipeline/queries";
 import { aiEnabled } from "@/lib/pipeline/extract/ai";
+import { hasRole } from "@/lib/auth/accounts";
 import { currentAccess } from "./gate";
 import { Denied } from "./Denied";
 
@@ -37,12 +38,13 @@ async function ReviewHome() {
   const companyName = new Map(companies.map((c) => [c.id, c.name]));
   const alerts = openAlertCount();
   const awaiting = awaitingFetchCount();
+  const canReview = hasRole(access.user.role, "reviewer");
 
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-ink-2">
         <span>
-          Signed in as <b className="text-ink">{access.reviewer}</b> · Jobs: {stats.get("queued") ?? 0} queued,{" "}
+          Signed in as <b className="text-ink">{access.reviewer}</b> ({access.user.role}) · Jobs: {stats.get("queued") ?? 0} queued,{" "}
           {stats.get("running") ?? 0} running, {stats.get("failed") ?? 0} failed · Claude extraction{" "}
           {aiEnabled() ? "on" : "off (no ANTHROPIC_API_KEY)"}
         </span>
@@ -56,13 +58,25 @@ async function ReviewHome() {
           <Link href="/review/audit" className="text-accent hover:underline">
             Audit log
           </Link>
+          {access.user.role === "admin" && (
+            <Link href="/review/users" className="text-accent hover:underline">
+              Users
+            </Link>
+          )}
+          <Link href="/review/account" className="text-accent hover:underline">
+            Account
+          </Link>
           <LogoutButton />
         </span>
       </div>
 
-      <Card title="Upload a document">
-        <UploadForm companies={companies} />
-      </Card>
+      {canReview ? (
+        <Card title="Upload a document">
+          <UploadForm companies={companies} />
+        </Card>
+      ) : (
+        <p className="text-sm text-ink-muted">Your account can view the queue. Uploading and reviewing need the reviewer role.</p>
+      )}
 
       <Card title="Documents">
         {docs.length === 0 ? (

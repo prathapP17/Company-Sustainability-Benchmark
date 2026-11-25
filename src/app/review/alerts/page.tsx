@@ -5,6 +5,7 @@ import { Card, Tag } from "@/components/ui";
 import { AcknowledgeButton } from "@/components/review/ReviewClient";
 import { listCompanies } from "@/lib/db/queries";
 import { listAlerts } from "@/lib/pipeline/queries";
+import { hasRole } from "@/lib/auth/accounts";
 import { currentAccess } from "../gate";
 import { Denied } from "../Denied";
 
@@ -48,6 +49,7 @@ async function AlertList() {
   const open = listAlerts("open");
   const done = listAlerts("acknowledged", 50);
   const names = new Map(listCompanies().map((c) => [c.id, c.name]));
+  const canReview = hasRole(access.user.role, "reviewer");
 
   const item = (a: (typeof open)[number], actions: boolean) => (
     <li key={a.id} className="flex flex-col gap-2 border-b border-hairline pb-3 last:border-0 last:pb-0 sm:flex-row sm:items-start sm:justify-between">
@@ -75,7 +77,7 @@ async function AlertList() {
           {!actions && a.acknowledged_by && ` · acknowledged by ${a.acknowledged_by}`}
         </div>
       </div>
-      {actions && <AcknowledgeButton id={a.id} />}
+      {actions && canReview && <AcknowledgeButton id={a.id} />}
     </li>
   );
 

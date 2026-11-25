@@ -1,0 +1,15 @@
+# HTTPS reverse proxy. Caddy obtains and renews the certificate for $DOMAIN
+# automatically (ports 80 and 443 must reach this server, and the domain's
+# DNS must point here). It replaces any client-supplied X-Forwarded-For with
+# the real client address, which the app uses for sign-in throttling.
+{$DOMAIN} {
+	encode zstd gzip
+	request_body {
+		max_size 60MB
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	reverse_proxy web:3000
+}

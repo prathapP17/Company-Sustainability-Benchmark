@@ -6,6 +6,7 @@ import { DiscoveredActions } from "@/components/review/ReviewClient";
 import { listCompanies } from "@/lib/db/queries";
 import { listDiscovered, recentRuns } from "@/lib/pipeline/queries";
 import { titleCase } from "@/lib/format";
+import { hasRole } from "@/lib/auth/accounts";
 import { currentAccess } from "../gate";
 import { Denied } from "../Denied";
 
@@ -51,6 +52,7 @@ async function DiscoveredList() {
   const rows = listDiscovered();
   const runs = recentRuns();
   const names = new Map(listCompanies().map((c) => [c.id, c.name]));
+  const canReview = hasRole(access.user.role, "reviewer");
 
   return (
     <>
@@ -106,7 +108,7 @@ async function DiscoveredList() {
                     )}
                   </div>
                 </div>
-                {["new", "awaiting_fetch", "failed", "blocked"].includes(r.status) && (
+                {canReview && ["new", "awaiting_fetch", "failed", "blocked"].includes(r.status) && (
                   <DiscoveredActions id={r.id} canFetch={r.status !== "blocked"} />
                 )}
               </li>
