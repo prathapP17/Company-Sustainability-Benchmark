@@ -70,7 +70,7 @@ export function CompareView({ companies, metrics, cells }: { companies: CompanyM
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggle(c.id)}
-                className={`rounded-full border px-3 py-1 text-sm ${on ? "border-accent bg-accent text-white" : "border-hairline text-ink-2 hover:border-ink-muted"}`}
+                className={`rounded-full border px-3 py-1 text-sm ${on ? "border-accent bg-accent text-[var(--on-accent)]" : "border-hairline text-ink-2 hover:border-ink-muted"}`}
               >
                 {on && <span aria-hidden>✓ </span>}
                 {c.name}

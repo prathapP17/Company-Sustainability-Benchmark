@@ -1,0 +1,66 @@
+[
+  {
+    "company": "apple",
+    "source": "apple-epr-2026",
+    "url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2026.pdf",
+    "file": "apple-epr-2026.pdf",
+    "bytes": 16209103,
+    "sha256": "294587a989beb1bd2c1688e0bf67d18c601b55dcf582343ca87e917dc2aec38a"
+  },
+  {
+    "company": "microsoft",
+    "source": "msft-factsheet-2026",
+    "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/msc/documents/presentations/CSR/2026-Microsoft-Environmental-Data-Fact-Sheet-PDF.pdf",
+    "file": "msft-factsheet-2026.pdf",
+    "bytes": 3912081,
+    "sha256": "0fd180837df00b3427c3eae484a492224b8f18c381e82a2aed98b04553a197f6"
+  },
+  {
+    "company": "nestle",
+    "source": "nestle-nfs-2025",
+    "url": "https://www.nestle.com/sites/default/files/2026-02/non-financial-statement-2025.pdf",
+    "file": "nestle-nfs-2025.pdf",
+    "bytes": 16822620,
+    "sha256": "a3e295111579afb2fb6291ac65465f9712529baaed12f80a8a901311dcbb5001"
+  },
+  {
+    "company": "reliance",
+    "source": "ril-brsr-fy2026",
+    "url": "https://www.ril.com/ar2025-26/pdf/BRSR202526.pdf",
+    "file": "ril-brsr-fy2026.pdf",
+    "bytes": 9603247,
+    "sha256": "bb5d449db013bbbbc9824fdec21364948838b5fc829dd4166aad87375bccb15d"
+  },
+  {
+    "company": "samsung",
+    "source": "samsung-sr-2026",
+    "url": "https://download.semiconductor.samsung.com/resources/others/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf",
+    "file": "samsung-sr-2026.pdf",
+    "bytes": 4698813,
+    "sha256": "9daee11eb7bd019bc9957d880c4eec04aa98314be5b5f2d526570ec24c9c8ed4"
+  },
+  {
+    "company": "siemens",
+    "source": "siemens-ss-fy2025",
+    "url": "https://assets.new.siemens.com/siemens/assets/api/uuid:dea0c623-1ae9-4ef0-a69a-31d8eb7b39fb/sustainability-statement.pdf",
+    "file": "siemens-ss-fy2025.pdf",
+    "bytes": 4466029,
+    "sha256": "02b55070ea3ef2dda495861fffb7ba80f7c6b13fbd7b7a8ee833ffc7e4714f15"
+  },
+  {
+    "company": "toyota",
+    "source": "toyota-sdb-2026",
+    "url": "https://global.toyota/pages/global_toyota/sustainability/report/sdb/sdb26_en.pdf",
+    "file": "toyota-sdb-2026.pdf",
+    "bytes": 12802480,
+    "sha256": "b4d725a58922a5c6e8ff0078b597d7c599f5e61c1d445065a839f073b5084bea"
+  },
+  {
+    "company": "unilever",
+    "source": "unilever-ar-2025",
+    "url": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ul-2025-12-31-1-en.xhtml",
+    "file": "unilever-ar-2025.xhtml",
+    "bytes": 15780128,
+    "sha256": "feacdf7ed24ff3a58589dded7c710b1ccbd1bd578f04405335fccffccd7de0f5"
+  }
+]

@@ -10,6 +10,7 @@
  */
 import { spawn } from "node:child_process";
 import { mkdirSync } from "node:fs";
+import { auditPage } from "./a11y-lib";
 import path from "node:path";
 import { chromium, type Page } from "playwright-core";
 
@@ -123,6 +124,18 @@ async function main() {
       }
       const missing = await fetch(`${BASE}/api/export/report/does-not-exist`);
       check(missing.status === 404, `unknown company PDF returns 404 (got ${missing.status})`);
+
+      // Accessibility (axe-core, WCAG 2.1 A/AA), light and dark mode.
+      for (const scheme of ["light", "dark"] as const) {
+        const ctx = await browser.newContext({ colorScheme: scheme });
+        const ap = await ctx.newPage();
+        for (const route of ["/", "/companies/apple", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads", "/review"]) {
+          await ap.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
+          const v = await auditPage(ap);
+          check(v.length === 0, `accessibility ${scheme} ${route}${v.length ? `: ${v.map((x) => `${x.id} @ ${x.nodes[0]}`).join("; ")}` : ""}`);
+        }
+        await ctx.close();
+      }
 
       // Responsive checks + screenshots
       for (const [name, width] of Object.entries(WIDTHS)) {

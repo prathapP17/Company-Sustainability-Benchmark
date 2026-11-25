@@ -12,6 +12,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import ExcelJS from "exceljs";
 import { extractPdfPages, looksScanned } from "../extract/pdf-text";
+import { ocrPdfPages } from "../extract/ocr";
 import { xhtmlPages } from "../extract/xhtml-text";
 import type { DB } from "../db/connection";
 import { audit, nowIso, uploadsDir, type DocumentRow } from "./db";
@@ -116,7 +117,19 @@ export async function parseFile(file: string, mime: string): Promise<ParsedPage[
   const kind = ACCEPTED[mime]?.kind;
   if (kind === "pdf") {
     const pages = await extractPdfPages(file);
-    return pages.map((p) => ({ pageNumber: p.pageNumber, label: `PDF p.${p.pageNumber}`, text: p.text, isScanned: looksScanned(p) }));
+    const scanned = pages.filter(looksScanned).map((p) => p.pageNumber);
+    // Image-only pages are read by OCR (unless OCR_DISABLED=1); they stay flagged as scanned and are labelled "(OCR)".
+    const ocr = scanned.length && process.env.OCR_DISABLED !== "1" ? await ocrPdfPages(file, scanned) : new Map<number, string>();
+    return pages.map((p) => {
+      const text = ocr.get(p.pageNumber);
+      const read = text !== undefined && text.replace(/\s/g, "").length >= 20;
+      return {
+        pageNumber: p.pageNumber,
+        label: read ? `PDF p.${p.pageNumber} (OCR)` : `PDF p.${p.pageNumber}`,
+        text: read ? text : p.text,
+        isScanned: looksScanned(p),
+      };
+    });
   }
   if (kind === "xhtml") {
     return xhtmlPages(readFileSync(/*turbopackIgnore: true*/ file, "utf8")).map((p) => ({

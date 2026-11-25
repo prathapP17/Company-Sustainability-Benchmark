@@ -86,6 +86,20 @@ Benchmarks the sustainability disclosures of large operating companies. See
   "Written by AI", and only if an automatic check passes (every number appears in a cited fact; no comparisons,
   rankings, judgements or forecasts). They are hidden as soon as the underlying data changes. News stays under rule 7.
 
+## Phase 7 (evaluation and hardening)
+
+- **Extraction evaluation:** 184 curated values from 8 source reports as gold answers; the rule-based extractor finds
+  36% with 44% judged precision (see [docs/EVALUATION.md](docs/EVALUATION.md)). Claude can be evaluated with the same
+  set once an API key is set.
+- **OCR:** image-only PDF pages are read with Tesseract (offline, English), labelled "(OCR)", at lower confidence.
+- **Accessibility:** axe-core (WCAG 2.1 A/AA) checks every public page in light and dark mode and every review page
+  in the end-to-end suites; 0 violations.
+- **Performance budgets:** `perf-budgets.json`, checked by `npm run perf` on a production build.
+- **CI:** GitHub Actions runs `npm audit`, validate, typecheck, lint, unit tests and the build on every push.
+- **Backups:** `npm run restore:drill` proves the newest snapshot restores cleanly.
+- **Docs:** [METHODOLOGY](docs/METHODOLOGY.md), [DATA_MODEL](docs/DATA_MODEL.md), [DEPLOYMENT](docs/DEPLOYMENT.md),
+  [EVALUATION](docs/EVALUATION.md).
+
 ## Commands
 
 ```bash
@@ -105,6 +119,9 @@ npm run backup        # snapshot backup into data/backups/snapshot-<time>/ (keep
 npm run sbti:import   # re-extract data/sbti.json from downloaded SBTi files (ask before downloading new ones)
 npm run summaries -- --company apple   # AI summary (or --stale for all without a current one)
 npm run news          # search GDELT now; items wait on /review/news
+npm run eval          # extraction evaluation against the curated values (npm run eval:gold to rebuild the gold set)
+npm run perf          # performance budgets (needs a build and Chrome)
+npm run restore:drill # verify the newest backup snapshot restores cleanly
 npm run extract-text -- <file.pdf>   # page-marked text for manual research
 ```
 

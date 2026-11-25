@@ -68,7 +68,7 @@ export function Scope3Chart({ data, companyName }: { data: Scope3Datum[]; compan
       </ul>
       <div style={{ height }} className="hidden sm:block" aria-hidden>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={rows} layout="vertical" margin={{ top: 4, right: 16, bottom: 4, left: 0 }}>
+          <BarChart data={rows} layout="vertical" margin={{ top: 4, right: 16, bottom: 4, left: 0 }} accessibilityLayer={false}>
             <CartesianGrid horizontal={false} stroke="var(--hairline)" />
             <XAxis
               type="number"

@@ -158,7 +158,8 @@ export function extractCandidates(pages: PageInput[], ctx: ExtractContext): Cand
   const best = new Map<string, Candidate>();
 
   for (const page of pages) {
-    if (page.isScanned) continue;
+    const ocr = page.label.endsWith("(OCR)");
+    if (page.isScanned && !ocr) continue; // image only, no readable text
     const lines = linesOf(page);
     const texts = lines.map((l) => l.text);
     const pageBoundary = detectBoundary(page.text);
@@ -190,7 +191,18 @@ export function extractCandidates(pages: PageInput[], ctx: ExtractContext): Cand
 
         const header = findYearHeader(texts, i, ctx.convention);
         let mapped: { year: number; token: NumberToken }[] | null = null;
-        if (header) mapped = alignToYears(values, header.years);
+        // Empty cells printed as "-" / "–" / "n/a" keep their column: align by cell position, or skip when unclear.
+        // Only dashes inside the trailing run of cells count; a dash in a label ("Category 3 – Fuel") does not.
+        const tail = /(?:[\s|]+(?:\(?-?[\d,]+(?:\.\d+)?\)?\s?%?|[-–—]|n\/a|n\.a\.))+[\s|]*$/i.exec(line.text.slice(after));
+        const tailStart = tail ? after + tail.index : line.text.length;
+        const placeholders = tail
+          ? [...tail[0].matchAll(/(?<=^|[\s|])(?:[-–—]|n\/a|n\.a\.)(?=$|[\s|])/gi)].map((m) => m.index! + tailStart)
+          : [];
+        if (header && placeholders.length) {
+          const slots = [...values.filter((t) => t.index >= tailStart).map((t) => ({ at: t.index, token: t as NumberToken | null })), ...placeholders.map((at) => ({ at, token: null }))].sort((a, b) => a.at - b.at);
+          if (slots.length !== header.years.length) return; // ambiguous columns (rule 1)
+          mapped = slots.flatMap((sl, k) => (sl.token ? [{ year: header.years[k], token: sl.token }] : []));
+        } else if (header) mapped = alignToYears(values, header.years);
         else if (values.length === 1 && ctx.reportingYear) mapped = [{ year: ctx.reportingYear, token: values[0] }];
         if (!mapped) return;
 
@@ -200,6 +212,7 @@ export function extractCandidates(pages: PageInput[], ctx: ExtractContext): Cand
           if (unitNear) confidence += 0.15;
           if (header && values.length === header.years.length) confidence += 0.1;
           if (def.core) confidence += 0.05;
+          if (ocr) confidence -= 0.2; // OCR can misread digits: reviewers check the page image
           const cand: Candidate = {
             metricId: def.id,
             year,

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const BTN = "rounded border border-hairline px-3 py-1.5 text-sm text-ink hover:border-ink-muted disabled:opacity-50";
-const BTN_PRIMARY = "rounded bg-accent px-3 py-1.5 text-sm text-white hover:opacity-90 disabled:opacity-50";
+const BTN_PRIMARY = "rounded bg-accent px-3 py-1.5 text-sm text-[var(--on-accent)] hover:opacity-90 disabled:opacity-50";
 const INPUT = "w-full rounded border border-hairline bg-surface px-2 py-1.5 text-sm text-ink";
 const MIN = 12;
 

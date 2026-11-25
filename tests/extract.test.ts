@@ -53,6 +53,7 @@ describe("units and years", () => {
     expect(parseYearHeader("Parameter | FY 2025-26 | FY 2024-25", "end_year")).toEqual([2026, 2025]);
     expect(parseYearHeader("Parameter | FY 2025-26 | FY 2024-25", "start_year")).toEqual([2025, 2024]);
     expect(parseYearHeader("Total | 3,63,50,070 | 2024", "end_year")).toBeNull();
+    expect(parseYearHeader("GHG emissions (tCO2e) FY2024 FY2025", "start_year")).toEqual([2024, 2025]); // the company's own label, as printed
   });
   it("aligns short rows to the latest years and rejects overlong rows", () => {
     expect(alignToYears(findNumbers("x | 1 | 2"), [2023, 2024, 2025])!.map((m) => m.year)).toEqual([2024, 2025]);
@@ -109,6 +110,23 @@ Scope 2 (MTCO2e) (market-based) | 8,152,497 | 9,539,765 | 10,187,387 | 10,957,39
 Scope 3 (MTCO2e) | 6,049,256 | 7,429,158 | 7,616,655 | 8,223,173 | 36,299,005`;
 const RELIANCE_PROSE = `Key Indicators | 2024 | 2025
 academic and research institutions | energy hubs on wastelands, combining | For this year, Scope 1 and Scope 2 with location-based method is 46.13 MMT CO2e.`;
+
+describe("rule-based extractor: empty cells printed as dashes", () => {
+  it("keeps each value in its own column, and skips rows whose cells do not line up with the years", () => {
+    const aligned = `(in ktCO2e) | 2019 | 2025 | 2030 | 2050
+Gross Scope 1 GHG emissions - 288 - -`;
+    const c = extractCandidates([page(aligned)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null });
+    expect(c.map((x) => [x.metricId, x.year, x.value])).toEqual([["ghg_scope1", 2025, 288]]); // not 2050
+    const misaligned = `(in ktCO2e) | 2019 | 2025 | 2030 | 2050
+Gross Scope 1 GHG emissions - 288 - - -`;
+    expect(extractCandidates([page(misaligned)], { peerGroup: "autos_industrials", convention: "end_year", reportingYear: null })).toEqual([]);
+    // A dash inside the label is not an empty cell.
+    const label = `GHG emissions (mtCO2e) | FY24 | FY25
+Category 3 – Fuel- and energy-related activities | 708,000 | 1,075,000`;
+    const l = extractCandidates([page(label)], { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+    expect(l.find((x) => x.metricId === "ghg_scope3_c3" && x.year === 2025)?.value).toBe(1075000);
+  });
+});
 
 describe("rule-based extractor: rows that are not the metric", () => {
   it("skips intensity ratios and renewable / non-renewable energy subtotals", () => {
@@ -199,4 +217,47 @@ Pages purgeable:                           100.`;
   it("parses Linux MemAvailable", () => {
     expect(parseMemInfo("MemTotal: 8000 kB\nMemAvailable:    2048 kB\n")).toBe(2048 * 1024);
   });
+});
+
+describe("OCR for image-only pages", () => {
+  it("reads a scanned table, labels the page (OCR), and lowers the proposals' confidence", async () => {
+    const { createCanvas } = await import("@napi-rs/canvas");
+    const PDFDocument = (await import("pdfkit")).default;
+    const { mkdtempSync, rmSync, writeFileSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const path = await import("node:path");
+    const { parseFile } = await import("@/lib/pipeline/ingest");
+
+    const canvas = createCanvas(1400, 320);
+    const g = canvas.getContext("2d");
+    g.fillStyle = "#ffffff";
+    g.fillRect(0, 0, 1400, 320);
+    g.fillStyle = "#000000";
+    g.font = "40px sans-serif";
+    g.fillText("GHG emissions (tCO2e)      FY2024      FY2025", 30, 90);
+    g.fillText("Scope 1 emissions               53,300        55,900", 30, 190);
+    const png = await canvas.encode("png");
+    const dir = mkdtempSync(path.join(tmpdir(), "csi-ocr-"));
+    try {
+      const file = path.join(dir, "scan.pdf");
+      const pdf = await new Promise<Buffer>((resolve) => {
+        const d = new PDFDocument({ size: [700, 160] });
+        const chunks: Buffer[] = [];
+        d.on("data", (c: Buffer) => chunks.push(c));
+        d.on("end", () => resolve(Buffer.concat(chunks)));
+        d.image(png, 0, 0, { width: 700 });
+        d.end();
+      });
+      writeFileSync(file, pdf);
+      const pages = await parseFile(file, "application/pdf");
+      expect(pages[0]).toMatchObject({ label: "PDF p.1 (OCR)", isScanned: true });
+      expect(pages[0].text).toMatch(/55,900/);
+      const c = extractCandidates(pages, { peerGroup: "software_it", convention: "end_year", reportingYear: null });
+      const v = c.find((x) => x.metricId === "ghg_scope1" && x.year === 2025)!;
+      expect(v).toMatchObject({ value: 55900, pageLabel: "PDF p.1 (OCR)" });
+      expect(v.confidence).toBeLessThan(0.75);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }, 60_000);
 });

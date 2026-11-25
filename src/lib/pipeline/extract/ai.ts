@@ -41,7 +41,7 @@ export function selectPages(pages: PageInput[], peerGroup: string): PageInput[] 
     .filter((s) => /^[\x00-\x7f]+$/.test(s) && s.length > 3)
     .map((s) => s.toLowerCase());
   return pages
-    .filter((p) => !p.isScanned && p.text.trim().length > 0)
+    .filter((p) => (!p.isScanned || p.label.endsWith("(OCR)")) && p.text.trim().length > 0)
     .map((p) => {
       const t = p.text.toLowerCase();
       return { p, score: words.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0) };

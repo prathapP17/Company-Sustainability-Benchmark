@@ -10,6 +10,7 @@ import http from "node:http";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { chromium } from "playwright-core";
+import { auditPage } from "./a11y-lib";
 import { makeGhgPdf } from "../tests/pdf-fixture";
 
 const PORT = 3108;
@@ -100,7 +101,7 @@ async function main() {
     }
     const browser = await chromium.launch({ executablePath: CHROME, headless: true });
     try {
-      const page = await browser.newPage();
+      const page = await (await browser.newContext()).newPage();
 
       // Hardening: security headers on public pages.
       const home = await fetch(BASE);
@@ -209,7 +210,7 @@ async function main() {
       check(w.status === 0 && /rule-based proposals/.test(w.stdout), "worker processed the document");
 
       await page.goto(`${BASE}/review/documents/1`);
-      check((await page.getByText(/1 page\(s\) have no text layer/).count()) === 1, "scanned page flagged for OCR");
+      check((await page.getByText(/1 page\(s\) have no text layer and could not be read/).count()) === 1, "unreadable image page flagged (OCR found no text)");
       check((await page.getByText(/Pending review/).count()) === 1, "proposals awaiting review");
       check((await page.getByText("Conflicts with curated value").count()) >= 1, "conflict with curated Apple value shown");
 
@@ -277,6 +278,10 @@ async function main() {
           const ok = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
           check(ok, `no horizontal page scroll at ${name} on ${route}`);
           await page.screenshot({ path: path.join(OUT, `${route.slice(1).replace(/\//g, "_")}-${name}.png`), fullPage: true });
+          if (name === "desktop") {
+            const v = await auditPage(page);
+            check(v.length === 0, `accessibility ${route}${v.length ? `: ${v.map((x) => `${x.id} @ ${x.nodes[0]}`).join("; ")}` : ""}`);
+          }
         }
       }
     } finally {

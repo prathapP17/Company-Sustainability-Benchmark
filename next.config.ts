@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   // pdfkit reads its font metrics from disk; keep these as plain Node requires.
-  serverExternalPackages: ["pdfkit", "exceljs"],
+  serverExternalPackages: ["pdfkit", "exceljs", "tesseract.js", "@napi-rs/canvas", "@tesseract.js-data/eng"],
   partialPrefetching: true,
   turbopack: {
     // Pin the project root so a stray lockfile in a parent folder is never picked up.

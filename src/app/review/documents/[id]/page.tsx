@@ -10,7 +10,8 @@ import { fiscalLabel } from "@/lib/fiscal";
 import { formatReported, titleCase } from "@/lib/format";
 import { LABELS } from "@/lib/labels";
 import type { Boundary, Consolidation } from "@/lib/schema/enums";
-import { extractionsFor, getDocument, jobsFor, pagesFor } from "@/lib/pipeline/queries";
+import { extractionsFor, getDocument, jobsFor, ocrPageNumbers, pagesFor } from "@/lib/pipeline/queries";
+import { MAX_OCR_PAGES } from "@/lib/extract/ocr";
 import { normalizeForMatch } from "@/lib/pipeline/evidence";
 import type { Conflict } from "@/lib/pipeline/review";
 import type { ExtractionRow } from "@/lib/pipeline/db";
@@ -75,6 +76,8 @@ async function DocumentReview({ id }: { id: number }) {
   const extractions = extractionsFor(id);
   const pages = new Map(pagesFor(id, [...new Set(extractions.map((e) => e.page_number))]).map((p) => [p.page_number, p]));
   const scanned = JSON.parse(doc.scanned_pages ?? "[]") as number[];
+  const ocrRead = ocrPageNumbers(id);
+  const unread = scanned.filter((n) => !ocrRead.includes(n));
 
   return (
     <>
@@ -98,11 +101,19 @@ async function DocumentReview({ id }: { id: number }) {
         </div>
       </div>
 
-      {scanned.length > 0 && (
+      {ocrRead.length > 0 && (
         <div className="rounded-xl border border-hairline bg-warn-bg p-4 text-sm text-warn-ink">
           <span aria-hidden>⚠ </span>
-          {scanned.length} page(s) have no text layer and need OCR (not available yet): {scanned.slice(0, 30).join(", ")}
-          {scanned.length > 30 ? "…" : ""}. Values on these pages were not extracted.
+          {ocrRead.length} page(s) had no text layer and were read by OCR: {ocrRead.slice(0, 30).join(", ")}
+          {ocrRead.length > 30 ? "…" : ""}. OCR can misread digits: check every value from these pages (labelled “(OCR)”) against the page image before approving.
+        </div>
+      )}
+      {unread.length > 0 && (
+        <div className="rounded-xl border border-hairline bg-warn-bg p-4 text-sm text-warn-ink">
+          <span aria-hidden>⚠ </span>
+          {unread.length} page(s) have no text layer and could not be read (OCR found no text, or over the {MAX_OCR_PAGES}-page OCR limit):{" "}
+          {unread.slice(0, 30).join(", ")}
+          {unread.length > 30 ? "…" : ""}. Values on these pages were not extracted.
         </div>
       )}
 

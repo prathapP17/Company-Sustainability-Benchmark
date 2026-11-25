@@ -121,22 +121,25 @@ export interface YearHeader {
 
 /**
  * Parses a column-header line into fiscal-year labels in column order.
- * Handles "2023 | 2024 | 2025", "FY20 FY21 … FY25", "FY 2025-26 | FY 2024-25",
+ * Handles "2023 | 2024 | 2025", "FY20 FY21 … FY25", "FY2024 FY2025", "FY 2025-26 | FY 2024-25",
  * "(2018) 2022 2023". "FY 2025-26" maps to 2026 for end-year labelling and
  * 2025 for start-year labelling.
  */
 export function parseYearHeader(line: string, convention: FiscalLabelConvention): number[] | null {
   const years: number[] = [];
-  const re = /\bFY\s?(\d{4})\s?[-–/]\s?(\d{2,4})\b|\bFY\s?'?(\d{2})\b|\(?\b((?:19|20)\d{2})\b\)?/g;
+  // "FY 2025-26", "FY2025" (the company's own label), "FY25", "(2018) 2022".
+  const re = /\bFY\s?(\d{4})\s?[-–/]\s?(\d{2,4})\b|\bFY\s?((?:19|20)\d{2})\b|\bFY\s?'?(\d{2})\b|\(?\b((?:19|20)\d{2})\b\)?/g;
   let other = line;
   for (const m of line.matchAll(re)) {
     if (m[1] && m[2]) {
       const start = Number(m[1]);
       years.push(convention === "start_year" ? start : start + 1);
     } else if (m[3]) {
-      years.push(2000 + Number(m[3]));
+      years.push(Number(m[3]));
     } else if (m[4]) {
-      years.push(Number(m[4]));
+      years.push(2000 + Number(m[4]));
+    } else if (m[5]) {
+      years.push(Number(m[5]));
     }
     other = other.replace(m[0], "");
   }

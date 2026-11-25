@@ -23,6 +23,10 @@
     "sbti:import": "tsx scripts/sbti-import.ts",
     "summaries": "tsx scripts/summaries.ts",
     "news": "tsx scripts/news.ts",
+    "eval": "tsx scripts/eval-extraction.ts",
+    "eval:gold": "tsx scripts/eval-extraction.ts --gold",
+    "perf": "tsx scripts/perf-budget.ts",
+    "restore:drill": "tsx scripts/restore-drill.ts",
     "scheduler": "tsx scripts/scheduler.ts",
     "launchd:print": "zsh ops/launchd/install.sh --print",
     "launchd:install": "zsh ops/launchd/install.sh",
@@ -30,6 +34,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.13.0",
+    "@tesseract.js-data/eng": "^1.0.0",
     "better-sqlite3": "^13.2.0",
     "exceljs": "^4.4.0",
     "next": "16.4.6",
@@ -39,9 +44,11 @@
     "react-dom": "19.3.0",
     "recharts": "^3.11.0",
     "server-only": "^0.0.1",
+    "tesseract.js": "^7.0.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^22.20.5",

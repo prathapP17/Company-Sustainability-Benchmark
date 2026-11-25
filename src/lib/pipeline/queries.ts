@@ -54,6 +54,11 @@ export function pagesFor(id: number, numbers: number[]): PageRow[] {
     .all(id, ...numbers) as PageRow[];
 }
 
+/** Pages of a document that were read by OCR. */
+export function ocrPageNumbers(id: number): number[] {
+  return (pipelineDb().prepare("SELECT page_number FROM pages WHERE document_id = ? AND label LIKE '%(OCR)' ORDER BY page_number").all(id) as { page_number: number }[]).map((r) => r.page_number);
+}
+
 export interface AuditRow {
   id: number;
   at: string;

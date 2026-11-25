@@ -12,6 +12,7 @@
   --axis: #c3c2b7;
   --ring: rgba(11, 11, 11, 0.1);
   --accent: #256abf;
+  --on-accent: #ffffff;
   /* Coverage: ordinal one-hue ramp (validated light, --ordinal) + neutral for "not assessed" */
   --state-disclosed: #1c5cab;
   --state-not-disclosed: #3987e5;
@@ -35,6 +36,7 @@
     --axis: #383835;
     --ring: rgba(255, 255, 255, 0.1);
     --accent: #6da7ec;
+    --on-accent: #0b1b2e;
     /* dark ordinal steps validated against #1a1a19 */
     --state-disclosed: #9ec5f4;
     --state-not-disclosed: #3987e5;
@@ -74,4 +76,13 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Links in text must not rely on colour alone (WCAG 1.4.1). */
+@layer base {
+  a.text-accent {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
 }

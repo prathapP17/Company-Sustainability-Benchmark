@@ -3,6 +3,8 @@ import Database from "better-sqlite3";
 import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { backupDataDir } from "@/lib/ops/backup";
+import { latestSnapshot, restoreDrill } from "@/lib/ops/restore";
+import { seed } from "@/lib/db/seed";
 import { isDue, localParts, parseSlot } from "@/lib/ops/schedule";
 import { closePipelineDbs, pipelineDb } from "@/lib/pipeline/db";
 import { tempDataDir } from "./helpers";
@@ -38,6 +40,33 @@ describe("snapshot backups", () => {
     expect(existsSync(path.join(snap, "discovery.json"))).toBe(true);
     // Hard link: same inode as the original upload.
     expect(statSync(path.join(snap, "uploads", "ab", "abcdef.pdf")).ino).toBe(statSync(path.join(t.dir, "uploads", "ab", "abcdef.pdf")).ino);
+  });
+});
+
+describe("restore drill", () => {
+  it("passes a good snapshot and catches a corrupted upload, without touching the live folder", async () => {
+    const t = tempDataDir();
+    cleanup = t.cleanup;
+    seed(t.dir);
+    pipelineDb(t.dir).prepare("INSERT INTO audit_log (at, actor, action, entity) VALUES ('2026-11-25T00:00:00Z', 'test', 'marker', 'x')").run();
+    const body = "%PDF-1.4 drill fixture";
+    const sha = (await import("node:crypto")).createHash("sha256").update(body).digest("hex");
+    mkdirSync(path.join(t.dir, "uploads", sha.slice(0, 2)), { recursive: true });
+    writeFileSync(path.join(t.dir, "uploads", sha.slice(0, 2), `${sha}.pdf`), body);
+    await backupDataDir(t.dir, { keep: 3 });
+    const snap = latestSnapshot(t.dir)!;
+    const good = restoreDrill(snap);
+    expect(good.ok).toBe(true);
+    expect(good.checks.map((c) => c.name)).toEqual(["pipeline.db", "benchmark.db", "company files", "re-seed", "uploads"]);
+
+    // Corrupt the snapshot's copy only (it is a hard link, so replace the file rather than write through it).
+    const copy = path.join(snap, "uploads", sha.slice(0, 2), `${sha}.pdf`);
+    (await import("node:fs")).rmSync(copy);
+    writeFileSync(copy, "tampered");
+    const bad = restoreDrill(snap);
+    expect(bad.ok).toBe(false);
+    expect(bad.checks.find((c) => c.name === "uploads")!.detail).toMatch(/1 do not match/);
+    expect(readdirSync(path.join(t.dir, "uploads", sha.slice(0, 2)))).toEqual([`${sha}.pdf`]); // live upload untouched
   });
 });
 
