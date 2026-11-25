@@ -244,6 +244,12 @@ async function main() {
       await page.getByText("Recently acknowledged").waitFor();
       check(true, "alert acknowledged");
 
+      // Phase 6 review pages (no API key in tests: generation is offered only when one is set).
+      await page.goto(`${BASE}/review/summaries`);
+      check((await page.getByText("ANTHROPIC_API_KEY is not set").count()) === 1, "summaries page says generation needs an API key");
+      await page.goto(`${BASE}/review/news`);
+      check((await page.getByText("Nothing waiting.").count()) === 1, "news review queue renders");
+
       await page.goto(`${BASE}/review/audit`);
       check((await page.getByText("E2E Admin").count()) >= 2, "audit log records the signed-in user's actions");
 
@@ -265,7 +271,7 @@ async function main() {
 
       for (const [name, width] of [["phone", 375], ["tablet", 768], ["desktop", 1280]] as const) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/review", "/review/documents/1", "/review/discovered", "/review/alerts", "/review/users", "/review/account"]) {
+        for (const route of ["/review", "/review/documents/1", "/review/discovered", "/review/alerts", "/review/users", "/review/account", "/review/news", "/review/summaries"]) {
           await page.goto(`${BASE}${route}`, { waitUntil: "networkidle" });
           await page.locator("h1").first().waitFor();
           const ok = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);

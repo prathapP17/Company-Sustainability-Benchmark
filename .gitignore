@@ -47,3 +47,6 @@ __pycache__/
 .env*.local
 !.env.example
 /data/logs/
+
+# third-party downloads (only extracted, cited rows are committed)
+/data/external/

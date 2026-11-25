@@ -1,0 +1,728 @@
+{
+  "$schemaVersion": 1,
+  "source": {
+    "organisation": "Science Based Targets initiative (SBTi)",
+    "title": "SBTi Target Dashboard: companies and targets downloads",
+    "url": "https://sciencebasedtargets.org/target-dashboard",
+    "downloaded": "2026-11-25",
+    "dataAsOf": "2026-11-19",
+    "files": [
+      {
+        "name": "companies-excel.xlsx",
+        "url": "https://files.sciencebasedtargets.org/production/files/companies-excel.xlsx",
+        "bytes": 2367219,
+        "sha256": "168580940eb67cb71175c1597ea4cae82060fb211a777a9d45f866c3d7e15aed"
+      },
+      {
+        "name": "targets-excel.xlsx",
+        "url": "https://files.sciencebasedtargets.org/production/files/targets-excel.xlsx",
+        "bytes": 5914154,
+        "sha256": "60f5779f6f1ebfef6ae6323cb437df6c9682a70f12b671f033822b44fce117f7"
+      }
+    ]
+  },
+  "companies": {
+    "apple": {
+      "sbtiId": "40003329",
+      "name": "Apple, Inc.",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2030"
+      },
+      "longTerm": {
+        "status": null,
+        "classification": null,
+        "year": null
+      },
+      "netZero": {
+        "status": null,
+        "year": null
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": null,
+      "dateUpdated": "2021-05-06",
+      "targets": [
+        {
+          "rowId": "13330-40003329",
+          "horizon": "Near-term",
+          "scope": "1+2+3",
+          "value": "62%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Apple, Inc. commits to reduce absolute combined scope 1, 2 and 3 GHG emissions 62% by FY2030 from a FY2019 base year.",
+          "published": "2021-05-06"
+        },
+        {
+          "rowId": "13527-40003329",
+          "horizon": "Near-term",
+          "scope": "2",
+          "value": "100%",
+          "type": "Renewable electricity",
+          "subType": "Maintenance",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Apple also commits to continue annually sourcing 100% renewable electricity through FY2030.",
+          "published": "2021-05-06"
+        }
+      ]
+    },
+    "microsoft": {
+      "sbtiId": "40005011",
+      "name": "Microsoft Corporation",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "2030"
+      },
+      "longTerm": {
+        "status": null,
+        "classification": null,
+        "year": null
+      },
+      "netZero": {
+        "status": "Commitment Removed",
+        "year": null
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": "Expired commitment",
+      "dateUpdated": "2020-01-01",
+      "targets": [
+        {
+          "rowId": "13798-40005011",
+          "horizon": "Near-term",
+          "scope": "2",
+          "value": "100%",
+          "type": "Renewable electricity",
+          "subType": "Maintenance",
+          "classification": "1.5°C",
+          "baseYear": 2017,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "American multinational technology company Microsoft commits to continue annually source 100% renewable electricity through 2030.",
+          "published": "2019-09-23"
+        },
+        {
+          "rowId": "15778-40005011",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "30%",
+          "type": "Intensity",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2017,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Microsoft also commits to reduce scope 3 GHG emissions intensity per unit of revenue 30% by 2030 from a 2017 base year and to avoid growth in absolute scope 3 emissions.",
+          "published": "2019-09-23"
+        }
+      ]
+    },
+    "nestle": {
+      "sbtiId": "40009928",
+      "name": "Nestlé",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "2030"
+      },
+      "longTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "2050"
+      },
+      "netZero": {
+        "status": "Validated Targets",
+        "year": "2050"
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": null,
+      "dateUpdated": "2023-12-07",
+      "targets": [
+        {
+          "rowId": "76841979-40009928",
+          "horizon": "Long-term",
+          "scope": "1+2+3",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Energy and industry:\nNestlé commits to reduce absolute scope 1, 2 and 3 GHG emissions 90% by 2050 from a 2018 base year*.\n*The target boundary includes biogenic emissions and removals from bioenergy feedstocks",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "46601849-40009928",
+          "horizon": "Long-term",
+          "scope": "3",
+          "value": "75%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2018,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "FLAG:\nNestlé commits to reduce absolute scope 3 FLAG GHG emissions 75% by 2050 from a 2018 base year*.\n*The target includes FLAG emissions and removals.",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "67267528-40009928",
+          "horizon": "Near-term",
+          "scope": "2",
+          "value": "100%",
+          "type": "Renewable electricity",
+          "subType": "Other",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2025,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Energy and industry:\nNestlé also commits to increase annual active sourcing of renewable electricity from 33.4% in 2018 to 100% by 2025.",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "54753446-40009928",
+          "horizon": "Near-term",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "No-deforestation",
+          "subType": "Other",
+          "classification": null,
+          "baseYear": 2018,
+          "targetYear": 2025,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "FLAG:\nNestle also commits to no deforestation across its primary deforestation-linked commodities, with a target date of 2025.",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "99457170-40009928",
+          "horizon": "Near-term",
+          "scope": "1+2+3",
+          "value": "50.4%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Energy and industry:\nNestlé commits to reduce absolute scope 1, 2 and scope 3 GHG emissions from purchased goods and services, fuel and energy related activities, waste generated in operations, upstream transportation and distribution, business travel, employee commuting, downstream transportation and distribution and end-of-life treatment of sold products 50.4% by 2030 from a 2018 base year*. *The target boundary includes biogenic emissions and removals from bioenergy feedstocks",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "08860781-40009928",
+          "horizon": "Near-term",
+          "scope": "2",
+          "value": "100%",
+          "type": "Renewable electricity",
+          "subType": "Maintenance",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Energy and industry:\nNestlé also commits to continue annual active sourcing of renewable electricity of 100% through 2030.",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "54431324-40009928",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "50%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2018,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "FLAG:\nNestlé commits to reduce absolute scope 3 FLAG GHG emissions 50% by 2030 from a 2018 base year*.\n*The target includes FLAG emissions and removals.",
+          "published": "2023-12-07"
+        },
+        {
+          "rowId": "75481301-40009928",
+          "horizon": "Net-zero",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "Net-zero",
+          "subType": "Other",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "Nestlé commits to reach net-zero GHG emissions across the value chain by 2050 from a 2018 base year.",
+          "published": "2023-12-07"
+        }
+      ]
+    },
+    "reliance": {
+      "notFound": true,
+      "note": "Not in the SBTi Target Dashboard (latest record update 2026-11-19); searched by company name."
+    },
+    "samsung": {
+      "notFound": true,
+      "note": "Not in the SBTi Target Dashboard (latest record update 2026-11-19); searched by company name."
+    },
+    "siemens": {
+      "sbtiId": "40003681",
+      "name": "Siemens AG",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2030"
+      },
+      "longTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2050"
+      },
+      "netZero": {
+        "status": "Validated Targets",
+        "year": "FY2050"
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": null,
+      "dateUpdated": "2024-09-19",
+      "targets": [
+        {
+          "rowId": "17253-40003681",
+          "horizon": "Long-term",
+          "scope": "1+2",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Maintenance",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2050,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Siemens AG commits to maintain a minimum of 90% absolute scope 1 and 2 GHG emissions reductions from FY2030 through FY2050 from a FY2019 base year.*\n*The target boundary includes land-related emissions and removals from bioenergy feedstocks.",
+          "published": "2024-09-19"
+        },
+        {
+          "rowId": "13649-40003681",
+          "horizon": "Long-term",
+          "scope": "3",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2019,
+          "targetYear": 2050,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Siemens AG commits to reduce absolute scope 3 GHG emissions 90% by FY2050 from a FY2019 base year.",
+          "published": "2024-09-19"
+        },
+        {
+          "rowId": "15747-40003681",
+          "horizon": "Near-term",
+          "scope": "1+2",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Siemens AG commits to reduce absolute scope 1 and 2 GHG emissions 90% by FY2030 from a FY2019 base year.*\n*The target boundary includes land-related emissions and removals from bioenergy feedstocks.\"",
+          "published": "2024-09-19"
+        },
+        {
+          "rowId": "14859-40003681",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "30%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Siemens AG commits to reduce absolute scope 3 GHG emissions 30% within the same timeframe.",
+          "published": "2024-09-19"
+        },
+        {
+          "rowId": "15198-40003681",
+          "horizon": "Net-zero",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "Net-zero",
+          "subType": "Other",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2050,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Siemens AG commits to reach net-zero greenhouse gas emissions across the value chain by FY2050.",
+          "published": "2024-09-19"
+        }
+      ]
+    },
+    "sony": {
+      "sbtiId": "40003135",
+      "name": "Sony Group Corporation",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2035"
+      },
+      "longTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2040"
+      },
+      "netZero": {
+        "status": "Validated Targets",
+        "year": "FY2040"
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": null,
+      "dateUpdated": "2022-09-15",
+      "targets": [
+        {
+          "rowId": "60613706-40003135",
+          "horizon": "Long-term",
+          "scope": "1+2+3",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2040,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Sony Group Corporation commits to reduce absolute scope 1, 2, and 3 GHG emissions 90% by FY2040 from a FY2018 base year.",
+          "published": "2022-09-15"
+        },
+        {
+          "rowId": "95773093-40003135",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "10%",
+          "type": "Engagement",
+          "subType": "Other",
+          "classification": null,
+          "baseYear": 2018,
+          "targetYear": 2025,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Sony Corporation also commits that 10% of its suppliers by emissions covering purchased goods and services, will have science-based targets by FY2025.",
+          "published": "2022-09-15"
+        },
+        {
+          "rowId": "07818312-40003135",
+          "horizon": "Near-term",
+          "scope": "1+2",
+          "value": "72%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2035,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Sony Group Corporation commits to reduce absolute scope 1 and 2 GHG emissions 72% by FY2035 from a FY2018 base year.",
+          "published": "2022-09-15"
+        },
+        {
+          "rowId": "50750149-40003135",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "45%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2018,
+          "targetYear": 2035,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Sony Group Corporation commits to reduce absolute scope 3 GHG emissions covering use of sold products 45% over the same target period.",
+          "published": "2022-09-15"
+        },
+        {
+          "rowId": "55297377-40003135",
+          "horizon": "Net-zero",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "Net-zero",
+          "subType": "Other",
+          "classification": "1.5°C",
+          "baseYear": 2018,
+          "targetYear": 2040,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Sony Group Corporation commits to reach net-zero greenhouse gas emissions across the value chain by FY2040 from a FY2018 base year.",
+          "published": "2022-09-15"
+        }
+      ]
+    },
+    "toyota": {
+      "sbtiId": "40012050",
+      "name": "Toyota Motor Corporation",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C/Well-below 2°C",
+        "year": "2035"
+      },
+      "longTerm": {
+        "status": null,
+        "classification": null,
+        "year": null
+      },
+      "netZero": {
+        "status": null,
+        "year": null
+      },
+      "ba15": null,
+      "statusReason": null,
+      "dateUpdated": "2022-11-03",
+      "targets": [
+        {
+          "rowId": "15039519-40012050",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "33.3%",
+          "type": "Intensity",
+          "subType": "Reduction",
+          "classification": "Well-below 2°C",
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TOYOTA MOTOR CORPORATION commits to reduce scope 3 use of sold products GHG emissions from passenger light duty vehicles and light commercial vehicles 33.3% per vehicle km by 2030 from a 2019 base year*. *The target boundary includes biogenic emissions and removals from bioenergy feedstocks.",
+          "published": "2022-11-03"
+        },
+        {
+          "rowId": "73735464-40012050",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "11.6%",
+          "type": "Intensity",
+          "subType": "Reduction",
+          "classification": "Well-below 2°C",
+          "baseYear": 2019,
+          "targetYear": 2030,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TOYOTA MOTOR CORPORATION commits to reduce scope 3 use of sold products GHG emissions from medium and heavy freight trucks 11.6% per vehicle km by 2030 from a 2019 base year. *The target boundary includes biogenic emissions and removals from bioenergy feedstocks.",
+          "published": "2022-11-03"
+        },
+        {
+          "rowId": "78267599-40012050",
+          "horizon": "Near-term",
+          "scope": "1+2",
+          "value": "68%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2019,
+          "targetYear": 2035,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TOYOTA MOTOR CORPORATION commits to reduce absolute scope 1 and 2 GHG emissions 68% by 2035 from a 2019 base year.",
+          "published": "2022-11-03"
+        }
+      ]
+    },
+    "tsmc": {
+      "sbtiId": "40001249",
+      "name": "TSMC",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "2035"
+      },
+      "longTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "2050"
+      },
+      "netZero": {
+        "status": "Validated Targets",
+        "year": "2050"
+      },
+      "ba15": null,
+      "statusReason": null,
+      "dateUpdated": "2026-09-24",
+      "targets": [
+        {
+          "rowId": "38090463-40001249",
+          "horizon": "Long-term",
+          "scope": "1+2",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2025,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TSMC commits to reduce absolute scope 1 and 2 GHG emissions 90.0% by 2050 from a 2025 base year.*",
+          "published": "2026-09-24"
+        },
+        {
+          "rowId": "14213776-40001249",
+          "horizon": "Long-term",
+          "scope": "3",
+          "value": "90%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2025,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TSMC commits to reduce absolute scope 3 GHG emissions 90.0% by 2050 from a 2025 base year.",
+          "published": "2026-09-24"
+        },
+        {
+          "rowId": "42323946-40001249",
+          "horizon": "Near-term",
+          "scope": "1+2",
+          "value": "62%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2025,
+          "targetYear": 2035,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TSMC commits to reduce absolute scope 1 and 2 GHG emissions 62.0% by 2035 from a 2025 base year.*",
+          "published": "2026-09-24"
+        },
+        {
+          "rowId": "75396480-40001249",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "30%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2025,
+          "targetYear": 2035,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TSMC commits to reduce absolute scope 3 GHG emissions from purchased goods and services, capital goods, and fuel- and energy-related activities 30.0% by 2035 from a 2025 base year.",
+          "published": "2026-09-24"
+        },
+        {
+          "rowId": "61518820-40001249",
+          "horizon": "Net-zero",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "Net-zero",
+          "subType": "Other",
+          "classification": "1.5°C",
+          "baseYear": 2025,
+          "targetYear": 2050,
+          "yearType": "CY",
+          "status": "Other",
+          "wording": "TSMC commits to achieve net-zero greenhouse gas emissions across the value chain by 2050.",
+          "published": "2026-09-24"
+        }
+      ]
+    },
+    "unilever": {
+      "sbtiId": "40008764",
+      "name": "Unilever plc",
+      "nearTerm": {
+        "status": "Validated Targets",
+        "classification": "1.5°C",
+        "year": "FY2030"
+      },
+      "longTerm": {
+        "status": null,
+        "classification": null,
+        "year": null
+      },
+      "netZero": {
+        "status": "Commitment Removed",
+        "year": null
+      },
+      "ba15": "BA1.5 member",
+      "statusReason": "Expired commitment",
+      "dateUpdated": "2024-04-25",
+      "targets": [
+        {
+          "rowId": "89111324-40008764",
+          "horizon": "Near-term",
+          "scope": "1+2+3",
+          "value": null,
+          "type": "No-deforestation",
+          "subType": "Maintenance",
+          "classification": null,
+          "baseYear": 2021,
+          "targetYear": null,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Unilever also commits to maintain no deforestation across its primary deforestation-linked commodities.",
+          "published": "2024-04-25"
+        },
+        {
+          "rowId": "99631639-40008764",
+          "horizon": "Near-term",
+          "scope": "1+2",
+          "value": "100%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": "1.5°C",
+          "baseYear": 2015,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Energy & industrial: Unilever commits to reduce scope 1 and 2 GHG emissions 100% by FY2030 from a FY2015 base year.",
+          "published": "2024-04-25"
+        },
+        {
+          "rowId": "56136926-40008764",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "42%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2021,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "Unilever also commits to reduce absolute scope 3 GHG emissions from purchased goods and services, fuel and energy related activities, upstream transport and distribution, use of sold products, end-of-life treatment of sold products, and downstream leased assets 42% by FY2030 from a FY2021 base year.",
+          "published": "2024-04-25"
+        },
+        {
+          "rowId": "08495965-40008764",
+          "horizon": "Near-term",
+          "scope": "3",
+          "value": "30.3%",
+          "type": "Absolute",
+          "subType": "Reduction",
+          "classification": null,
+          "baseYear": 2021,
+          "targetYear": 2030,
+          "yearType": "FY",
+          "status": "Other",
+          "wording": "FLAG: Unilever commits to reduce absolute scope 3 FLAG GHG emissions 30.3% by FY2030 from a FY2021 base year.",
+          "published": "2024-04-25"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$comment": "Each company pinned to one SBTi dashboard record. The importer refuses a record whose name or ISIN/LEI no longer matches. null = searched, not in the dashboard.",
+  "apple": { "sbtiId": "40003329", "name": "Apple, Inc.", "isin": "US0378331005" },
+  "microsoft": { "sbtiId": "40005011", "name": "Microsoft Corporation", "isin": "US5949181045" },
+  "nestle": { "sbtiId": "40009928", "name": "Nestlé", "isin": "CH0038863350" },
+  "reliance": null,
+  "samsung": null,
+  "siemens": { "sbtiId": "40003681", "name": "Siemens AG", "isin": "DE0007236101" },
+  "sony": { "sbtiId": "40003135", "name": "Sony Group Corporation", "isin": "JP3435000009" },
+  "toyota": { "sbtiId": "40012050", "name": "Toyota Motor Corporation", "lei": "5493006W3QUS5LMH6R84" },
+  "tsmc": { "sbtiId": "40001249", "name": "TSMC", "isin": "TW0002330008" },
+  "unilever": { "sbtiId": "40008764", "name": "Unilever plc", "isin": "GB00B10RZP78" }
+}

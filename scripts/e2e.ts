@@ -88,6 +88,19 @@ async function main() {
       await page.goto(`${BASE}/targets`);
       check((await page.getByText(/Ahead of straight-line path/).count()) >= 1, "targets: progress vs straight-line path");
 
+      // Phase 6 pages
+      await page.goto(`${BASE}/targets`);
+      check((await page.getByText(/1\.5 °C pace · 5\.6%\/yr/).count()) >= 1, "targets: Apple's 62% by 2030 shown at 1.5 °C pace (5.6%/yr)");
+      check((await page.getByText("Companies without targets recorded here").count()) === 1, "targets: companies without curated targets listed with SBTi status");
+      await page.goto(`${BASE}/companies/microsoft`);
+      check((await page.getByText(/SBTi lists a commitment as removed/).count()) === 1, "company page: SBTi removed commitment flagged");
+      check((await page.getByText(/Data as of 20\d\d-\d\d-\d\d/i).count()) >= 1, "company page: SBTi data cited with its date");
+      await page.goto(`${BASE}/scope3`);
+      check((await page.locator("h1").textContent()) === "Scope 3 heatmap", "Scope 3 heatmap page");
+      check((await page.locator("tbody th[scope=row]").count()) === 10, "heatmap has a row per company");
+      await page.goto(`${BASE}/industry`);
+      check((await page.getByText(/SASB/).count()) >= 5, "industry KPI page lists SASB indicators");
+
       await page.goto(`${BASE}/transparency`);
       check((await page.locator("tbody tr").count()) >= 18, "transparency checklist rows");
 
@@ -114,7 +127,7 @@ async function main() {
       // Responsive checks + screenshots
       for (const [name, width] of Object.entries(WIDTHS)) {
         await page.setViewportSize({ width, height: 900 });
-        for (const route of ["/", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/transparency", "/rankings", "/methodology", "/downloads"]) {
+        for (const route of ["/", "/companies/toyota", "/compare", "/peers/consumer_staples", "/targets", "/scope3", "/industry", "/transparency", "/rankings", "/methodology", "/downloads"]) {
           await page.goto(`${BASE}${route}`);
           check(await noHorizontalScroll(page), `no horizontal page scroll at ${name} (${width}px) on ${route}`);
           const file = `${route === "/" ? "dashboard" : route.slice(1).replace(/\//g, "_")}-${name}.png`;

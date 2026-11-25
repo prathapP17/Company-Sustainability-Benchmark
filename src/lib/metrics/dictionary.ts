@@ -46,7 +46,7 @@ const WATER = {
 const MASS = { t: 1, kt: 1_000, Mt: 1_000_000, lb: 0.00045359237 };
 const PCT = { "%": 1 };
 
-const scope3Names: Record<number, string> = {
+export const SCOPE3_NAMES: Record<number, string> = {
   1: "Purchased goods and services",
   2: "Capital goods",
   3: "Fuel- and energy-related activities",
@@ -64,7 +64,7 @@ const scope3Names: Record<number, string> = {
   15: "Investments",
 };
 
-const scope3Categories: MetricDef[] = Object.entries(scope3Names).map(([n, name]) => ({
+const scope3Categories: MetricDef[] = Object.entries(SCOPE3_NAMES).map(([n, name]) => ({
   id: `ghg_scope3_c${n}`,
   label: `Scope 3 cat. ${n}: ${name}`,
   category: "emissions",

@@ -221,4 +221,32 @@ CREATE TABLE login_throttle (
 );
 `,
   },
+  {
+    version: 4,
+    name: "news and controversy signals (GDELT), reviewed before display",
+    sql: `
+-- Phase 6: news items are secondary, low-confidence sources (rule 7). Found
+-- items wait as 'pending'; only reviewer-approved items are shown publicly,
+-- always labelled, and never used in scores.
+CREATE TABLE news_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  company_id TEXT NOT NULL,
+  url TEXT NOT NULL,
+  title TEXT NOT NULL,
+  domain TEXT,
+  language TEXT,
+  source_country TEXT,
+  seen_at TEXT,                  -- GDELT "seendate", ISO
+  topics TEXT,                   -- JSON array of matched topic words
+  origin TEXT NOT NULL,          -- 'gdelt'
+  status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'rejected')),
+  reviewer TEXT,
+  reviewed_at TEXT,
+  note TEXT,                     -- reviewer's one-line context, shown publicly with approved items
+  first_seen TEXT NOT NULL,
+  UNIQUE (company_id, url)
+);
+CREATE INDEX news_items_company ON news_items(company_id, status);
+`,
+  },
 ];

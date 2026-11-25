@@ -1,0 +1,17 @@
+{
+  "$schemaVersion": 1,
+  "defaults": { "timespan": "1month", "maxRecords": 25, "language": "english", "hostIntervalMs": 10000 },
+  "topics": ["emissions", "pollution", "lawsuit", "fined", "greenwashing", "deforestation", "\"human rights\"", "\"forced labor\"", "\"child labor\"", "spill", "contamination", "violation", "toxic", "recall", "strike", "boycott", "protest"],
+  "companies": {
+    "apple": { "names": ["\"Apple Inc\""] },
+    "microsoft": { "names": ["Microsoft"] },
+    "nestle": { "names": ["Nestle"] },
+    "reliance": { "names": ["\"Reliance Industries\""] },
+    "samsung": { "names": ["\"Samsung Electronics\""] },
+    "siemens": { "names": ["Siemens"] },
+    "sony": { "names": ["\"Sony Group\"", "Sony"] },
+    "toyota": { "names": ["Toyota"] },
+    "tsmc": { "names": ["TSMC"] },
+    "unilever": { "names": ["Unilever"] }
+  }
+}

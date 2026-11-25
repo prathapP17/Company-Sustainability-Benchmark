@@ -13,6 +13,8 @@ const NAV: [string, string][] = [
   ["/compare", "Compare"],
   ["/peers", "Peers"],
   ["/targets", "Targets"],
+  ["/scope3", "Scope 3"],
+  ["/industry", "Industry KPIs"],
   ["/transparency", "Transparency"],
   ["/rankings", "Rankings"],
   ["/methodology", "Methodology"],

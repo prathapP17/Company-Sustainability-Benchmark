@@ -27,6 +27,11 @@ import { METRICS, metricAppliesTo, type MetricCategory, type MetricDef } from "@
 import { LABELS, type AssuranceLevel, type Boundary, type Consolidation, type VerificationClass } from "@/lib/schema/enums";
 import { fiscalLabel } from "@/lib/fiscal";
 import { formatCompact, formatReported, titleCase } from "@/lib/format";
+import { AmbitionTag, SbtiPanel } from "@/components/Sbti";
+import { AiSummary } from "@/components/AiSummary";
+import { NewsSignals } from "@/components/NewsSignals";
+import { ambitionOf } from "@/lib/scoring/ambition";
+import { loadSbti, sbtiFor } from "@/lib/sbti/load";
 
 export function generateStaticParams() {
   return listCompanyIds().map((id) => ({ id }));
@@ -162,6 +167,7 @@ async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "pa
   const sourceMap = new Map(sources.map((s) => [s.id, s]));
   const reports = reportsFor(id);
   const targets = targetsFor(id);
+  const sbti = loadSbti();
   const gaps = dataGapsFor(id);
   const score = scoreFor(id);
   const indicators = allIndicators().filter((i) => i.company_id === id);
@@ -233,6 +239,10 @@ async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "pa
         {c.fy_note && <p className="text-xs text-ink-muted">{c.fy_note}</p>}
         {c.research_notes && <p className="max-w-3xl text-sm text-ink-2">{c.research_notes}</p>}
       </div>
+
+      <Suspense fallback={null}>
+        <AiSummary companyId={id} />
+      </Suspense>
 
       <Card title="Core metric coverage" action={<CoverageLegend />}>
         <div className="flex items-center gap-3">
@@ -345,6 +355,10 @@ async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "pa
                       <Tag tone={t.validation === "sbti_validated" ? "neutral" : "warn"}>
                         {t.validation === "sbti_validated" ? "SBTi validated" : t.validation === "self_declared" ? "Self-declared" : "Validation not stated"}
                       </Tag>
+                      {(() => {
+                        const a = ambitionOf({ category: t.category, type: t.type, baselineYear: t.baseline_year, targetYear: t.target_year, reductionPct: t.target_value, unit: t.target_unit });
+                        return a.status !== "not_assessable" ? <AmbitionTag a={a} /> : null;
+                      })()}
                     </div>
                     <div className="mt-2">
                       <TargetProgressBar p={progressFromRow(t)} />
@@ -370,6 +384,14 @@ async function CompanyContent({ params }: Pick<PageProps<"/companies/[id]">, "pa
               </ul>
             )}
           </Card>
+
+          <Card title="SBTi Target Dashboard">
+            <SbtiPanel entry={sbtiFor(sbti, id)} sbti={sbti} claimsValidated={targets.some((t) => t.validation === "sbti_validated")} />
+          </Card>
+
+          <Suspense fallback={null}>
+            <NewsSignals companyId={id} />
+          </Suspense>
 
           <Card title="Sources and assurance">
             <ul className="flex flex-col gap-3 text-sm">

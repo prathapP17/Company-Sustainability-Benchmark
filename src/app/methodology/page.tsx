@@ -81,6 +81,44 @@ export default function MethodologyPage() {
         </p>
       </Card>
 
+      <Card title="Targets: pace check and SBTi status">
+        <p className="text-sm text-ink-2">
+          For absolute emissions targets stated as a percentage cut from a base year, the implied linear yearly reduction
+          (cut ÷ years from base year to target year) is compared with SBTi&apos;s near-term minimums: 4.2% a year for
+          1.5 °C and 2.5% a year for well-below 2 °C. This is a derived check of pace only; it ignores the coverage,
+          base-year and time-frame rules that SBTi validation also applies, and intensity and net-zero targets are not
+          assessed. SBTi&apos;s own status and classification come from its public Target Dashboard download, cited with its
+          data date and file checksum; each company is pinned to one SBTi record (name and ISIN/LEI checked).
+        </p>
+      </Card>
+
+      <Card title="Scope 3 heatmap and industry KPIs">
+        <p className="text-sm text-ink-2">
+          The heatmap shows each company&apos;s disclosure state per Scope 3 category in its latest year. A category&apos;s share
+          of the company&apos;s own Scope 3 total is a derived figure, shown only when both have the same year and boundary,
+          and is not compared across companies. Industry KPIs (SASB/ISSB) are shown only within the peer group they apply
+          to, with boundary warnings.
+        </p>
+      </Card>
+
+      <Card title="AI summaries">
+        <p className="text-sm text-ink-2">
+          Claude (claude-opus-5-5) writes a short summary from the company&apos;s curated facts only, citing a fact for every
+          sentence. Decided with the project owner on 2026-11-25: summaries are published without human review, as an
+          exception to the rule that automated output is a proposal, but only after an automatic check: every number must
+          appear in a cited fact, and comparisons, rankings, judgements and forecasts are refused. A summary is hidden as
+          soon as the company&apos;s data changes, and the values and sources on the page always take precedence.
+        </p>
+      </Card>
+
+      <Card title="News and controversy signals">
+        <p className="text-sm text-ink-2">
+          Weekly searches of the GDELT news index (headlines and links only) for each company together with topic words
+          such as pollution, lawsuit or forced labor. Every item is a secondary, unverified source: it is shown only after a
+          reviewer approves it with a note on its relevance, and it never changes a value or a score.
+        </p>
+      </Card>
+
       <Card title="Exports">
         <p className="text-sm text-ink-2">
           CSV, XLSX and PDF exports carry the full provenance of every value (source, page, boundary, method, assurance,

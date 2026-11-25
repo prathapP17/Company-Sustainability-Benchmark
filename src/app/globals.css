@@ -17,6 +17,7 @@
   --state-not-disclosed: #3987e5;
   --state-not-found: #86b6ef;
   --state-not-assessed: #e1e0d9;
+  --on-state-disclosed: #ffffff;
   --series-1: #2a78d6;
   --warn-bg: #fff4d6;
   --warn-ink: #6b4a00;
@@ -39,6 +40,7 @@
     --state-not-disclosed: #3987e5;
     --state-not-found: #184f95;
     --state-not-assessed: #383835;
+    --on-state-disclosed: #0b1b2e;
     --series-1: #3987e5;
     --warn-bg: #3a2c05;
     --warn-ink: #fad27a;

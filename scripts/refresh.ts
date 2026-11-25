@@ -6,12 +6,14 @@
  *   npm run refresh -- --company apple    # one company (repeatable)
  *   npm run refresh -- --trigger schedule # used by the launchd job
  *   npm run refresh -- --no-extract       # discovery only
+ *   npm run refresh -- --no-news          # skip the GDELT news search
  */
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { defaultDataDir } from "../src/lib/data/load";
 import { pipelineDb } from "../src/lib/pipeline/db";
 import { runDiscovery } from "../src/lib/discovery/discover";
+import { fetchNews } from "../src/lib/news/gdelt";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 
@@ -39,6 +41,17 @@ async function main() {
   );
   for (const b of summary.blocked) console.log(`  blocked: ${b}`);
   for (const n of summary.notes) console.log(`  note: ${n}`);
+
+  if (!args.includes("--no-news") && existsSync(`${dataDir}/news.json`)) {
+    // News is secondary: a failure here is reported but never fails the refresh.
+    try {
+      const news = await fetchNews(pipelineDb(dataDir), dataDir, { companies: companies.length ? companies : undefined });
+      console.log(`  news: ${news.found} articles found, ${news.added} new waiting for review`);
+      for (const e of news.errors) console.log(`  news error: ${e}`);
+    } catch (e) {
+      console.log(`  news failed: ${(e as Error).message}`);
+    }
+  }
 
   if (!args.includes("--no-extract")) {
     const r = spawnSync("npx", ["tsx", "scripts/worker.ts", "--once"], { stdio: "inherit", env: process.env });

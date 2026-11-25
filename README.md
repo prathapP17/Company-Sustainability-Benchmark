@@ -70,6 +70,22 @@ Benchmarks the sustainability disclosures of large operating companies. See
   `compose.yaml` (Caddy HTTPS, web, worker, scheduler for weekly refresh and daily snapshot backups). See
   [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md); nothing is deployed until you run it on your own server.
 
+## Phase 6 (extra features)
+
+- **Targets:** pace check for absolute emissions targets against SBTi's near-term minimums (4.2%/yr for 1.5 °C, 2.5%/yr
+  for well-below 2 °C), plus each company's status from the SBTi Target Dashboard (`data/sbti.json`, extracted by
+  `npm run sbti:import` from the downloaded files in `data/external/sbti/`, which stay out of git; each company is pinned
+  in `data/sbti-matches.json`). Disagreements, such as a removed SBTi commitment, are flagged.
+- **`/scope3`:** heatmap of the 15 Scope 3 categories per company, with each category's share of the company's own total
+  (derived, same year and boundary only). **`/industry`:** SASB/ISSB industry KPIs within each peer group.
+- **AI summaries** (`/review/summaries`, `npm run summaries`): Claude writes 3–6 cited sentences from the company's
+  curated facts (`data/summaries/<id>.json`). Needs `ANTHROPIC_API_KEY`; costs API credits per summary.
+- **News signals** (`/review/news`, `npm run news`, and part of the weekly refresh): GDELT headlines per company and topic,
+  shown publicly only after a reviewer approves each one with a note; never used in values or scores.
+- **Decision (2026-11-25), an exception to brief rule 7:** AI summaries are published without human review, labelled
+  "Written by AI", and only if an automatic check passes (every number appears in a cited fact; no comparisons,
+  rankings, judgements or forecasts). They are hidden as soon as the underlying data changes. News stays under rule 7.
+
 ## Commands
 
 ```bash
@@ -86,6 +102,9 @@ npm run refresh       # discovery + extraction now (add -- --company apple to li
 npm run refilter      # re-apply changed filters to queued links (dry run; add -- --apply, which backs up first)
 npm run users -- list # accounts: list | invite | link | role | disable | enable (see docs/DEPLOYMENT.md)
 npm run backup        # snapshot backup into data/backups/snapshot-<time>/ (keeps 14)
+npm run sbti:import   # re-extract data/sbti.json from downloaded SBTi files (ask before downloading new ones)
+npm run summaries -- --company apple   # AI summary (or --stale for all without a current one)
+npm run news          # search GDELT now; items wait on /review/news
 npm run extract-text -- <file.pdf>   # page-marked text for manual research
 ```
 

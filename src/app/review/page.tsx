@@ -55,6 +55,12 @@ async function ReviewHome() {
           <Link href="/review/discovered" className="text-accent hover:underline">
             Discovered{awaiting ? ` (${awaiting} to fetch)` : ""}
           </Link>
+          <Link href="/review/news" className="text-accent hover:underline">
+            News
+          </Link>
+          <Link href="/review/summaries" className="text-accent hover:underline">
+            AI summaries
+          </Link>
           <Link href="/review/audit" className="text-accent hover:underline">
             Audit log
           </Link>
